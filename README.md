@@ -2,19 +2,18 @@
 ```
 \deepbots
 	\structure
-		\models
 		\controllers
-			\robots
-				robotManager.py
-				\controllers
-					robotController.py
-			\supervisors
-				supervisorManager.py
-				\wrappers
-					myWrapper.py
-				\controllers
-					supervisorController.py
+			\robot_manager
+				robot_manager.py
+				robot_controller.py
+			\supervisor_manager
+				supervisor_manager.py
+				supervisor_controller.py
+			\wrappers
+				myWrapper.py
+				
 		\libraries
+		\models
 		\plugins
 		\protos
 		\worlds
