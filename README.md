@@ -17,6 +17,6 @@
 		\libraries
 		\plugins
 		\protos
-		\world
+		\worlds
 			exampleWorld.wbt
 ```
