@@ -1,13 +1,21 @@
 # deepworlds
 ```
 \deepbots
-	\neural_networks
-	\robots
+	\structure
 		\controllers
-			robotController.py
-	\supervisors
-		\wrappers
-		\controllers
-			supervisorController.py
-	\setups
+			\robot_manager
+				robot_manager.py
+				robot_controller.py
+			\supervisor_manager
+				supervisor_manager.py
+				supervisor_controller.py
+			\wrappers
+				myWrapper.py
+				
+		\libraries
+		\models
+		\plugins
+		\protos
+		\worlds
+			exampleWorld.wbt
 ```
