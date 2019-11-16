@@ -2,7 +2,7 @@
 ```
 \deepbots
 	\structure
-		\neural_networks
+		\models
 		\controllers
 			\robots
 				robotManager.py
