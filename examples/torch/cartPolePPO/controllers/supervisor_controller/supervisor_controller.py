@@ -199,22 +199,18 @@ while not solved and supervisor.controller.episodeCount < supervisor.controller.
         # condition
         newState, reward, done, info = supervisor.step([selectedAction])
 
-        # Terminal states are rewarded with -1
-        if done:
-            reward = -reward
-
         # Save the current state transition in agent's memory
         trans = Transition(state, selectedAction, actionProb, reward, newState)
         supervisor.controller.agent.storeTransition(trans)
 
+        supervisor.controller.episodeScore += reward  # Accumulate episode reward
         if done:
             # Save the episode's score
             supervisor.controller.episodeScoreList.append(supervisor.controller.episodeScore)
-            supervisor.controller.agent.trainStep(batchSize=step)
+            supervisor.controller.agent.trainStep(batchSize=step + 1)
             solved = supervisor.controller.solved()  # Check whether the task is solved
             break
 
-        supervisor.controller.episodeScore += reward  # Accumulate episode reward
         state = newState  # state for next step is current step's newState
 
     if supervisor.controller.test:  # If test flag is externally set to True, agent is deployed
