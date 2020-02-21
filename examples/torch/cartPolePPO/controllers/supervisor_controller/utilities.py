@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
@@ -23,3 +24,27 @@ def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
         return np.clip((newMax - newMin) / (maxVal - minVal) * (value - maxVal) + newMax, newMin, newMax)
     else:
         return (newMax - newMin) / (maxVal - minVal) * (value - maxVal) + newMax
+
+
+def plotData(data, xLabel, yLabel, plotTitle, save=False, saveName=None):
+    """
+    Use matplotlib to plot data
+    :param data: list of data
+    :param xLabel: str, label on x axis
+    :param yLabel: str, label on y axis
+    :param plotTitle: str, plot title
+    :param save: bool, whether to save plot automatically or not
+    :param saveName: str, filename of saved plot
+    :return: None
+    """
+    fig, ax = plt.subplots()
+    ax.plot(data)
+    ax.set(xlabel=xLabel, ylabel=yLabel,
+           title=plotTitle)
+    ax.grid()
+    if save:
+        if saveName is not None:
+            fig.savefig(saveName)
+        else:
+            fig.savefig("figure")
+    plt.show()
