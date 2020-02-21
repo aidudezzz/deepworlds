@@ -2,7 +2,7 @@ import numpy as np
 
 from supervisor_controller import CartPoleSupervisor
 from keyboard_controller_cartpole import KeyboardControllerCartPole
-from agent.PPOAgent import Transition
+from agent.PPO_agent import Transition
 from utilities import plotData
 
 

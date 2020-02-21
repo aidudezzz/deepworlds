@@ -1,5 +1,5 @@
-import PPORunner
-# import TRPORunner
+import PPO_runner
+# import TRPO_runner
 
-PPORunner.run()
-# TRPORunner.run()
+PPO_runner.run()
+# TRPO_runner.run()

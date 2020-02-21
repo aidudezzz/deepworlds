@@ -1,6 +1,6 @@
 import numpy as np
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from agent.PPOAgent import PPOAgent, Transition
+from agent.PPO_agent import PPOAgent, Transition
 from utilities import normalizeToRange, plotData
 from keyboard_controller_cartpole import KeyboardControllerCartPole
 
