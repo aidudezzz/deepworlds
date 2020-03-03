@@ -1,8 +1,6 @@
 import numpy as np
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from agent.PPO_agent import PPOAgent, Transition
 from utilities import normalizeToRange, plotData
-from keyboard_controller_cartpole import KeyboardControllerCartPole
 
 
 class CartPoleSupervisor(SupervisorCSV):
@@ -27,10 +25,9 @@ class CartPoleSupervisor(SupervisorCSV):
         3	Pole Velocity At Tip      -Inf            Inf
 
     Actions:
-        Type: Discrete(2)
-        Num	Action
-        0	Move cart forward
-        1	Move cart backward
+        Type: Continuous(1)
+        Num     Min     Max
+        0       -inf    inf
 
         Note: The amount the velocity that is reduced or increased is not fixed; it depends on the angle the pole is
         pointing. This is because the center of gravity of the pole increases the amount of energy needed to move the
@@ -46,28 +43,25 @@ class CartPoleSupervisor(SupervisorCSV):
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
 
-    def __init__(self, episodeLimit=10000, stepsPerEpisode=200):
+    def __init__(self, stepsPerEpisode=200):
         """
         In the constructor, the agent object is created, the robot is spawned in the world via respawnRobot().
         References to robot and the pole endpoint are initialized here, used for building the observation.
         When in test mode (self.test = True) the agent stops being trained and picks actions in a non stochastic way.
 
-        :param episodeLimit: int, upper limit of how many episodes to run
         :param stepsPerEpisode: int, how many steps to run each episode (changing this messes up the solved condition)
         """
         print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
-        self.observationSpace = 4
-        self.actionSpace = 2
-        self.agent = PPOAgent(self.observationSpace, self.actionSpace)
+        self.observationSpace = (4,)
+        self.actionSpace = (1,)
+
         self.robot = None
         self.respawnRobot()
 
         self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
         self.robot = self.supervisor.getFromDef("ROBOT")
 
-        self.episodeCount = 0  # counter for episodes
-        self.episodeLimit = episodeLimit
         self.stepsPerEpisode = stepsPerEpisode
         self.episodeScore = 0  # score accumulated during an episode
         self.episodeScoreList = []  # a list to save all the episode scores, used to check if task is solved
@@ -99,11 +93,11 @@ class CartPoleSupervisor(SupervisorCSV):
 
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
 
-    def get_reward(self, action=None):
+    def get_reward(self, action):
         """
         Reward is +1 for each step taken, apart for termination step, which is handled after step() is called.
 
-        :param action: None
+        :param action: float
         :return: int, always 1
         """
         return 1
@@ -138,7 +132,7 @@ class CartPoleSupervisor(SupervisorCSV):
         :return: list, starting observation filled with zeros
         """
         self.respawnRobot()
-        return [0.0 for _ in range(self.observationSpace)]
+        return [0.0 for _ in range(self.observationSpace[0])]
 
     def respawnRobot(self):
         """

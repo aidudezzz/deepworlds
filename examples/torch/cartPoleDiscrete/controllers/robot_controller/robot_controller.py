@@ -1,4 +1,5 @@
 from deepbots.robots.controllers.robot_emitter_receiver_csv import RobotEmitterReceiverCSV
+from numpy import clip
 
 
 class CartpoleRobot(RobotEmitterReceiverCSV):
@@ -8,6 +9,7 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
     Hinge: https://cyberbotics.com/doc/reference/hingejoint
     Position Sensor: https://cyberbotics.com/doc/reference/positionsensor
     """
+
     def __init__(self):
         """
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
@@ -35,9 +37,10 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
     def use_message_data(self, message):
         """
         This method unpacks the supervisor's message, which contains the next action to be executed by the robot.
-        In this case it contains an integer denoting the action, either 0 or 1, with 0 being forward and
+        The message contains an integer denoting the action, either 0 or 1, with 0 being forward and
         1 being backward movement. The corresponding motorSpeed value is applied to the wheels.
 
+        :param mode: string, "discrete"/"continuous"
         :param message: list of strings, the message the supervisor sent, containing the next action
         """
         action = int(message[0])
