@@ -19,6 +19,19 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
 
+    def setup_motors(self):
+        """
+        This method initializes the four wheels, storing the references inside a list and sets the starting
+        positions and velocities.
+        """
+        self.wheels[0] = self.robot.getMotor('wheel1')
+        self.wheels[1] = self.robot.getMotor('wheel2')
+        self.wheels[2] = self.robot.getMotor('wheel3')
+        self.wheels[3] = self.robot.getMotor('wheel4')
+        for i in range(len(self.wheels)):
+            self.wheels[i].setPosition(float('inf'))
+            self.wheels[i].setVelocity(0.0)
+
     def create_message(self):
         """
         This method packs the robot's observation into a list of strings to be sent to the supervisor.
@@ -34,7 +47,7 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
 
     def use_message_data(self, message):
         """
-        This method unpacks the supervisor's message, which contains the next action to be executed by the robot.
+        This method unpacks the supervisor message, which contains the next action to be executed by the robot.
         In this case it contains an integer denoting the action, either 0 or 1, with 0 being forward and
         1 being backward movement. The corresponding motorSpeed value is applied to the wheels.
 
@@ -44,27 +57,13 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
 
         assert action == 0 or action == 1, "CartpoleRobot controller got incorrect action value: " + str(action)
 
-        motorSpeed = 0.0
         if action == 0:
             motorSpeed = 5.0
-        elif action == 1:
+        else:
             motorSpeed = -5.0
 
         for i in range(len(self.wheels)):
             self.wheels[i].setVelocity(motorSpeed)
-
-    def setup_motors(self):
-        """
-        This method initializes the four wheels, storing the references inside a list and setting the starting
-        position and velocity.
-        """
-        self.wheels[0] = self.robot.getMotor('wheel1')
-        self.wheels[1] = self.robot.getMotor('wheel2')
-        self.wheels[2] = self.robot.getMotor('wheel3')
-        self.wheels[3] = self.robot.getMotor('wheel4')
-        for i in range(len(self.wheels)):
-            self.wheels[i].setPosition(float('inf'))
-            self.wheels[i].setVelocity(0.0)
 
 
 # Create the robot controller object and run it
