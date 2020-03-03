@@ -5,6 +5,10 @@ from controller import Keyboard
 class KeyboardControllerCartPole(KeyboardPrinter):
     def __init__(self, supervisor):
         super().__init__(supervisor)
+        print("--------- Keyboard controls ---------")
+        print("T: stop training and deploy agent for testing")
+        print("R: reset world")
+        print("------------------------------------")
 
     def step(self, action):
         """
