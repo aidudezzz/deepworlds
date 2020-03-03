@@ -1,14 +1,11 @@
 import numpy as np
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from agent.PPO_agent import PPOAgent, Transition
 from utilities import normalizeToRange, plotData
-from keyboard_controller_cartpole import KeyboardControllerCartPole
 
 
 class CartPoleSupervisor(SupervisorCSV):
     """
-    CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward(), but also contains
-    the agent. The agent used here is trained with the PPO algorithm (https://arxiv.org/abs/1707.06347).
+    CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward()
 
     Taken from https://github.com/openai/gym/blob/master/gym/envs/classic_control/cartpole.py and modified for Webots.
     Description:
@@ -46,39 +43,33 @@ class CartPoleSupervisor(SupervisorCSV):
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
 
-    def __init__(self, episodeLimit=10000, stepsPerEpisode=200):
+    def __init__(self):
         """
         In the constructor, the agent object is created, the robot is spawned in the world via respawnRobot().
         References to robot and the pole endpoint are initialized here, used for building the observation.
-        When in test mode (self.test = True) the agent stops being trained and picks actions in a non stochastic way.
-
-        :param episodeLimit: int, upper limit of how many episodes to run
-        :param stepsPerEpisode: int, how many steps to run each episode (changing this messes up the solved condition)
+        When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
         """
         print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
         self.observationSpace = 4
         self.actionSpace = 2
-        self.agent = PPOAgent(self.observationSpace, self.actionSpace)
         self.robot = None
         self.respawnRobot()
 
         self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
         self.robot = self.supervisor.getFromDef("ROBOT")
 
-        self.episodeCount = 0  # counter for episodes
-        self.episodeLimit = episodeLimit
-        self.stepsPerEpisode = stepsPerEpisode
-        self.episodeScore = 0  # score accumulated during an episode
-        self.episodeScoreList = []  # a list to save all the episode scores, used to check if task is solved
-        self.test = False  # whether the agent is in test mode
+        self.stepsPerEpisode = 200 # How many steps to run each episode (changing this messes up the solved condition)
+        self.episodeScore = 0  # Score accumulated during an episode
+        self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
+        self.test = False  # Whether the agent is in test mode
 
     def get_observations(self):
         """
         This get_observation implementation builds the required observation for the CartPole problem.
         All values apart from pole angle are gathered here from the robot and poleEndpoint objects.
         The pole angle value is taken from the message sent by the robot.
-        All values are normalized appropriately to [-1, 1].
+        All values are normalized appropriately to [-1, 1], according to their original ranges
 
         :return: list, observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
         """
@@ -101,7 +92,7 @@ class CartPoleSupervisor(SupervisorCSV):
 
     def get_reward(self, action=None):
         """
-        Reward is +1 for each step taken, apart for termination step, which is handled after step() is called.
+        Reward is +1 for each step taken, including the termination step
 
         :param action: None
         :return: int, always 1
@@ -137,13 +128,17 @@ class CartPoleSupervisor(SupervisorCSV):
         Reset calls respawnRobot() method and returns starting observation.
         :return: list, starting observation filled with zeros
         """
+        # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
         self.respawnRobot()
         return [0.0 for _ in range(self.observationSpace)]
 
     def respawnRobot(self):
         """
         This method reloads the saved CartPole robot in its initial state from the disk.
+
+        :return: None
         """
+        # TODO This method will be removed in Webots R2020a rev2
         if self.robot is not None:
             # Despawn existing robot
             self.robot.remove()
@@ -161,12 +156,21 @@ class CartPoleSupervisor(SupervisorCSV):
 
         self._last_message = None
 
+        return None
+
     def get_info(self):
+        """
+        Dummy implementation of get_info
+
+        :return: None
+        """
         return None
 
     def solved(self):
         """
         This method checks whether the CartPole task is solved, so training terminates.
+        Solved condition requires that the average episode score of last 100 episodes is over 195.0
+
         :return: bool, True if task is solved, False otherwise
         """
         if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
