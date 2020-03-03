@@ -25,7 +25,7 @@ class KeyboardControllerCartPole(KeyboardPrinter):
         observation, reward, isDone, info = self.controller.step(action)
         key = self.keyboard.getKey()
 
-        if key == ord("T"):
+        if key == ord("T") and not self.controller.test:
             self.controller.test = True
             print("Training will stop and agent will be deployed after episode end.")
         if key == ord("R"):
