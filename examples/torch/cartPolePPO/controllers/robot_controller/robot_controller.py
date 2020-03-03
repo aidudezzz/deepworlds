@@ -1,9 +1,9 @@
 from deepbots.robots.controllers.robot_emitter_receiver_csv import RobotEmitterReceiverCSV
 
 
-class CartpoleRobot(RobotEmitterReceiverCSV):
+class CartPoleRobot(RobotEmitterReceiverCSV):
     """
-    Cartpole robot has 4 wheels and pole connected by an unactuated hinge to its body.
+    CartPole robot has 4 wheels and pole connected by an unactuated hinge to its body.
     The hinge contains a Position Sensor device to measure the angle from vertical needed in the observation.
     Hinge: https://cyberbotics.com/doc/reference/hingejoint
     Position Sensor: https://cyberbotics.com/doc/reference/positionsensor
@@ -55,7 +55,7 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
         """
         action = int(message[0])
 
-        assert action == 0 or action == 1, "CartpoleRobot controller got incorrect action value: " + str(action)
+        assert action == 0 or action == 1, "CartPoleRobot controller got incorrect action value: " + str(action)
 
         if action == 0:
             motorSpeed = 5.0
@@ -67,5 +67,5 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
 
 
 # Create the robot controller object and run it
-robot_controller = CartpoleRobot()
+robot_controller = CartPoleRobot()
 robot_controller.run()
