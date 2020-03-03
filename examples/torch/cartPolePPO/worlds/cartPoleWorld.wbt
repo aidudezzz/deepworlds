@@ -1,4 +1,4 @@
-#VRML_SIM R2019a utf8
+#VRML_SIM R2020a utf8
 WorldInfo {
 }
 Viewpoint {
@@ -19,6 +19,6 @@ DEF SUPERVISOR Robot {
     }
   ]
   name "supervisor"
-  controller "supervisor_controller"
+  controller "supervisor_manager"
   supervisor TRUE
 }
