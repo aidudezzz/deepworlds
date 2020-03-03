@@ -28,7 +28,8 @@ def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
 
 def plotData(data, xLabel, yLabel, plotTitle, save=False, saveName=None):
     """
-    Use matplotlib to plot data
+    Use matplotlib to plot data.
+
     :param data: list of data
     :param xLabel: str, label on x axis
     :param yLabel: str, label on y axis
