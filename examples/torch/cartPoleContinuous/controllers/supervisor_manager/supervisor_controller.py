@@ -52,11 +52,9 @@ class CartPoleSupervisor(SupervisorCSV):
         super().__init__()
         self.observationSpace = (4,)
         self.actionSpace = (1,)
-        self.robot = None
-        self.respawnRobot()
 
-        self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
         self.robot = self.supervisor.getFromDef("ROBOT")
+        self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
 
         self.stepsPerEpisode = 200  # How many steps to run each episode (changing this messes up the solved condition)
         self.episodeScore = 0  # Score accumulated during an episode
@@ -124,37 +122,24 @@ class CartPoleSupervisor(SupervisorCSV):
 
     def reset(self):
         """
-        Reset calls respawnRobot() method and returns starting observation.
-        :return: list, starting observation filled with zeros
+        Reset calls Webots method simulationReset to reset the simulation to its initial state and
+        returns starting observation. Also restarts the robot controller
+
+        :return: list, starting observation
         """
-        self.respawnRobot()
-        return [0.0 for _ in range(self.observationSpace[0])]
-
-    def respawnRobot(self):
-        """
-        This method reloads the saved CartPole robot in its initial state from the disk.
-
-        :return: None
-        """
-        # TODO This method will be removed in Webots R2020a rev2
-        if self.robot is not None:
-            # Despawn existing robot
-            self.robot.remove()
-
-        # Respawn robot in starting position and state
-        rootNode = self.supervisor.getRoot()  # This gets the root of the scene tree
-        childrenField = rootNode.getField('children')  # This gets a list of all the children, ie. objects of the scene
-        childrenField.importMFNode(-2, "CartPoleRobot.wbo")  # Load robot from file and add to second-to-last position
-
-        # Get the new robot and pole endpoint references
-        self.robot = self.supervisor.getFromDef("ROBOT")
-        self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
-        # Reset the simulation physics to start over
-        self.supervisor.simulationResetPhysics()
-
+        self.supervisor.simulationReset()
+        self.robot.restartController()
         self._last_message = None
 
-        return None
+        # This is less than ideal, but it's needed probably due to the way Webots empties emitter/reicever queues see:
+        #  https://github.com/cyberbotics/webots/issues/1384
+        # Dump receiver queue
+        while self.supervisor.step(self.timestep) != -1:
+            if self.receiver.getQueueLength() > 0:
+                self.receiver.nextPacket()
+            else:
+                break
+        return [0.0 for _ in range(self.observationSpace[0])]
 
     def get_info(self):
         """

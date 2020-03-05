@@ -1,4 +1,5 @@
 import numpy as np
+from time import time
 
 from supervisor_controller import CartPoleSupervisor
 from keyboard_controller_cartpole import KeyboardControllerCartPole
@@ -20,8 +21,14 @@ def run():
     episodeLimit = 10000
     solved = False  # Whether the solved requirement is met
 
+    startTime = time()  # Start counting real training time
+    simTime = 0  # Accumulator for simulated time elapsed
+
     # Run outer loop until the episodes limit is reached or the task is solved
     while not solved and episodeCount < episodeLimit:
+        # Get time elapsed in episode before resetting it and add it to simTime
+        simTime += supervisorPre.supervisor.getTime()
+
         state = supervisorEnv.reset()  # Reset robot and get starting observation
         supervisorPre.episodeScore = 0
 
@@ -54,6 +61,23 @@ def run():
 
         print("Episode #", episodeCount, "score:", supervisorPre.episodeScore)
         episodeCount += 1  # Increment episode counter
+
+    # Calculate and print training wall clock time
+    trainingTime = time() - startTime
+    if trainingTime < 60.0:
+        print("Training finished after:", trainingTime, "seconds, real time.")
+    else:
+        rem = round(trainingTime % 60, 2)
+        mins = int(trainingTime / 60)
+        print("Training finished after:", mins, "minutes,", rem, "seconds, real time.")
+
+    # Print simulated time
+    if simTime < 60.0:
+        print("Training finished after:", simTime, "seconds, simulated time.")
+    else:
+        rem = round(simTime % 60, 2)
+        mins = int(simTime / 60)
+        print("Training finished after:", mins, "minutes,", rem, "seconds, simulated time.")
 
     # np.convolve is used as a moving average, see https://stackoverflow.com/a/22621523
     # this is done to smooth out the plots
