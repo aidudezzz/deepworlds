@@ -30,5 +30,7 @@ class KeyboardControllerCartPole(KeyboardPrinter):
         if key == ord("R"):
             print("User invoked reset method")
             self.controller.reset()
+        if key == ord("A"):
+            print("Action:", action)
 
         return observation, reward, isDone, info
