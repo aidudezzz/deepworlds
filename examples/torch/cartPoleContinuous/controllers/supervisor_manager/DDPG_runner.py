@@ -14,7 +14,7 @@ def run():
 
     # The agent used here is trained with the DDPG algorithm (https://arxiv.org/abs/1509.02971).
     agent = DDPGAgent(supervisorPre.observationSpace, supervisorPre.actionSpace, lr_actor=0.000025, lr_critic=0.00025,
-                      layer1_size=30, layer2_size=50, layer3_size=30, batch_size=128)
+                      layer1_size=30, layer2_size=50, layer3_size=30, batch_size=64)
 
     episodeCount = 0
     episodeLimit = 10000
