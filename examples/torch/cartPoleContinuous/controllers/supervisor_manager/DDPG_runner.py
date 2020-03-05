@@ -7,41 +7,35 @@ from utilities import plotData
 
 
 def run():
-    ########
-    # Setup
-    ########
     # Initialize supervisor object
     supervisorPre = CartPoleSupervisor()
     # Wrap the CartPole supervisor in the custom keyboard controller
     supervisorEnv = KeyboardControllerCartPole(supervisorPre)
 
+    # The agent used here is trained with the DDPG algorithm (https://arxiv.org/abs/1509.02971).
     agent = DDPGAgent(supervisorPre.observationSpace, supervisorPre.actionSpace, lr_actor=0.000025, lr_critic=0.00025,
-                      layer1_size=30, layer2_size=50, layer3_size=30, batch_size=64)
+                      layer1_size=30, layer2_size=50, layer3_size=30, batch_size=128)
 
-    solved = False  # Whether the solved requirement is met
-    averageEpisodeActionProbs = []  # Save average episode taken actions probability to plot later
     episodeCount = 0
     episodeLimit = 10000
+    solved = False  # Whether the solved requirement is met
 
-    ########
-    # Train
-    ########
     # Run outer loop until the episodes limit is reached or the task is solved
     while not solved and episodeCount < episodeLimit:
-        state = supervisorPre.reset()  # Reset robot and get starting observation
+        state = supervisorEnv.reset()  # Reset robot and get starting observation
         supervisorPre.episodeScore = 0
-        actionProbs = []  # This list holds the probability of each chosen action
 
         # Inner loop is the episode loop
         for step in range(supervisorPre.stepsPerEpisode):
             # In training mode the agent returns the action plus OU noise for exploration
-            action = agent.choose_action_train(state)
-            # Step the supervisor to get the current action reward, the new state and whether we reached
+            selectedAction = agent.choose_action_train(state)
+
+            # Step the supervisor to get the current selectedAction reward, the new state and whether we reached
             # the done condition
-            newState, reward, done, info = supervisorEnv.step(action)
+            newState, reward, done, info = supervisorEnv.step(selectedAction)
 
             # Save the current state transition in agent's memory
-            agent.remember(state, action, reward, newState, int(done))
+            agent.remember(state, selectedAction, reward, newState, int(done))
             # Perform a learning step
 
             supervisorPre.episodeScore += reward  # Accumulate episode reward
@@ -59,21 +53,14 @@ def run():
             break
 
         print("Episode #", episodeCount, "score:", supervisorPre.episodeScore)
-
         episodeCount += 1  # Increment episode counter
 
-    ###############
-    # Create plots
-    ###############
     # np.convolve is used as a moving average, see https://stackoverflow.com/a/22621523
     # this is done to smooth out the plots
     movingAvgN = 10
     plotData(np.convolve(supervisorPre.episodeScoreList, np.ones((movingAvgN,)) / movingAvgN, mode='valid'),
              "episode", "episode score", "Episode scores over episodes")
 
-    #############
-    # Test agent
-    #############
     if not solved and not supervisorPre.test:
         print("Reached episode limit and task was not solved.")
     else:
@@ -81,8 +68,8 @@ def run():
             print("Task is not solved, deploying agent for testing...")
         elif solved:
             print("Task is solved, deploying agent for testing...")
-    state = supervisorPre.reset()
+    state = supervisorEnv.reset()
     supervisorPre.test = True
     while True:
-        action = agent.choose_action_test(state)
-        state, _, _, _ = supervisorEnv.step(action)
+        selectedAction = agent.choose_action_test(state)
+        state, _, _, _ = supervisorEnv.step(selectedAction)

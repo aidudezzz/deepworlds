@@ -64,7 +64,7 @@ class ReplayBuffer(object):
 
 class CriticNetwork(nn.Module):
     def __init__(self, input_shape, output_shape, lr, fc1_dims, fc2_dims, fc3_dims, name,
-                 chkpt_dir='./models/saved/default_ddpg/'):
+                 chkpt_dir='./models/saved/default_ddpg/', use_cuda=False):
         super(CriticNetwork, self).__init__()
 
         self.input_shape = input_shape
@@ -89,7 +89,10 @@ class CriticNetwork(nn.Module):
 
         self.optimizer = optim.Adam(self.parameters(), lr=lr)
 
-        self.device = 'cpu'  # T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        if use_cuda:
+            self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        else:
+            self.device = 'cpu'
 
         self.to(self.device)
 
@@ -133,7 +136,7 @@ class CriticNetwork(nn.Module):
 
 class ActorNetwork(nn.Module):
     def __init__(self, input_shape, output_shape, lr, fc1_dims, fc2_dims, fc3_dims, name,
-                 chkpt_dir='./models/saved/default_ddpg/'):
+                 chkpt_dir='./models/saved/default_ddpg/', use_cuda=False):
         super(ActorNetwork, self).__init__()
         self.lr = lr
         self.input_shape = input_shape
@@ -157,7 +160,12 @@ class ActorNetwork(nn.Module):
         self.initialization()
 
         self.optimizer = optim.Adam(self.parameters(), lr=lr)
-        self.device = 'cpu'  # T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+
+        if use_cuda:
+            self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        else:
+            self.device = 'cpu'
+
         self.to(self.device)
 
     def initialization(self):
@@ -197,7 +205,7 @@ class ActorNetwork(nn.Module):
 
 class DDPGAgent(object):
     def __init__(self, input_shape, output_shape, lr_actor=0.0001, lr_critic=0.001, tau=0.01, gamma=0.99,
-                 max_size=1000000, layer1_size=400, layer2_size=300, layer3_size=200, batch_size=8):
+                 max_size=1000000, layer1_size=10, layer2_size=20, layer3_size=10, batch_size=8):
         self.gamma = gamma
         self.tau = tau
         self.batch_size = batch_size

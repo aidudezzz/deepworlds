@@ -1,10 +1,14 @@
 from deepbots.supervisor.wrappers.keyboard_printer import KeyboardPrinter
-from controller import Keyboard
 
 
 class KeyboardControllerCartPole(KeyboardPrinter):
     def __init__(self, supervisor):
         super().__init__(supervisor)
+        print("--------- Keyboard controls ---------")
+        print("T: stop training and deploy agent for testing")
+        print("R: reset world")
+        print("(simulation window must be in focus)")
+        print("------------------------------------")
 
     def step(self, action):
         """
@@ -20,13 +24,11 @@ class KeyboardControllerCartPole(KeyboardPrinter):
         observation, reward, isDone, info = self.controller.step(action)
         key = self.keyboard.getKey()
 
-        if key == ord("T"):
+        if key == ord("T") and not self.controller.test:
             self.controller.test = True
             print("Training will stop and agent will be deployed after episode end.")
         if key == ord("R"):
             print("User invoked reset method")
             self.controller.reset()
-        if key == ord("A"):
-            print("Action:", action)
 
         return observation, reward, isDone, info

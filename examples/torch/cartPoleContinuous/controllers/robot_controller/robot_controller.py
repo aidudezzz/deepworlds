@@ -1,5 +1,4 @@
 from deepbots.robots.controllers.robot_emitter_receiver_csv import RobotEmitterReceiverCSV
-from numpy import clip
 
 
 class CartpoleRobot(RobotEmitterReceiverCSV):
@@ -20,6 +19,19 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
+
+    def setup_motors(self):
+        """
+        This method initializes the four wheels, storing the references inside a list and setting the starting
+        position and velocity.
+        """
+        self.wheels[0] = self.robot.getMotor('wheel1')
+        self.wheels[1] = self.robot.getMotor('wheel2')
+        self.wheels[2] = self.robot.getMotor('wheel3')
+        self.wheels[3] = self.robot.getMotor('wheel4')
+        for i in range(len(self.wheels)):
+            self.wheels[i].setPosition(float('inf'))
+            self.wheels[i].setVelocity(0.0)
 
     def create_message(self):
         """
@@ -45,19 +57,6 @@ class CartpoleRobot(RobotEmitterReceiverCSV):
 
         for i in range(len(self.wheels)):
             self.wheels[i].setVelocity(motorSpeed)
-
-    def setup_motors(self):
-        """
-        This method initializes the four wheels, storing the references inside a list and setting the starting
-        position and velocity.
-        """
-        self.wheels[0] = self.robot.getMotor('wheel1')
-        self.wheels[1] = self.robot.getMotor('wheel2')
-        self.wheels[2] = self.robot.getMotor('wheel3')
-        self.wheels[3] = self.robot.getMotor('wheel4')
-        for i in range(len(self.wheels)):
-            self.wheels[i].setPosition(float('inf'))
-            self.wheels[i].setVelocity(0.0)
 
 
 # Create the robot controller object and run it
