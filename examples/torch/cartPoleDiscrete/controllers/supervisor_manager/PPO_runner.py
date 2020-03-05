@@ -77,8 +77,8 @@ def run():
             print("Task is not solved, deploying agent for testing...")
         elif solved:
             print("Task is solved, deploying agent for testing...")
-        state = supervisorEnv.reset()
-        supervisorPre.test = True
-        while True:
-            selectedAction, actionProb = agent.work(state, type_="selectActionMax")
-            state, _, _, _ = supervisorEnv.step([selectedAction])
+    state = supervisorEnv.reset()
+    supervisorPre.test = True
+    while True:
+        selectedAction, actionProb = agent.work(state, type_="selectActionMax")
+        state, _, _, _ = supervisorEnv.step([selectedAction])
