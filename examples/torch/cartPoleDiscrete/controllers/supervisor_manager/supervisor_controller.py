@@ -5,7 +5,7 @@ from utilities import normalizeToRange, plotData
 
 class CartPoleSupervisor(SupervisorCSV):
     """
-    CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward()
+    CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward().
 
     Taken from https://github.com/openai/gym/blob/master/gym/envs/classic_control/cartpole.py and modified for Webots.
     Description:
@@ -69,7 +69,7 @@ class CartPoleSupervisor(SupervisorCSV):
         This get_observation implementation builds the required observation for the CartPole problem.
         All values apart from pole angle are gathered here from the robot and poleEndpoint objects.
         The pole angle value is taken from the message sent by the robot.
-        All values are normalized appropriately to [-1, 1], according to their original ranges
+        All values are normalized appropriately to [-1, 1], according to their original ranges.
 
         :return: list, observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
         """
@@ -92,7 +92,7 @@ class CartPoleSupervisor(SupervisorCSV):
 
     def get_reward(self, action=None):
         """
-        Reward is +1 for each step taken, including the termination step
+        Reward is +1 for each step taken, including the termination step.
 
         :param action: None
         :return: int, always 1
@@ -169,11 +169,11 @@ class CartPoleSupervisor(SupervisorCSV):
     def solved(self):
         """
         This method checks whether the CartPole task is solved, so training terminates.
-        Solved condition requires that the average episode score of last 100 episodes is over 195.0
+        Solved condition requires that the average episode score of last 100 episodes is over 195.0.
 
         :return: bool, True if task is solved, False otherwise
         """
         if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-100:]) > 195.0:  # Last 100 episodes' scores average value
+            if np.mean(self.episodeScoreList[-100:]) > 195.0:  # Last 100 episode scores average value
                 return True
         return False
