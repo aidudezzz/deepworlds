@@ -1,5 +1,4 @@
 from deepbots.supervisor.wrappers.keyboard_printer import KeyboardPrinter
-from controller import Keyboard
 
 
 class KeyboardControllerCartPole(KeyboardPrinter):
