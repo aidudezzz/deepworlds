@@ -56,7 +56,7 @@ class CartPoleSupervisor(SupervisorCSV):
         self.respawnRobot()
 
         self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
-        self.robot = self.supervisor.getFromDef("ROBOT")
+        self.messageReceived = None  # Variable to save the messages received from the robot
 
         self.stepsPerEpisode = 200  # How many steps to run each episode (changing this messes up the solved condition)
         self.episodeScore = 0  # Score accumulated during an episode
@@ -77,11 +77,11 @@ class CartPoleSupervisor(SupervisorCSV):
         # Linear velocity on z axis
         cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
 
-        self.handle_receiver()  # update _last_message received from robot, which contains pole angle
-        if self._last_message is not None:
-            poleAngle = normalizeToRange(float(self._last_message[0]), -0.23, 0.23, -1.0, 1.0, clip=True)
+        self.messageReceived = self.handle_receiver()  # update message received from robot, which contains pole angle
+        if self.messageReceived is not None:
+            poleAngle = normalizeToRange(float(self.messageReceived[0]), -0.23, 0.23, -1.0, 1.0, clip=True)
         else:
-            # method is called before _last_message is initialized
+            # method is called before messageReceived is initialized
             poleAngle = 0.0
 
         # Angular velocity x of endpoint
@@ -108,10 +108,10 @@ class CartPoleSupervisor(SupervisorCSV):
         if self.episodeScore > 195.0:
             return True
 
-        if self._last_message is not None:
-            poleAngle = round(float(self._last_message[0]), 2)
+        if self.messageReceived is not None:
+            poleAngle = round(float(self.messageReceived[0]), 2)
         else:
-            # method is called before _last_message is initialized
+            # method is called before messageReceived is initialized
             poleAngle = 0.0
         if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
             return True
@@ -127,6 +127,7 @@ class CartPoleSupervisor(SupervisorCSV):
         Reset calls respawnRobot() method and returns starting observation.
         :return: list, starting observation filled with zeros
         """
+        # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
         self.respawnRobot()
         return [0.0 for _ in range(self.observationSpace[0])]
 
@@ -151,8 +152,6 @@ class CartPoleSupervisor(SupervisorCSV):
         self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
         # Reset the simulation physics to start over
         self.supervisor.simulationResetPhysics()
-
-        self._last_message = None
 
         return None
 
