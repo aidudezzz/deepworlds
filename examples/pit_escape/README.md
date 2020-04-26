@@ -14,4 +14,4 @@ More Pit Escape examples can be added in the future, using other algorithms/back
 
 ## Contents
 (TODO fix link)
-- ![Pit Escape discrete]()
+- [Pit Escape discrete PPO]()

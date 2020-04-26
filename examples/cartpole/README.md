@@ -17,5 +17,5 @@ More CartPole examples can be added in the future, using other algorithms/backen
 
 ## Contents
 (TODO fix links)
-- [CartPole discrete]()
-- [CartPole continuous]()
+- [CartPole discrete PPO]()
+- [CartPole continuous DDPG]()
