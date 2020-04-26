@@ -12,7 +12,7 @@ class KeyboardControllerCartPole(KeyboardPrinter):
 
     def step(self, action):
         """
-        Overriding the default KeyboardPrinter step to add custom keyboard controls for cartpole problem.
+        Overriding the default KeyboardPrinter step to add custom keyboard controls for CartPole problem.
 
         Pressing a button while the simulation window is in focus:
 
@@ -28,9 +28,7 @@ class KeyboardControllerCartPole(KeyboardPrinter):
             self.controller.test = True
             print("Training will stop and agent will be deployed after episode end.")
         if key == ord("R"):
-            print("User invoked reset method")
+            print("User invoked reset method.")
             self.controller.reset()
-        if key == ord("A"):
-            print("Action:", action)
 
         return observation, reward, isDone, info

@@ -1,14 +1,18 @@
 from deepbots.supervisor.wrappers.keyboard_printer import KeyboardPrinter
-from controller import Keyboard
 
 
 class KeyboardControllerPitEscape(KeyboardPrinter):
     def __init__(self, supervisor):
         super().__init__(supervisor)
+        print("--------- Keyboard controls ---------")
+        print("T: stop training and deploy agent for testing")
+        print("R: reset world")
+        print("(simulation window must be in focus)")
+        print("------------------------------------")
 
     def step(self, action, repeatSteps=None):
         """
-        Overriding the default KeyboardPrinter step to add custom keyboard controls for cartpole problem.
+        Overriding the default KeyboardPrinter step to add custom keyboard controls for Pit Escape problem.
 
         Pressing a button while the simulation window is in focus:
 
@@ -20,14 +24,11 @@ class KeyboardControllerPitEscape(KeyboardPrinter):
         observation, reward, isDone, info = self.controller.step(action, repeatSteps)
         key = self.keyboard.getKey()
 
-        if key == ord("T"):
+        if key == ord("T") and not self.controller.test:
             self.controller.test = True
             print("Training will stop and agent will be deployed after episode end.")
         if key == ord("R"):
-            print("User invoked reset method")
+            print("User invoked reset method.")
             self.controller.reset()
-
-        if key == ord("F"):
-            print("Step reward:", reward)
 
         return observation, reward, isDone, info
