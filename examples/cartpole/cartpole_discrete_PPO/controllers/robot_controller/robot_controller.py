@@ -8,6 +8,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
     Hinge: https://cyberbotics.com/doc/reference/hingejoint
     Position Sensor: https://cyberbotics.com/doc/reference/positionsensor
     """
+
     def __init__(self):
         """
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
@@ -21,7 +22,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
 
     def setup_motors(self):
         """
-        This method initializes the four wheels, storing the references inside a list and sets the starting
+        This method initializes the four wheels, storing the references inside a list and setting the starting
         positions and velocities.
         """
         self.wheels[0] = self.robot.getMotor('wheel1')
@@ -40,18 +41,20 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         'The getValue function returns the most recent value measured by the specified position sensor. Depending on
         the type, it will return a value in radians (angular position sensor) or in meters (linear position sensor).'
 
-        :return: list
+        :return: A list of strings with the robot's observations.
+        :rtype: list
         """
         message = [str(self.positionSensor.getValue())]
         return message
 
     def use_message_data(self, message):
         """
-        This method unpacks the supervisor message, which contains the next action to be executed by the robot.
+        This method unpacks the supervisor's message, which contains the next action to be executed by the robot.
         In this case it contains an integer denoting the action, either 0 or 1, with 0 being forward and
         1 being backward movement. The corresponding motorSpeed value is applied to the wheels.
 
-        :param message: list of strings, the message the supervisor sent, containing the next action
+        :param message: The message the supervisor sent containing the next action.
+        :type message: list of strings
         """
         action = int(message[0])
 
