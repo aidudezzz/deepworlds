@@ -4,15 +4,22 @@ import matplotlib.pyplot as plt
 
 def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
     """
-    Normalize value to a specified new range by supplying the current range.
+    Normalizes value to a specified new range by supplying the current range.
 
     :param value: value to be normalized
+    :type value: float
     :param minVal: value's min value, value ∈ [minVal, maxVal]
+    :type minVal: float
     :param maxVal: value's max value, value ∈ [minVal, maxVal]
+    :type maxVal: float
     :param newMin: normalized range min value
+    :type newMin: float
     :param newMax: normalized range max value
-    :param clip: whether to clip normalized value to new range or not
+    :type newMax: float
+    :param clip: whether to clip normalized value to new range or not, defaults to False
+    :type clip: bool, optional
     :return: normalized value ∈ [newMin, newMax]
+    :rtype: float
     """
     value = float(value)
     minVal = float(minVal)
@@ -28,15 +35,20 @@ def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
 
 def plotData(data, xLabel, yLabel, plotTitle, save=False, saveName=None):
     """
-    Use matplotlib to plot data.
+    Uses matplotlib to plot data.
 
-    :param data: list of data
-    :param xLabel: str, label on x axis
-    :param yLabel: str, label on y axis
-    :param plotTitle: str, plot title
-    :param save: bool, whether to save plot automatically or not
-    :param saveName: str, filename of saved plot
-    :return: None
+    :param data: List of data to plot
+    :type data: list
+    :param xLabel: Label on x axis
+    :type xLabel: str
+    :param yLabel: Label on y axis
+    :type yLabel: str
+    :param plotTitle: Plot title
+    :type plotTitle: str
+    :param save: Whether to save plot automatically or not, defaults to False
+    :type save: bool, optional
+    :param saveName: Filename of saved plot, defaults to None
+    :type saveName: str, optional
     """
     fig, ax = plt.subplots()
     ax.plot(data)
