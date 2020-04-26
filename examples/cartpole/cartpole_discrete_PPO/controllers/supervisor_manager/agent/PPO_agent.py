@@ -52,11 +52,13 @@ class PPOAgent:
 
     def work(self, agentInput, type_="selectAction"):
         """
-        type_ == "selectAction"
-            Implementation for the forward pass, that returns a selected action according to the probability
-            distribution and its probability.
-        type_ == "selectActionMax"
-            Implementation for the forward pass, that returns the max selected action.
+        Forward pass of the PPO agent. Depending on the type_ argument, it either explores by sampling its actor's
+        softmax output, or eliminates exploring by selecting the action with the maximum probability (argmax).
+
+        :param agentInput: The actor neural network input vector
+        :type agentInput: vector
+        :param type_: "selectAction" or "selectActionMax", defaults to "selectAction"
+        :type type_: str, optional
         """
         agentInput = from_numpy(np.array(agentInput)).float().unsqueeze(0)  # Add batch dimension with unsqueeze
 
@@ -76,8 +78,9 @@ class PPOAgent:
     def save(self, path):
         """
         Save actor and critic models in the path provided.
+
         :param path: path to save the models
-        :return: None
+        :type path: str
         """
         save(self.actor_net.state_dict(), path + '_actor.pkl')
         save(self.critic_net.state_dict(), path + '_critic.pkl')
@@ -85,8 +88,9 @@ class PPOAgent:
     def load(self, path):
         """
         Load actor and critic models from the path provided.
+
         :param path: path where the models are saved
-        :return: None
+        :type path: str
         """
         actor_state_dict = load(path + '_actor.pkl')
         critic_state_dict = load(path + '_critic.pkl')
@@ -96,8 +100,9 @@ class PPOAgent:
     def storeTransition(self, transition):
         """
         Stores a transition in the buffer to be used later.
-        :param transition: state, action, action_prob, reward, next_state
-        :return: None
+
+        :param transition: contains state, action, action_prob, reward, next_state
+        :type transition: namedtuple('Transition', ['state', 'action', 'a_log_prob', 'reward', 'next_state'])
         """
         self.buffer.append(transition)
 
@@ -105,10 +110,10 @@ class PPOAgent:
         """
         Performs a training step for the actor and critic models, based on transitions gathered in the
         buffer. It then resets the buffer.
-        :param batchSize: int or None, overrides agent set batch size
-        :return: None
-        """
 
+        :param batchSize: Overrides agent set batch size, defaults to None
+        :type batchSize: int, optional
+        """
         # Default behaviour waits for buffer to collect at least one batch_size of transitions
         if batchSize is None:
             if len(self.buffer) < self.batch_size:
