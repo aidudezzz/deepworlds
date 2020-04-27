@@ -11,7 +11,7 @@ supervisor = PitEscapeSupervisor()
 supervisor = KeyboardControllerPitEscape(supervisor)
 
 solved = False  # Whether the solved requirement is met
-repeatActionSteps = 0  # Amount of steps for which to repeat a certain action
+repeatActionSteps = 1  # Amount of steps for which to repeat a certain action
 averageEpisodeActionProbs = []  # Save average episode taken actions probability to plot later
 
 # Run outer loop until the episodes limit is reached or the task is solved
@@ -80,7 +80,7 @@ else:
         # print(state)
         actionValues, _ = supervisor.controller.agent.work(state, type_="selectActionMax")
         # print(actionValues)
-        state, _, done, _ = supervisor.step([actionValues])
+        state, _, done, _ = supervisor.step([actionValues], repeatActionSteps)
 
         if done:
             supervisor.controller.reset()
