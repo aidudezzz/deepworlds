@@ -10,7 +10,7 @@ class KeyboardControllerPitEscape(KeyboardPrinter):
         print("(simulation window must be in focus)")
         print("------------------------------------")
 
-    def step(self, action, repeatSteps=None):
+    def step(self, action, repeatSteps=1):
         """
         Overriding the default KeyboardPrinter step to add custom keyboard controls for Pit Escape problem.
 
