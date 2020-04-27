@@ -59,7 +59,7 @@ class CartPoleSupervisor(SupervisorCSV):
         self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
         self.messageReceived = None  # Variable to save the messages received from the robot
 
-        self.stepsPerEpisode = 200 # How many steps to run each episode (changing this messes up the solved condition)
+        self.stepsPerEpisode = 200  # How many steps to run each episode (changing this messes up the solved condition)
         self.episodeScore = 0  # Score accumulated during an episode
         self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
         self.test = False  # Whether the agent is in test mode
@@ -71,7 +71,8 @@ class CartPoleSupervisor(SupervisorCSV):
         The pole angle value is taken from the message sent by the robot.
         All values are normalized appropriately to [-1, 1], according to their original ranges.
 
-        :return: list, observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
+        :return: Observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
+        :rtype: list
         """
         # Position on z axis
         cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
@@ -94,8 +95,10 @@ class CartPoleSupervisor(SupervisorCSV):
         """
         Reward is +1 for each step taken, including the termination step.
 
-        :param action: None
-        :return: int, always 1
+        :param action: Not used, defaults to None
+        :type action: None, optional
+        :return: Always 1
+        :rtype: int
         """
         return 1
 
@@ -104,7 +107,8 @@ class CartPoleSupervisor(SupervisorCSV):
         An episode is done if the score is over 195.0, or if the pole is off balance, or the cart position is on the
         arena's edges.
 
-        :return: bool, True if termination conditions are met, False otherwise
+        :return: True if termination conditions are met, False otherwise
+        :rtype: bool
         """
         if self.episodeScore > 195.0:
             return True
@@ -126,7 +130,8 @@ class CartPoleSupervisor(SupervisorCSV):
     def reset(self):
         """
         Reset calls respawnRobot() method and returns starting observation.
-        :return: list, starting observation filled with zeros
+        :return: Starting observation zero vector
+        :rtype: list
         """
         # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
         self.respawnRobot()
@@ -135,8 +140,6 @@ class CartPoleSupervisor(SupervisorCSV):
     def respawnRobot(self):
         """
         This method reloads the saved CartPole robot in its initial state from the disk.
-
-        :return: None
         """
         # TODO This method will be removed in Webots R2020a rev2
         if self.robot is not None:
@@ -154,13 +157,12 @@ class CartPoleSupervisor(SupervisorCSV):
         # Reset the simulation physics to start over
         self.supervisor.simulationResetPhysics()
 
-        return None
-
     def get_info(self):
         """
-        Dummy implementation of get_info
+        Dummy implementation of get_info.
 
         :return: None
+        :rtype: None
         """
         return None
 
@@ -169,7 +171,8 @@ class CartPoleSupervisor(SupervisorCSV):
         This method checks whether the CartPole task is solved, so training terminates.
         Solved condition requires that the average episode score of last 100 episodes is over 195.0.
 
-        :return: bool, True if task is solved, False otherwise
+        :return: True if task is solved, False otherwise
+        :rtype: bool
         """
         if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
             if np.mean(self.episodeScoreList[-100:]) > 195.0:  # Last 100 episode scores average value
