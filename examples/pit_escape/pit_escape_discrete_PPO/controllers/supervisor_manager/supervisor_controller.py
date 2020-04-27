@@ -64,9 +64,11 @@ class PitEscapeSupervisor(SupervisorCSV):
     def __init__(self, episodeLimit=10000):
         """
         In the constructor, the agent object is created, the robot is spawned in the world via respawnRobot().
-        Reference to robot is initialized here.
+        Reference to robot is initialized here, through self.respawnRobot(), where it is also spawned.
+        When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
 
-        :param episodeLimit: int, upper limit of how many episodes to run
+        :param episodeLimit: Upper limit of how many episodes to run, defaults to 10000
+        :type episodeLimit: int, optional
         """
         print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
@@ -75,7 +77,6 @@ class PitEscapeSupervisor(SupervisorCSV):
         self.agent = PPOAgent(self.observationSpace, self.actionSpace)
 
         self.robot = None
-        self.robotDef = "ROBOT_BB-8"
         self.respawnRobot()
 
         self.episodeCount = 0  # counter for episodes
@@ -84,22 +85,24 @@ class PitEscapeSupervisor(SupervisorCSV):
         self.episodeScoreList = []  # a list to save all the episode scores, used to check if task is solved
         self.test = False  # whether the agent is in test mode
 
-        self.longestDistance = 0.0
-        self.oldMetric = 0.0
+        self.longestDistance = 0.0  # Tracks max distance achieved during an episode
+        self.oldMetric = 0.0  # oldMetrics is used to get the difference with new metrics
         self.metric = 0.0
         self.time = self.supervisor.getTime()  # Current time
-        self.startTime = 0.0
-        self.episodeTime = 0.0
+        self.startTime = 0.0  # Episode start time
+        self.episodeTime = 0.0  # Current episode time
         self.maxTime = 60.0  # Time in seconds that each episode lasts
         self.pitRadius = self.supervisor.getFromDef("PIT").getField("pitRadius").getSFFloat()
 
     def get_observations(self):
         """
         Observation gets the message sent by the robot through the receiver.
-        The values are extracted from the message, converted to float, normalized and clipped.
-        If no message is received, it returns zeros.
+        The values are extracted from the message, converted to float, normalized and clipped appropriately.
+        If no message is received, it returns a zero vector. The supervisor doesn't need to add any
+        external information; the observation vector is built entirely out of the robot's sensors.
 
-        :return: list, observation: [gyro x, gyro y, gyro z, accelerometer x, accelerometer y, accelerometer z]
+        :return: Observation: [gyro x, gyro y, gyro z, accelerometer x, accelerometer y, accelerometer z]
+        :rtype: list
         """
         messageReceived = self.handle_receiver()
         if messageReceived is not None:
@@ -116,8 +119,10 @@ class PitEscapeSupervisor(SupervisorCSV):
         the metric updates with that in mind.
         This method updates the metric, but returns the difference with the previous recorded metric.
 
-        :param action: None, get_reward doesn't need the action to calculate the reward
-        :return: float, step reward
+        :param action: Not used, defaults to None
+        :type action: None, optional
+        :return: This step's reward
+        :rtype: float
         """
         self.oldMetric = self.metric
 
@@ -130,16 +135,17 @@ class PitEscapeSupervisor(SupervisorCSV):
         if self.longestDistance > self.pitRadius:
             self.metric = 0.5 + 0.5 * (self.maxTime - self.episodeTime) / self.maxTime
 
-        # Step reward is how much the metric changed
+        # Step reward is how much the metric changed, i.e. the difference from the previous one
         return self.metric - self.oldMetric
 
     def is_done(self):
         """
-        Pit escape implementation counts time elapsed in current episode, based on episode's start time, and current
+        Pit Escape implementation counts time elapsed in current episode, based on episode's start time and current
         time taken from Webots supervisor. The episode is terminated after maxTime seconds, or when the episode is
         solved, the robot is out of the pit.
 
-        :return: bool, True if termination conditions are met, False otherwise
+        :return: True if termination conditions are met, False otherwise
+        :rtype: bool
         """
         doneFlag = False
         self.episodeTime = self.time - self.startTime  # Update episode time
@@ -168,8 +174,10 @@ class PitEscapeSupervisor(SupervisorCSV):
     def reset(self):
         """
         Reset calls respawnRobot() method and returns starting observation.
-        :return: list, starting observation filled with zeros
+        :return: Starting observation zero vector
+        :rtype: list
         """
+        # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
         self.respawnRobot()
         return [0.0 for _ in range(self.observationSpace)]
 
@@ -177,6 +185,7 @@ class PitEscapeSupervisor(SupervisorCSV):
         """
         This method reloads the saved BB-8 robot in its initial state from the disk.
         """
+        # TODO This method will be removed in Webots R2020a rev2
         if self.robot is not None:
             # Despawn existing robot
             self.robot.remove()
@@ -187,43 +196,54 @@ class PitEscapeSupervisor(SupervisorCSV):
         childrenField.importMFNode(-2, "BB-8.wbo")  # Load robot from file and add to second-to-last position
 
         # Get the new robot reference
-        self.robot = self.supervisor.getFromDef(self.robotDef)
+        self.robot = self.supervisor.getFromDef("ROBOT_BB-8")
         # Reset the simulation physics to start over
         self.supervisor.simulationResetPhysics()
 
     def get_info(self):
+        """
+        Dummy implementation of get_info.
+
+        :return: None
+        :rtype: None
+        """
         return None
 
     def solved(self):
         """
         This method checks whether the Pit Escape task is solved, so training terminates.
         Task is considered solved when average score of last 100 episodes is > 0.85.
-        :return: bool, True if task is solved, False otherwise
+
+        :return: True if task is solved, False otherwise
+        :rtype: bool
         """
-        if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-100:]) > 0.85:  # Last 100 episodes' scores average value
+        if len(self.episodeScoreList) > 10:  # Over 100 trials thus far
+            if np.mean(self.episodeScoreList[-10:]) > 0.85:  # Last 100 episodes' scores average value
                 return True
         return False
 
-    def step(self, action, repeatSteps=None):
+    def step(self, action, repeatSteps=1):
         """
         This custom implementation of step incorporates a repeat step feature. By setting the repeatSteps
         value, the supervisor is stepped and the selected action is emitted to the robot repeatedly.
-        :param action: iterable, that contains the action value(s)
-        :param repeatSteps: int, number of steps to repeatedly do the same action before returning
+        repeatSteps must be > 0.
+
+        :param action: Iterable that contains the action value(s)
+        :type action: iterable
+        :param repeatSteps: Number of steps to repeatedly do the same action before returning, defaults to 1
+        :type repeatSteps: int, optional
         :return: observation, reward, done, info
         """
-        if repeatSteps is not None and repeatSteps != 0:
-            for _ in range(repeatSteps):
-                self.supervisor.step(self.get_timestep())
-                self.handle_emitter(action)
-        else:
+        if repeatSteps <= 0:
+            raise ValueError("repeatSteps must be > 0")
+
+        for _ in range(repeatSteps):
             self.supervisor.step(self.get_timestep())
             self.handle_emitter(action)
 
         return (
             self.get_observations(),
-            self.get_reward(action),
+            self.get_reward(),
             self.is_done(),
             self.get_info(),
         )
