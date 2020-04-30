@@ -1,8 +1,7 @@
 import numpy as np
+
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from agent.PPOAgent import PPOAgent, Transition
 from utilities import normalizeToRange, getDistanceFromCenter, plotData
-from keyboard_controller_pit_escape import KeyboardControllerPitEscape
 
 
 class PitEscapeSupervisor(SupervisorCSV):
@@ -61,26 +60,20 @@ class PitEscapeSupervisor(SupervisorCSV):
         distance from the pit center and the pit radius.
     """
 
-    def __init__(self, episodeLimit=10000):
+    def __init__(self):
         """
-        In the constructor, the agent object is created, the robot is spawned in the world via respawnRobot().
+        In the constructor the robot is spawned in the world via respawnRobot().
         Reference to robot is initialized here, through self.respawnRobot(), where it is also spawned.
         When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
-
-        :param episodeLimit: Upper limit of how many episodes to run, defaults to 10000
-        :type episodeLimit: int, optional
         """
         print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
         self.observationSpace = 6
         self.actionSpace = 4
-        self.agent = PPOAgent(self.observationSpace, self.actionSpace)
 
         self.robot = None
         self.respawnRobot()
 
-        self.episodeCount = 0  # counter for episodes
-        self.episodeLimit = episodeLimit
         self.episodeScore = 0  # score accumulated during an episode
         self.episodeScoreList = []  # a list to save all the episode scores, used to check if task is solved
         self.test = False  # whether the agent is in test mode
