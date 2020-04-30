@@ -5,7 +5,7 @@ This example is the [Pit Escape](https://robotbenchmark.net/benchmark/pit_escape
 [MountainCar](https://gym.openai.com/envs/MountainCar-v0/) problem, in 3 dimensions and more complicated 
 observation and action spaces.
 
-One solutions of the problem is provided, using a discrete action space.
+One solution of the problem is provided, using a discrete action space.
 It is solved with the 
 [Proximal Policy Optimization Reinforcement (PPO) Learning (RL) algorithm](https://openai.com/blog/openai-baselines-ppo/).
 It uses [PyTorch](https://pytorch.org/) as the backend neural network library.
