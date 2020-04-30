@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import convolve, ones, mean
 
 from supervisor_controller import CartPoleSupervisor
 from keyboard_controller_cartpole import KeyboardControllerCartPole
@@ -8,6 +8,8 @@ from utilities import plotData
 
 def run():
     # Initialize supervisor object
+    # Whenever we want to access attributes, etc., from the supervisor controller we use
+    # supervisorPre.
     supervisorPre = CartPoleSupervisor()
     # Wrap the CartPole supervisor in the custom keyboard printer
     supervisorEnv = KeyboardControllerCartPole(supervisorPre)
@@ -57,7 +59,7 @@ def run():
         print("Episode #", episodeCount, "score:", supervisorPre.episodeScore)
         # The average action probability tells us how confident the agent was of its actions.
         # By looking at this we can check whether the agent is converging to a certain policy.
-        avgActionProb = np.mean(actionProbs)
+        avgActionProb = mean(actionProbs)
         averageEpisodeActionProbs.append(avgActionProb)
         print("Avg action prob:", avgActionProb)
 
@@ -65,9 +67,9 @@ def run():
 
     # np.convolve is used as a moving average, see https://stackoverflow.com/a/22621523
     movingAvgN = 10
-    plotData(np.convolve(supervisorPre.episodeScoreList, np.ones((movingAvgN,))/movingAvgN, mode='valid'),
+    plotData(convolve(supervisorPre.episodeScoreList, ones((movingAvgN,))/movingAvgN, mode='valid'),
              "episode", "episode score", "Episode scores over episodes")
-    plotData(np.convolve(averageEpisodeActionProbs, np.ones((movingAvgN,))/movingAvgN, mode='valid'),
+    plotData(convolve(averageEpisodeActionProbs, ones((movingAvgN,))/movingAvgN, mode='valid'),
              "episode", "average episode action probability", "Average episode action probability over episodes")
 
     if not solved and not supervisorPre.test:
@@ -77,8 +79,16 @@ def run():
             print("Task is not solved, deploying agent for testing...")
         elif solved:
             print("Task is solved, deploying agent for testing...")
+    print("Press R to reset.")
     state = supervisorEnv.reset()
     supervisorPre.test = True
+    supervisorPre.episodeScore = 0
     while True:
         selectedAction, actionProb = agent.work(state, type_="selectActionMax")
-        state, _, _, _ = supervisorEnv.step([selectedAction])
+        state, reward, done, _ = supervisorEnv.step([selectedAction])
+        supervisorPre.episodeScore += reward  # Accumulate episode reward
+
+        if done:
+            print("Reward accumulated =", supervisorPre.episodeScore)
+            supervisorPre.episodeScore = 0
+            state = supervisorEnv.reset()
