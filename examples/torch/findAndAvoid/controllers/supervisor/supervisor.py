@@ -7,7 +7,6 @@ from deepbots.supervisor.controllers.supervisor_emitter_receiver import \
     SupervisorCSV
 from deepbots.supervisor.wrappers.keyboard_printer import KeyboardPrinter
 from deepbots.supervisor.wrappers.tensorboard_wrapper import TensorboardLogger
-from models.default_networks import DefaultDDPG
 from models.networks import DDPG
 
 OBSERVATION_SPACE = 10
@@ -21,8 +20,8 @@ ANGLE_MM = {'min': -math.pi, 'max': math.pi}
 
 class FindTargetSupervisor(SupervisorCSV):
     def __init__(self, robot, target, observation_space):
-        super(FindTargetSupervisor, self).__init__(
-            emitter_name='emitter', receiver_name='receiver')
+        super(FindTargetSupervisor, self).__init__(emitter_name='emitter',
+                                                   receiver_name='receiver')
         self.robot_name = robot
         self.target_name = target
         self.robot = self.supervisor.getFromDef(robot)
@@ -35,7 +34,7 @@ class FindTargetSupervisor(SupervisorCSV):
         self.should_done = False
 
     def get_observations(self):
-        message = super().handle_receiver()
+        message = self.handle_receiver()
 
         observation = []
         self.message = []
@@ -45,9 +44,9 @@ class FindTargetSupervisor(SupervisorCSV):
                 self.message.append(float(message[i]))
 
                 observation.append(
-                    utils.normalize_to_range(
-                        float(message[i]), DIST_SENSORS_MM['min'],
-                        DIST_SENSORS_MM['max'], 0, 1))
+                    utils.normalize_to_range(float(message[i]),
+                                             DIST_SENSORS_MM['min'],
+                                             DIST_SENSORS_MM['max'], 0, 1))
 
             distanceFromTarget = utils.get_distance_from_target(
                 self.robot, self.target)
@@ -56,11 +55,14 @@ class FindTargetSupervisor(SupervisorCSV):
                 distanceFromTarget, EUCL_MM['min'], EUCL_MM['max'], 0, 1)
             observation.append(distanceFromTarget)
 
-            angleFromTarget = utils.get_angle_from_target(
-                self.robot, self.target, is_true_angle=True, is_abs=False)
+            angleFromTarget = utils.get_angle_from_target(self.robot,
+                                                          self.target,
+                                                          is_true_angle=True,
+                                                          is_abs=False)
             self.message.append(angleFromTarget)
-            angleFromTarget = utils.normalize_to_range(
-                angleFromTarget, ANGLE_MM['min'], ANGLE_MM['max'], 0, 1)
+            angleFromTarget = utils.normalize_to_range(angleFromTarget,
+                                                       ANGLE_MM['min'],
+                                                       ANGLE_MM['max'], 0, 1)
             observation.append(angleFromTarget)
 
         else:
@@ -167,27 +169,25 @@ class FindTargetSupervisor(SupervisorCSV):
 
 supervisor_pre = FindTargetSupervisor('robot', 'target', observation_space=10)
 supervisor_env = KeyboardPrinter(supervisor_pre)
-supervisor_env = TensorboardLogger(
-    supervisor_env,
-    log_dir="logs/results/ddpg",
-    v_action=1,
-    v_observation=1,
-    v_reward=1,
-    windows=[10, 100, 200])
+supervisor_env = TensorboardLogger(supervisor_env,
+                                   log_dir="logs/results/ddpg",
+                                   v_action=1,
+                                   v_observation=1,
+                                   v_reward=1,
+                                   windows=[10, 100, 200])
 
-agent = DDPG(
-    lr_actor=0.000025,
-    lr_critic=0.00025,
-    input_dims=[10],
-    gamma=0.99,
-    tau=0.001,
-    env=supervisor_env,
-    batch_size=64,
-    layer1_size=400,
-    layer2_size=300,
-    n_actions=2,
-    load_models=False,
-    save_dir='./models/saved/ddpg/')
+agent = DDPG(lr_actor=0.00025,
+             lr_critic=0.0025,
+             input_dims=[10],
+             gamma=0.99,
+             tau=0.001,
+             env=supervisor_env,
+             batch_size=256,
+             layer1_size=400,
+             layer2_size=300,
+             n_actions=2,
+             load_models=False,
+             save_dir='./models/saved/ddpg/')
 
 score_history = []
 
