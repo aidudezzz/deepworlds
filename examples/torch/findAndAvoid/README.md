@@ -15,8 +15,8 @@ gas and wheel).
 ## Agents 
     
 + Deep Deterministic Policy Gradience (DDPG)
-  + Current implementation based on (Phil Tabor)[https://github.com/philtabor]
-    (implementation)[https://github.com/philtabor/Actor-Critic-Methods-Paper-To-Code/tree/master/DDPG]
-    which is presented in (Youtube
-    video)[https://www.youtube.com/watch?v=6Yd5WnYls_Y].
+  + Current implementation based on [Phil Tabor](https://github.com/philtabor)
+    [implementation](https://github.com/philtabor/Actor-Critic-Methods-Paper-To-Code/tree/master/DDPG)
+    which is presented in [Youtube
+    video](https://www.youtube.com/watch?v=6Yd5WnYls_Y).
     
