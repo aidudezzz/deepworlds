@@ -10,14 +10,14 @@ For more information on the examples, refer to the each example's README.
 \deepworlds
     \examples
         \cartpole
-            \cartpole_discrete_PPO
-            \cartpole_continuous_DDPG
+            \cartpole_discrete
+            \cartpole_continuous
             \...
-        \find_ball
-            \find_ball_continuous_DDPG
+        \find_and_avoid
+            \find_and_avoid_continuous
             \...
         \pit_escape
-            \pit_escape_discrete_PPO
+            \pit_escape_discrete
             \...
         \(more examples)       
 ```
