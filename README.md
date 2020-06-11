@@ -13,8 +13,8 @@ For more information on the examples, refer to the each example's README.
             \cartpole_discrete_PPO
             \cartpole_continuous_DDPG
             \...
-        \find_ball
-            \find_ball_continuous_DDPG
+        \find_and_avoid
+            \find_and_avoid_continuous_DDPG
             \...
         \pit_escape
             \pit_escape_discrete_PPO
