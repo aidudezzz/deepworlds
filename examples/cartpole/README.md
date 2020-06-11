@@ -16,6 +16,5 @@ supervisor controllers.
 More CartPole examples can be added in the future, using other algorithms/backends.
 
 ## Contents
-(TODO fix links)
-- [CartPole discrete PPO]()
-- [CartPole continuous DDPG]()
+- [CartPole discrete PPO](https://github.com/tsampazk/deepworlds/tree/readme-fixes/examples/cartpole/cartpole_discrete)
+- [CartPole continuous DDPG](https://github.com/tsampazk/deepworlds/tree/readme-fixes/examples/cartpole/cartpole_continous)
