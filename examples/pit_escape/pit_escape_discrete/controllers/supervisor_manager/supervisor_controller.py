@@ -210,8 +210,8 @@ class PitEscapeSupervisor(SupervisorCSV):
         :return: True if task is solved, False otherwise
         :rtype: bool
         """
-        if len(self.episodeScoreList) > 10:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-10:]) > 0.85:  # Last 100 episodes' scores average value
+        if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
+            if np.mean(self.episodeScoreList[-100:]) > 0.85:  # Last 100 episodes' scores average value
                 return True
         return False
 
@@ -231,7 +231,7 @@ class PitEscapeSupervisor(SupervisorCSV):
             raise ValueError("repeatSteps must be > 0")
 
         for _ in range(repeatSteps):
-            self.supervisor.step(self.get_timestep())
+            self.supervisor.step(self.timestep)  # TODO new version will break this
             self.handle_emitter(action)
 
         return (
