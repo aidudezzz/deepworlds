@@ -1,7 +1,7 @@
 import numpy as np
 
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from utilities import normalizeToRange, plotData
+from utilities import normalizeToRange
 
 
 class CartPoleSupervisor(SupervisorCSV):
