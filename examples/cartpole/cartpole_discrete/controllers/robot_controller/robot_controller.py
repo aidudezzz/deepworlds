@@ -15,7 +15,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         """
         super().__init__()
         self.positionSensor = self.robot.getDevice("polePosSensor")
-        self.positionSensor.enable(self.get_timestep())
+        self.positionSensor.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
