@@ -38,6 +38,15 @@
         "question",
         "review"
       ]
+    },
+    {
+      "login": "rohit-kumar-j",
+      "name": "RKJ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37873142?v=4",
+      "profile": "https://github.com/rohit-kumar-j",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
