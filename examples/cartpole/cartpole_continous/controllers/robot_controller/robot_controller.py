@@ -58,6 +58,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         motorSpeed = float(message[0]) * 5.0  # Scale from [-1.0, 1.0] to [-5.0, 5.0]
 
         for i in range(len(self.wheels)):
+            self.wheels[i].setPosition(float('inf'))
             self.wheels[i].setVelocity(motorSpeed)
 
 
