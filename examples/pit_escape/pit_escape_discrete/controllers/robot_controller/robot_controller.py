@@ -16,17 +16,17 @@ class PitEscapeRobot(RobotEmitterReceiverCSV):
         """
         super().__init__()
         # Set up sensors
-        self.gyroSensor = self.robot.getGyro("body gyro")
-        self.gyroSensor.enable(self.get_timestep())
-        self.accelerometerSensor = self.robot.getAccelerometer("body accelerometer")
-        self.accelerometerSensor.enable(self.get_timestep())
+        self.gyroSensor = self.robot.getDevice("body gyro")
+        self.gyroSensor.enable(self.timestep)
+        self.accelerometerSensor = self.robot.getDevice("body accelerometer")
+        self.accelerometerSensor.enable(self.timestep)
 
         # Max possible speed for the motor
         self.maxSpeed = 8.72
 
         # Configuration of the main motors of the robot
-        self.pitchMotor = self.robot.getMotor("body pitch motor")
-        self.yawMotor = self.robot.getMotor("body yaw motor")
+        self.pitchMotor = self.robot.getDevice("body pitch motor")
+        self.yawMotor = self.robot.getDevice("body yaw motor")
         self.pitchMotor.setPosition(float('inf'))
         self.yawMotor.setPosition(float('inf'))
         self.pitchMotor.setVelocity(0.0)
@@ -81,6 +81,8 @@ class PitEscapeRobot(RobotEmitterReceiverCSV):
             # print("yaw -")
             yawSpeed = -self.maxSpeed
 
+        self.pitchMotor.setPosition(float('inf'))
+        self.yawMotor.setPosition(float('inf'))
         self.pitchMotor.setVelocity(pitchSpeed)
         self.yawMotor.setVelocity(yawSpeed)
 
