@@ -19,8 +19,8 @@ with plans of providing the same examples using the
 [robot - supervisor scheme](https://github.com/aidudezzz/deepbots#combined-robot-supervisor-scheme) in the future.
 
 ## Contents
-- [CartPole discrete](https://github.com/tsampazk/deepworlds/tree/readme-fixes/examples/cartpole/cartpole_discrete)
-- [CartPole continuous](https://github.com/tsampazk/deepworlds/tree/readme-fixes/examples/cartpole/cartpole_continous)
+- [CartPole discrete](https://github.com/aidudezzz/deepworlds/tree/dev/examples/cartpole/cartpole_discrete)
+- [CartPole continuous](https://github.com/aidudezzz/deepworlds/tree/dev/examples/cartpole/cartpole_continous)
 
 
 ## Solved CartPole - PPO discrete
