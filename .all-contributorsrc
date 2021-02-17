@@ -47,6 +47,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "wakeupppp",
+      "name": "wakeupppp",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39750646?v=4",
+      "profile": "https://github.com/wakeupppp",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
