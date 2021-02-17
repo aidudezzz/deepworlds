@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "rohit-kumar-j",
+      "name": "RKJ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37873142?v=4",
+      "profile": "https://github.com/rohit-kumar-j",
+      "contributions": [
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "deepworlds",
+  "projectOwner": "aidudezzz",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
