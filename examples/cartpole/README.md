@@ -27,10 +27,8 @@ with plans of providing the same examples using the
 
 Trained agent showcase:
 
-TODO fix link to gif
-![image](https://github.com/tsampazk/deepworlds/blob/fixes-updates/examples/cartpole/doc/gif/cartpoleSolved.gif)
+![image](https://github.com/aidudezzz/deepworlds/blob/dev/examples/cartpole/doc/gif/cartpoleSolved.gif)
 
 Reward per episode plot:
 
-TODO fix link to plot
-![image](https://github.com/tsampazk/deepworlds/blob/fixes-updates/examples/cartpole/doc/img/rewardPlot.png)
+![image](https://github.com/aidudezzz/deepworlds/blob/dev/examples/cartpole/doc/img/rewardPlot.png)
