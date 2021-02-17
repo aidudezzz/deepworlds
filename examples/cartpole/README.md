@@ -14,7 +14,27 @@ Switching between discrete and continuous action spaces requires several modific
 supervisor controllers.
 
 More CartPole examples can be added in the future, using other algorithms/backends.
+Both examples utilize the [emitter - receiver scheme](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme),
+with plans of providing the same examples using the 
+[robot - supervisor scheme](https://github.com/aidudezzz/deepbots#combined-robot-supervisor-scheme) in the future.
 
 ## Contents
 - [CartPole discrete](https://github.com/tsampazk/deepworlds/tree/readme-fixes/examples/cartpole/cartpole_discrete)
 - [CartPole continuous](https://github.com/tsampazk/deepworlds/tree/readme-fixes/examples/cartpole/cartpole_continous)
+
+
+## Solved CartPole - PPO discrete
+
+Trained agent showcase:
+
+TODO fix link to gif
+<p align="center">
+    <img src="https://raw.githubusercontent.com/tsampazk/deepworlds/fixes-updates/examples/cartpole/doc/gif/cartpoleSolved.gif">
+</p>
+
+Reward per episode plot:
+
+TODO fix link to plot
+<p align="center">
+    <img src="https://raw.githubusercontent.com/tsampazk/deepworlds/fixes-updates/examples/cartpole/doc/img/rewardPlot.png">
+</p>
