@@ -6,7 +6,55 @@ import numpy as np
 
 
 class CartPoleRobotSupervisor(RobotSupervisor):
+    """
+    CartPoleRobotSupervisor acts as an environment having all the appropriate methods such as get_reward().
+    This class utilizes the robot-supervisor scheme combining both the robot controls and the environment
+    in the same class. Moreover, the reset procedure used is the default implemented reset.
+    This class is made with the new release of deepbots in mind that fully integrates gym.Env, using gym.spaces.
+
+    Taken from https://github.com/openai/gym/blob/master/gym/envs/classic_control/cartpole.py and modified
+    for Webots.
+    Description:
+        A pole is attached by an un-actuated joint to a cart, which moves forwards and backwards. The pendulum
+        starts upright, and the goal is to prevent it from falling over by increasing and reducing the cart's
+        velocity.
+    Source:
+        This environment corresponds to the version of the cart-pole problem described
+        by Barto, Sutton, and Anderson
+    Observation:
+        Type: Box(4)
+        Num	Observation                 Min         Max
+        0	Cart Position z axis      -0.4            0.4
+        1	Cart Velocity             -Inf            Inf
+        2	Pole Angle                -1.3 rad        1.3 rad
+        3	Pole Velocity At Tip      -Inf            Inf
+
+    Actions:
+        Type: Discrete(2)
+        Num	Action
+        0	Move cart forward
+        1	Move cart backward
+
+        Note: The amount the velocity that is reduced or increased is not fixed; it depends on the angle the pole is
+        pointing. This is because the center of gravity of the pole increases the amount of energy needed to move the
+        cart underneath it
+    Reward:
+        Reward is 1 for every step taken, including the termination step
+    Starting State:
+        [0.0, 0.0, 0.0, 0.0]
+    Episode Termination:
+        Pole Angle is more than 0.261799388 rad (15 degrees)
+        Cart Position is more than 0.39 on z axis (cart has reached arena edge)
+        Episode length is greater than 200
+        Solved Requirements (average episode score in last 100 episodes > 195.0)
+    """
+
     def __init__(self):
+        """
+        In the constructor the observation_space and action_space are set and references to the various components
+        of the robot required are initialized here.
+        """
+
         super().__init__()
 
         # Set up gym spaces
@@ -16,6 +64,7 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         self.action_space = Discrete(2)
 
         # Set up various robot components
+        self.robot = self.getSelf()  # Grab the robot reference from the supervisor to access various robot methods
         self.positionSensor = self.getDevice("polePosSensor")
         self.positionSensor.enable(self.timestep)
 
@@ -30,22 +79,44 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
 
     def get_observations(self):
+        """
+        This get_observation implementation builds the required observation for the CartPole problem.
+        All values apart are gathered here from the robot and poleEndpoint objects.
+        All values are normalized appropriately to [-1, 1], according to their original ranges.
+
+        :return: Observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
+        :rtype: list
+        """
         # Position on z axis
-        cartPosition = normalizeToRange(self.getSelf().getPosition()[2], -0.4, 0.4, -1.0, 1.0)
+        cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
         # Linear velocity on z axis
-        cartVelocity = normalizeToRange(self.getSelf().getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
-
+        cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
+        # Pole angle off vertical
         poleAngle = normalizeToRange(self.positionSensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
-
         # Angular velocity x of endpoint
         endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True)
 
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
 
     def get_reward(self, action):
+        """
+        Reward is +1 for each step taken, including the termination step.
+
+        :param action: Not used, defaults to None
+        :type action: None, optional
+        :return: Always 1
+        :rtype: int
+        """
         return 1
 
     def is_done(self):
+        """
+        An episode is done if the score is over 195.0, or if the pole is off balance, or the cart position is on the
+        arena's edges.
+
+        :return: True if termination conditions are met, False otherwise
+        :rtype: bool
+        """
         if self.episodeScore > 195.0:
             return True
 
@@ -53,7 +124,7 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
             return True
 
-        cartPosition = round(self.getSelf().getPosition()[2], 2)  # Position on z axis
+        cartPosition = round(self.robot.getPosition()[2], 2)  # Position on z axis
         if abs(cartPosition) > 0.39:
             return True
 
@@ -73,9 +144,23 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         return False
 
     def get_default_observation(self):
+        """
+        Simple implementation returning the default observation which is a zero vector in the shape
+        of the observation space.
+        :return: Starting observation zero vector
+        :rtype: list
+        """
         return [0.0 for _ in range(self.observation_space.shape[0])]
 
     def apply_action(self, action):
+        """
+        This method uses the action list provided, which contains the next action to be executed by the robot.
+        It contains an integer denoting the action, either 0 or 1, with 0 being forward and
+        1 being backward movement. The corresponding motorSpeed value is applied to the wheels.
+
+        :param action: The list that contains the action integer
+        :type action: list of int
+        """
         action = int(action[0])
 
         assert action == 0 or action == 1, "CartPoleRobot controller got incorrect action value: " + str(action)
@@ -103,7 +188,16 @@ class CartPoleRobotSupervisor(RobotSupervisor):
             self.wheels[i].setVelocity(0.0)
 
     def get_info(self):
+        """
+        Dummy implementation of get_info.
+        :return: Empty dict
+        """
         return {}
 
     def render(self, mode='human'):
+        """
+        Dummy implementation of render
+        :param mode:
+        :return:
+        """
         print("render() is not used")
