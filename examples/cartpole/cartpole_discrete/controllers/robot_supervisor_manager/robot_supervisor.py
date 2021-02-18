@@ -28,7 +28,6 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         self.stepsPerEpisode = 200  # How many steps to run each episode (changing this messes up the solved condition)
         self.episodeScore = 0  # Score accumulated during an episode
         self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
-        self.test = False
 
     def get_observations(self):
         # Position on z axis
