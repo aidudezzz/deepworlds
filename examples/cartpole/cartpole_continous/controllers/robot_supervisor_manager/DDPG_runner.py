@@ -11,7 +11,7 @@ def run():
 
     # The agent used here is trained with the DDPG algorithm (https://arxiv.org/abs/1509.02971).
     # We pass (4, ) as numberOfInputs and (2, ) as numberOfOutputs, taken from the gym spaces
-    agent = DDPGAgent(env.observation_space.shape, (env.action_space.n, ), lr_actor=0.000025, lr_critic=0.00025,
+    agent = DDPGAgent(env.observation_space.shape, env.action_space.shape, lr_actor=0.000025, lr_critic=0.00025,
                       layer1_size=30, layer2_size=50, layer3_size=30, batch_size=64)
 
     episodeCount = 0
