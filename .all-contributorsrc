@@ -56,6 +56,18 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "KelvinYang0320",
+      "name": "Jiun Kai Yang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49781698?v=4",
+      "profile": "https://www.linkedin.com/in/kelvin-yang-b7b508198/",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
