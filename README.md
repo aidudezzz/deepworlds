@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/aidudezzz/deepbots/dev/swag/logo/deepworlds_full.png">
+    <img src="https://raw.githubusercontent.com/aidudezzz/deepbots-swag/main/logo/deepworlds_full.png">
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
