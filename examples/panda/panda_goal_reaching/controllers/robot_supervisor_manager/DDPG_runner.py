@@ -3,7 +3,7 @@ from numpy import convolve, ones, mean, random
 from robot_supervisor_ddpg import PandaRobotSupervisor
 from agent.ddpg import DDPGAgent
 
-from Constants import EPISODE_LIMIT, STEPS_PER_EPISODE, SAVE_MODELS_PERIOD
+from robot_supervisor_manager import EPISODE_LIMIT, STEPS_PER_EPISODE, SAVE_MODELS_PERIOD
 
 def run(load_path):
     # Initialize supervisor object

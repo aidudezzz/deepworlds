@@ -1,8 +1,14 @@
 """
 More runners for RL algorithms can be added here.
 """
-import DDPG_runner
 import os
+import DDPG_runner
+
+# Modify these constants if needed.
+STEPS_PER_EPISODE = 300 
+MOTOR_VELOCITY = 10 
+EPISODE_LIMIT = 50000
+SAVE_MODELS_PERIOD = 200
 
 def create_path(path):
     try:
@@ -12,12 +18,14 @@ def create_path(path):
     else:
         print ("Successfully created the directory %s " % path)
 
-# dest of models' checkpoints
-create_path("./tmp/ddpg/")
+if __name__ == '__main__':
+    print("Hello")
+    # dest of models' checkpoints
+    create_path("./tmp/ddpg/")
 
-# dest of traing trend (text file & trend plot)
-create_path("./exports/")
+    # dest of traing trend (text file & trend plot)
+    create_path("./exports/")
 
-# pass a path to load the pretrained models, and pass "" for training from scratch
-load_path = "./tmp/ddpg/" 
-DDPG_runner.run(load_path)
+    # pass a path to load the pretrained models, and pass "" for training from scratch
+    load_path = "./tmp/ddpg/" 
+    DDPG_runner.run(load_path)
