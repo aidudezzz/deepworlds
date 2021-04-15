@@ -3,7 +3,7 @@ from gym.spaces import Box, Discrete
 import numpy as np
 from ArmUtil import Func, ToArmCoord
 
-from Constants import STEPS_PER_EPISODE, MOTOR_VELOCITY
+from robot_supervisor_manager import STEPS_PER_EPISODE, MOTOR_VELOCITY
 
 class PandaRobotSupervisor(RobotSupervisor):
     """
