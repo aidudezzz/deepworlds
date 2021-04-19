@@ -60,7 +60,7 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         self.observation_space = Box(low=np.array([-0.4, -np.inf, -1.3, -np.inf]),
                                      high=np.array([0.4, np.inf, 1.3, np.inf]),
                                      dtype=np.float64)
-        self.action_space = Box(low=np.array([-1.0]), high=np.array([1.0]))
+        self.action_space = Box(low=np.array([-1.0]), high=np.array([1.0]), dtype=np.float64)
 
         # Set up various robot components
         self.robot = self.getSelf()  # Grab the robot reference from the supervisor to access various robot methods
@@ -73,7 +73,6 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         self.setup_motors()
 
         # Set up misc
-        self.stepsPerEpisode = 200  # How many steps to run each episode (changing this messes up the solved condition)
         self.episodeScore = 0  # Score accumulated during an episode
         self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
 
