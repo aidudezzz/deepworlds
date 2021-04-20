@@ -4,7 +4,7 @@ from supervisor_controller import CartPoleSupervisor
 from keyboard_controller_cartpole import KeyboardControllerCartPole
 from agent.DDPG_agent import DDPGAgent
 from utilities import plotData
-
+from supervisor_manager import EPISODE_LIMIT, STEPS_PER_EPISODE
 
 def run():
     # Initialize supervisor object
@@ -19,16 +19,15 @@ def run():
                       layer1_size=30, layer2_size=50, layer3_size=30, batch_size=64)
 
     episodeCount = 0
-    episodeLimit = 10000
     solved = False  # Whether the solved requirement is met
 
     # Run outer loop until the episodes limit is reached or the task is solved
-    while not solved and episodeCount < episodeLimit:
+    while not solved and episodeCount < EPISODE_LIMIT:
         state = supervisorEnv.reset()  # Reset robot and get starting observation
         supervisorPre.episodeScore = 0
 
         # Inner loop is the episode loop
-        for step in range(supervisorPre.stepsPerEpisode):
+        for step in range(STEPS_PER_EPISODE):
             # In training mode the agent returns the action plus OU noise for exploration
             selectedAction = agent.choose_action_train(state)
 
@@ -42,7 +41,7 @@ def run():
             supervisorPre.episodeScore += reward  # Accumulate episode reward
             # Perform a learning step
             agent.learn()
-            if done or step == supervisorPre.stepsPerEpisode - 1:
+            if done or step == STEPS_PER_EPISODE - 1:
                 # Save the episode's score
                 supervisorPre.episodeScoreList.append(supervisorPre.episodeScore)
                 solved = supervisorPre.solved()  # Check whether the task is solved
