@@ -4,7 +4,7 @@ from supervisor_controller import PitEscapeSupervisor
 from keyboard_controller_pit_escape import KeyboardControllerPitEscape
 from agent.PPOAgent import PPOAgent, Transition
 from utilities import plotData
-
+from supervisor_manager import EPISODE_LIMIT
 
 def run():
     # Initialize supervisor object
@@ -18,13 +18,12 @@ def run():
     agent = PPOAgent(supervisorPre.observationSpace, supervisorPre.actionSpace)
 
     episodeCount = 0
-    episodeLimit = 10000
     solved = False  # Whether the solved requirement is met
     repeatActionSteps = 1  # Amount of steps for which to repeat a certain action
     averageEpisodeActionProbs = []  # Save average episode taken actions probability to plot later
 
     # Run outer loop until the episodes limit is reached or the task is solved
-    while not solved and episodeCount < episodeLimit:
+    while not solved and episodeCount < EPISODE_LIMIT:
         state = supervisorEnv.reset()  # Reset robot and get starting observation
         supervisorPre.episodeScore = 0
         actionProbs = []  # This list holds the probability of each chosen action
