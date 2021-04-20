@@ -2,7 +2,7 @@ import numpy as np
 
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
 from utilities import normalizeToRange, getDistanceFromCenter, plotData
-
+from supervisor_manager import MAX_TIME
 
 class PitEscapeSupervisor(SupervisorCSV):
     """
@@ -84,7 +84,6 @@ class PitEscapeSupervisor(SupervisorCSV):
         self.time = self.supervisor.getTime()  # Current time
         self.startTime = 0.0  # Episode start time
         self.episodeTime = 0.0  # Current episode time
-        self.maxTime = 60.0  # Time in seconds that each episode lasts
         self.pitRadius = self.supervisor.getFromDef("PIT").getField("pitRadius").getSFFloat()
 
     def get_observations(self):
@@ -126,7 +125,7 @@ class PitEscapeSupervisor(SupervisorCSV):
 
         # Escaping increases metric over 0.5 based on time elapsed in episode
         if self.longestDistance > self.pitRadius:
-            self.metric = 0.5 + 0.5 * (self.maxTime - self.episodeTime) / self.maxTime
+            self.metric = 0.5 + 0.5 * (MAX_TIME - self.episodeTime) / MAX_TIME
 
         # Step reward is how much the metric changed, i.e. the difference from the previous one
         return self.metric - self.oldMetric
@@ -144,7 +143,7 @@ class PitEscapeSupervisor(SupervisorCSV):
         self.episodeTime = self.time - self.startTime  # Update episode time
 
         # Time's not up
-        if self.episodeTime < self.maxTime:
+        if self.episodeTime < MAX_TIME:
             self.time = self.supervisor.getTime()  # Update current time
         # Episode time run out
         else:
