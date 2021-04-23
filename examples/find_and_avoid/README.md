@@ -1,5 +1,7 @@
 # Find target & avoid obstacles
 
+NOTE: This agent do not converge
+
 This is a typical find target and avoid obstacles task with a simple world
 configuration. For this task the E-puck robot is used, which is a compact mobile
 robot developed by GCtronic and EPFL and is included in Webots. The world

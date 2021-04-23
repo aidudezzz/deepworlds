@@ -58,14 +58,13 @@ class FindTargetRobot(RobotEmitterReceiverCSV):
                         ]  # 'ps0', 'ps1',...,'ps7'
 
         for i in range(self.n_rangefinders):
-            self.rangefinders.append(
-                self.robot.getDistanceSensor(self.psNames[i]))
+            self.rangefinders.append(self.robot.getDevice(self.psNames[i]))
             self.rangefinders[i].enable(self.timestep)
 
     def setup_motors(self):
         # Motor setup
-        self.leftMotor = self.robot.getMotor('left wheel motor')
-        self.rightMotor = self.robot.getMotor('right wheel motor')
+        self.leftMotor = self.robot.getDevice('left wheel motor')
+        self.rightMotor = self.robot.getDevice('right wheel motor')
         self.leftMotor.setPosition(float('inf'))
         self.rightMotor.setPosition(float('inf'))
         self.leftMotor.setVelocity(0.0)

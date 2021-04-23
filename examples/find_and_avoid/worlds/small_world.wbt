@@ -1,35 +1,18 @@
-#VRML_SIM R2020a utf8
+#VRML_SIM R2021a utf8
 WorldInfo {
+  coordinateSystem "NUE"
 }
-DEF robot E-puck {
-  hidden position_0_0 -9.108562689118283
-  hidden position_0_1 3.1547223230903496
-  hidden linearVelocity_0 -0.0017720631548026364 -1.563979260766478e-07 -0.0007657853543421064
-  hidden angularVelocity_0 0.0016422397371241711 0.2193649305098755 -0.003670303291332604
-  hidden rotation_1 -1 0 0 3.4578079252408895
-  hidden linearVelocity_1 -0.006989572042876959 -2.4592753491424944e-07 -0.0030217810657323318
-  hidden angularVelocity_1 -0.16179636422138877 0.21948214863385254 0.37421916975809205
-  hidden rotation_2 -1 0 0 3.1547223230903496
-  hidden linearVelocity_2 0.0034796935544542658 -8.95102422848352e-08 0.0015108522435370061
-  hidden angularVelocity_2 0.086416191223866 0.21937714440779785 -0.19910698039111127
-  translation -0.41315245128769285 -6.390043543542598e-05 0.3547243076966861
-  rotation -0.0006457489220301296 0.9999993119382065 -0.0009793525634786888 -1.975800098380752
-  name "robot"
-  controller "robot"
-  emitter_channel 0
-  receiver_channel 0
+Viewpoint {
+  orientation 1 0 0 4.71238898038469
+  position -1.0204376820965868e-16 2.343537727000891 3.6188514266717534e-16
 }
 WoodenBox {
   translation -0.23 0.15 0.15
   size 0.1 0.3 0.7
 }
 DEF target Ball {
-  translation 0.38 0.06991244453845845 -0.37
+  translation 0.38 0.06991367201317689 -0.37
   radius 0.07
-}
-Viewpoint {
-  orientation 1 0 0 4.71238898038469
-  position -9.086443101834422e-16 1.5786199520670043 -2.044940112033973e-14
 }
 TexturedBackground {
 }
@@ -47,4 +30,18 @@ DEF supervisor Robot {
   name "supervisor"
   controller "supervisor"
   supervisor TRUE
+}
+DEF robot E-puck {
+  hidden position_0_0 -2.5496523492311853e-11
+  hidden position_0_1 2.6980067249608448e-11
+  hidden translation_1 -0.026 0.02 0
+  hidden rotation_1 -1 0 0 0
+  hidden translation_2 0.026 0.02 0
+  hidden rotation_2 -1 0 0 0
+  translation -0.413245814554288 -6.388972745422807e-05 0.35468382649016655
+  rotation -0.0005534598842282864 0.999999486515061 -0.0008489121103638631 -1.9793525593801036
+  name "robot"
+  controller "robot"
+  emitter_channel 0
+  receiver_channel 0
 }
