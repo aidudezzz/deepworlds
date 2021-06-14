@@ -68,6 +68,17 @@
         "example",
         "ideas"
       ]
+    },
+    {
+      "login": "NickKok",
+      "name": "Nikolaos Kokkinis-Ntrenis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8222731?v=4",
+      "profile": "https://nickkok.github.io/my-website/",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
