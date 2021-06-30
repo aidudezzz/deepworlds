@@ -1,6 +1,8 @@
 """IKPY controller."""
 from controller import Supervisor
 from ikpy.chain import Chain
+import os,sys
+sys.path.insert(1, os.path.join(sys.path[0], '..')) # 
 from ArmUtil import ToArmCoord, Func
 import numpy as np
 
@@ -24,6 +26,9 @@ while supervisor.step(timestep) != -1:
 
     # get values from position sensors
     psValue = Func.getValue(positionSensorList)
+    psValue.append(0)
+    psValue = np.array(psValue)
+    psValue = np.insert(psValue, 0, 0)
     
     if rst_flag:
         # get another target
