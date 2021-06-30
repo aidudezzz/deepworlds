@@ -16,13 +16,12 @@ class ToArmCoord:
 class Func:
 	@staticmethod
 	def getValue(positionSensorList):
+		"""
+		Get values from the position sensors
+		"""
 		psValue = []
 		for i in positionSensorList:
 			psValue.append(i.getValue())
-		# For our URDF file links
-		psValue.append(0)
-		psValue = np.array(psValue)
-		psValue = np.insert(psValue, 0, 0)
 		return psValue
 	
 	@staticmethod
@@ -51,7 +50,7 @@ class Func:
 			positionSensor.enable(timestep)
 			positionSensorList.append(positionSensor)
 		return positionSensorList
-
+	
 	@staticmethod
 	def reset_All_motors(motorList, psValue):
 		"""
