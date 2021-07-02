@@ -12,18 +12,18 @@ class RobotFunc(object):
                     'RightFemurHead1', 'RightFemurHead2', 
                     'RightFoot', 'RightForearm','RightShoulder',
                     'Waist']
-        else:
+        elif name_type=='legs':
             return ['LeftAnkle', 'LeftCrus', 'LeftFemur',
-                    'LeftFoot','RightAnkle', 'RightCrus','RightFemur',
-                    'RightFoot','Waist']
+                    'RightAnkle', 'RightCrus','RightFemur']
+                    
                 
                 
     def getAllMotors(robot):
         """
-        Get 17 motors from the robot model
+        Get 6 motors from the robot model
         """
         
-        motorNames = RobotFunc.getMotorNames('all')
+        motorNames = RobotFunc.getMotorNames('legs')
         
         motorList = []
         for motorName in motorNames:
