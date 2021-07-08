@@ -54,9 +54,9 @@ class CartPoleSupervisor(SupervisorCSV):
         super().__init__()
         self.observationSpace = 4
         self.actionSpace = 2
-        self.robot = [self.supervisor.getFromDef("ROBOT" + str(i)) for i in range(9)]
+        self.robot = [self.getFromDef("ROBOT" + str(i)) for i in range(9)]
         self.initPositions = [self.robot[i].getField("translation").getSFVec3f() for i in range(9)]
-        self.poleEndpoint = [self.supervisor.getFromDef("POLE_ENDPOINT_" + str(i)) for i in range(9)]
+        self.poleEndpoint = [self.getFromDef("POLE_ENDPOINT_" + str(i)) for i in range(9)]
 
         self.messageReceived = None                     # Variable to save the messages received from the robots
 
