@@ -1,0 +1,217 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation 0.31931616874402746 -0.8912856999644497 -0.3219425188096732 4.578108459635118
+  position 3.4089232871855484 3.2329709473626735 -0.10573715914189685
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+}
+DEF ROBOT Robot {
+  translation 0 0.045 0
+  rotation 0 0 -0.9999999999999978 0
+  children [
+    DEF EMITTER Emitter {
+    }
+    DEF RECEIVER Receiver {
+    }
+    DEF HINGE_COVER Solid {
+      translation 0 0.03 -3.469446951953614e-18
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0.6509803921568628 1
+          }
+          geometry Box {
+            size 0.030000000000000002 0.019999999999999997 0.05
+          }
+        }
+      ]
+      name "hingeCover"
+    }
+    DEF BODY Shape {
+      appearance PBRAppearance {
+        baseColor 0.917647 0.145098 0.145098
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.1 0.05 0.2
+      }
+    }
+    DEF WHEEL1 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 6.723540149111039e-17
+        anchor 0.06 0 0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel1"
+        }
+      ]
+      endPoint Solid {
+        translation 0.06 0 0.05
+        rotation 4.1138585722960455e-17 -4.16180585569589e-17 1 1.5708000000006916
+        children [
+          DEF WHEEL Shape {
+            appearance PBRAppearance {
+              baseColor 0.305882 0.898039 0.25098
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.04
+              subdivision 24
+            }
+          }
+        ]
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF WHEEL2 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 6.670640318240083e-17
+        anchor -0.06 0 0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel2"
+        }
+      ]
+      endPoint Solid {
+        translation -0.06 0 0.05
+        rotation 4.949760574365507e-17 -4.999916037684601e-17 1 1.5708000000006936
+        children [
+          USE WHEEL
+        ]
+        name "solid(1)"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF WHEEL3 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 1.0324509589061627e-16
+        anchor 0.06 0 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel3"
+        }
+      ]
+      endPoint Solid {
+        translation 0.06 0 -0.05
+        rotation 9.575758457954634e-17 -9.625326295011288e-17 1 1.5708000000006943
+        children [
+          USE WHEEL
+        ]
+        name "solid(2)"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF WHEEL4 HingeJoint {
+      jointParameters HingeJointParameters {
+        position -2.6895122773572173e-17
+        anchor -0.06 0 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "wheel4"
+        }
+      ]
+      endPoint Solid {
+        translation -0.06 0 -0.05
+        rotation -7.142790904783557e-17 7.126605493860052e-17 1 1.5708000000006928
+        children [
+          USE WHEEL
+        ]
+        name "solid(3)"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF POLE HingeJoint {
+      jointParameters HingeJointParameters {
+        position -4.812689688184746e-16
+        anchor 0 0.03000000000047226 0
+        minStop -1.3
+        maxStop 1.3
+      }
+      device [
+        DEF POLE_POS_SENSOR PositionSensor {
+          name "polePosSensor"
+        }
+      ]
+      endPoint Solid {
+        translation -1.8379558561220528e-06 0.5299968874104791 -5.683239951941424e-16
+        rotation -5.991988835868618e-16 5.880355830947095e-16 1 1.5708000033841338
+        children [
+          DEF POLE_ENDPOINT Solid {
+            translation 0.5000000000000002 0 0
+            scale 0.1 0.1 0.1
+            children [
+              DEF BALL Shape {
+                appearance PBRAppearance {
+                  baseColor 0.03137254901960784 0.047058823529411764 1
+                  metalness 0
+                }
+                geometry Sphere {
+                  radius 0.1
+                }
+              }
+            ]
+            boundingObject USE BALL
+            physics Physics {
+              density -1
+              mass 0.02
+            }
+          }
+          DEF POLE Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.1568627450980392 0.1568627450980392
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 1 0.020000000000000004 0.019999999999999997
+            }
+          }
+        ]
+        name "pole"
+        boundingObject USE POLE
+        physics Physics {
+          density -1
+          mass 0.2
+        }
+      }
+    }
+  ]
+  name "robot(1)"
+  boundingObject USE BODY
+  physics Physics {
+    density -1
+    mass 2
+  }
+  controller "robot_controller"
+}
+DEF supervisor Robot {
+  children [
+    Receiver {
+    }
+    Emitter {
+    }
+  ]
+  supervisor TRUE
+}
