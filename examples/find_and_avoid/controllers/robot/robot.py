@@ -30,12 +30,11 @@ class FindTargetRobot(RobotEmitterReceiverCSV):
         # Action 0 is turning
         wheel = float(message[0])
 
-        # Normalzie gas from [-1, 1] to [0.3, 1.3] to make robot always move forward
-        gas *= 4
-        # Clip it
-        # gas = np.clip(gas, -0.5, 4.0)
+        # Mapping gas from [-1, 1] to [0, 4] to make robot always move forward
+        gas = (gas+1)*2
+        gas = np.clip(gas, 0, 4.0)
 
-        # Clip turning rate to [-1, 1]
+        # Mapping turning rate from [-1, 1] to [-2, 2]
         wheel *= 2
         wheel = np.clip(wheel, -2, 2)
 
@@ -44,11 +43,10 @@ class FindTargetRobot(RobotEmitterReceiverCSV):
         self.motorSpeeds[1] = gas - wheel
 
         # Clip final motor speeds to [-4, 4] to be sure that motors get valid values
-        self.motorSpeeds = np.clip(self.motorSpeeds, -4, 4)
+        self.motorSpeeds = np.clip(self.motorSpeeds, 0, 6)
 
         # Apply motor speeds
-        self.leftMotor.setVelocity(self.motorSpeeds[0])
-        self.rightMotor.setVelocity(self.motorSpeeds[1])
+        self._setVelocity(self.motorSpeeds[0], self.motorSpeeds[1])
 
     def setup_rangefinders(self, n_rangefinders):
         # Sensor setup
@@ -65,12 +63,14 @@ class FindTargetRobot(RobotEmitterReceiverCSV):
         # Motor setup
         self.leftMotor = self.robot.getDevice('left wheel motor')
         self.rightMotor = self.robot.getDevice('right wheel motor')
+        self._setVelocity(0.0, 0.0)
+        self.motorSpeeds = [0.0, 0.0]
+    
+    def _setVelocity(self, v1, v2):
         self.leftMotor.setPosition(float('inf'))
         self.rightMotor.setPosition(float('inf'))
-        self.leftMotor.setVelocity(0.0)
-        self.rightMotor.setVelocity(0.0)
-
-        self.motorSpeeds = [0.0, 0.0]
+        self.leftMotor.setVelocity(v1)
+        self.rightMotor.setVelocity(v2)
 
 
 robot_controller = FindTargetRobot(8)
