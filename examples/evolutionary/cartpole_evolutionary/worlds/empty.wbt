@@ -56,7 +56,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 1.4199131750610684e-16 -1.4247116079362448e-16 1 1.5708000000006916
+        rotation 2.0922647202820445e-16 -2.0970656228473493e-16 1 1.5708000000006916
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -88,7 +88,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 1.4955684297841104e-16 -1.5005876515044728e-16 1 1.5708000000006936
+        rotation 2.1626300113491504e-16 -2.1676516833284814e-16 1 1.5708000000006936
         children [
           USE WHEEL
         ]
@@ -110,7 +110,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 2.506246595557883e-16 -2.511209067860373e-16 1 1.5708000000006943
+        rotation 3.538693762066164e-16 -3.543660026766536e-16 1 1.5708000000006943
         children [
           USE WHEEL
         ]
@@ -132,7 +132,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.117704450214847e-16 1.116087390989588e-16 1 1.5708000000006928
+        rotation -1.3866546900391746e-16 1.3850386187253097e-16 1 1.5708000000006928
         children [
           USE WHEEL
         ]
@@ -155,8 +155,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220528e-06 0.5299968874104791 -1.2902229544429251e-15
-        rotation -1.3210996826769862e-15 1.309939036322421e-15 1 1.5708000033841338
+        translation -1.8379558561220528e-06 0.5299968874104791 -1.771488927275447e-15
+        rotation -1.802366882070403e-15 1.791208005140896e-15 1 1.5708000033841338
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
@@ -213,6 +213,6 @@ DEF supervisor Robot {
     Emitter {
     }
   ]
-  controller "supervisor_controller"
+  controller "supervisor_manager"
   supervisor TRUE
 }

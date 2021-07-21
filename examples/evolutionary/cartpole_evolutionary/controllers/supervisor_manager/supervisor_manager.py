@@ -13,4 +13,4 @@ model = nn.Sequential(
 )
 
 supervisor = CartpoleSupervisor(model=model)
-supervisor.run()
+supervisor.train()

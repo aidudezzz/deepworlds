@@ -6,7 +6,7 @@ from utilities import normalizeToRange
 
 class CartpoleSupervisor(SupervisorEvolutionary):
     def __init__(self, model):
-        super(CartpoleSupervisor, self).__init__(model)
+        super().__init__(model)
         self.observationSpace = 4
         self.actionSpace = 2
 
@@ -82,18 +82,3 @@ class CartpoleSupervisor(SupervisorEvolutionary):
 
     def get_info(self):
         return None
-
-if __name__ == "__main__":
-    observation_space = 4
-    action_space = 2
-
-    model = nn.Sequential(
-        nn.Linear(observation_space, 16),
-        nn.ReLU(),
-        nn.Linear(16, 16),
-        nn.ReLU(),
-        nn.Linear(16, action_space),
-    )
-
-    supervisor = CartpoleSupervisor(model=model)
-    supervisor.run()
