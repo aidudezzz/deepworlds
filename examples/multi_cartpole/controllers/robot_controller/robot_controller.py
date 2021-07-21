@@ -14,12 +14,27 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
         """
         super().__init__()
+
+        self.robot_num = int(self.getName()[-1])
+        self.timestep = int(self.getBasicTimeStep())
+
+        self.emitter, self.reciever = self.initialize_comms()
+        self.emitter.setChannel(self.robot_num)
+        self.reciever.setChannel(self.robot_num)
+
         self.positionSensor = self.robot.getDevice("polePosSensor")
         self.positionSensor.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
 
+    def initialize_comms(self, emitter_name, receiver_name):
+        emitter = self.getDevice('emitter')
+        receiver = self.getDevice('receiver')
+        receiver.enable(self.timestep)
+
+        return emitter, receiver
+    
     def setup_motors(self):
         """
         This method initializes the four wheels, storing the references inside a list and setting the starting
@@ -44,7 +59,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :return: A list of strings with the robot's observations.
         :rtype: list
         """
-        message = [self.robot.getName(), str(self.positionSensor.getValue())]
+        message = [self.positionSensor.getValue()]
         return message
 
     def handle_receiver(self):
@@ -71,12 +86,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :param message: The message the supervisor sent containing the next action.
         :type message: list of strings
         """
-        if message[0] != "actions":
-            return
-
-        robotName = self.robot.getName()
-        index = int(robotName[-1]) + 1
-        action = int(message[index])
+        action = int(message)
 
         assert action == 0 or action == 1, "CartPoleRobot controller got incorrect action value: " + str(action)
 
@@ -89,6 +99,25 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
             self.wheels[i].setPosition(float('inf'))
             self.wheels[i].setVelocity(motorSpeed)
 
+    def handle_emitter(self):
+        data = self.create_message()
+        string_message = ""
+
+        if type(data) is list:
+            string_message = ",".join(map(str, data))
+        elif type(data) is str:
+            string_message = data
+        else:
+            raise TypeError(
+                "message must be either a comma-separater string or a 1D list")
+
+        string_message = string_message.encode("utf-8")
+        self.emitter.send(string_message)
+    
+    def run(self):
+        while self.step(self.timestep) != 1:
+            self.handle_receiver()
+            self.handle_emitter()
 
 # Create the robot controller object and run it
 robot_controller = CartPoleRobot()

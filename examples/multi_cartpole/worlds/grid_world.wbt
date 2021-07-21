@@ -21,9 +21,31 @@ RectangleArena {
 }
 DEF SUPERVISOR Robot {
   children [
+    Emitter {
+    }
     Receiver {
+      name "receiver3"
     }
     Emitter {
+      name "emitter3"
+    }
+    Receiver {
+      name "receiver2"
+    }
+    Emitter {
+      name "emitter2"
+    }
+    Receiver {
+      name "receiver1"
+    }
+    Emitter {
+      name "emitter1"
+    }
+    Receiver {
+      name "receiver0"
+    }
+    Emitter {
+      name "emitter0"
     }
   ]
   name "supervisor"

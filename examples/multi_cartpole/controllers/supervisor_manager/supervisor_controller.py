@@ -1,7 +1,7 @@
 import numpy as np
-
+from controller import Supervisor
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from utilities import normalizeToRange, plotData
+from utilities import normalizeToRange
 
 
 class CartPoleSupervisor(SupervisorCSV):
@@ -43,6 +43,9 @@ class CartPoleSupervisor(SupervisorCSV):
         Cart Position is more than absolute 0.89 on z axis (cart has reached arena edge)
         Episode length is greater than 200
         Solved Requirements (average episode score in last 100 episodes > 195.0)
+    TODO:
+    - Improve docstrings
+    - Make it agnostic to number of robots
     """
 
     def __init__(self):
@@ -52,6 +55,10 @@ class CartPoleSupervisor(SupervisorCSV):
         When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
         """
         super().__init__()
+
+        self.timestep = int(self.getBasicTimeStep())
+        self.communication = self.initialize_comms(9)
+
         self.observationSpace = 4
         self.actionSpace = 2
         self.robot = [self.getFromDef("ROBOT" + str(i)) for i in range(9)]
@@ -65,6 +72,54 @@ class CartPoleSupervisor(SupervisorCSV):
         self.episodeScoreList = []                      # A list to save all the episode scores, used to check if task is solved
         self.test = False                               # Whether the agent is in test mode
 
+    def initialize_comms(self, robots_num):
+        communication = []
+        for i in range(robots_num):
+            emitter = self.getDevice(f'emitter{i}')
+            receiver = self.getDevice(f'reeiver{i}')
+
+            emitter.setChannel(i)
+            receiver.setChannel(i)
+
+            receiver.enable(self.timestep)
+
+            communication.append({
+                'emitter': emitter,
+                'receiver': receiver,
+            })
+
+        return communication
+
+    def step(self, action):
+        if super(Supervisor, self).step(self.timestep) == -1:
+            exit()
+
+        self.handle_emitter(action)
+
+        return (
+            self.get_observations(),
+            self.get_reward(action),
+            self.is_done(),
+            self.get_info(),
+        )
+
+    def handle_emitter(self, actions):
+        for i, action in enumerate(actions):
+            message = str(action).encode("utf-8")
+            self.communication[i]['emitter'].send(message)
+
+    def handle_receiver(self):
+        messages = []
+        for com in self.communication:
+            receiver = com['receiver']
+            if receiver.getQueueLength() > 0:
+                messages.append(receiver.getData().decode("utf-8"))
+                receiver.nextPacket()
+            else:
+                messages.append(None)
+
+        return messages
+    
     def get_observations(self):
         """
         This get_observation implementation builds the required observations for the MultiCartPole problem.
@@ -83,19 +138,16 @@ class CartPoleSupervisor(SupervisorCSV):
         # Linear velocity on z axis
         cartVelocity = [normalizeToRange(self.robot[i].getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True) for i in range(9)]
 
-        self.messageReceived = []
-        for _ in range(9):
-            self.messageReceived.append(self.handle_receiver())  # Message contains pole angle of the first robot
-        
+        self.messageReceived = self.handle_receiver()
+
         poleAngle = [None for _ in range(9)]
 
-        if None not in self.messageReceived:
-            for message in self.messageReceived:
-                robot_no = int(message[0][5])
-                poleAngle[robot_no] = normalizeToRange(float(message[1]), -0.23, 0.23, -1.0, 1.0, clip=True)
-        else:
-            # method is called before messageReceived is initialized
-            poleAngle = [0.0 for _ in range(9)]
+        for i, message in enumerate(self.messageReceived):    
+            if message is not None:
+                poleAngle[i] = normalizeToRange(message, -0.23, 0.23, -1.0, 1.0, clip=True)
+            else:
+                # method is called before messageReceived is initialized
+                poleAngle = [0.0 for _ in range(9)]
 
         # Angular velocity x of endpoint
         endpointVelocity = [normalizeToRange(self.poleEndpoint[i].getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True) for i in range(9)]
@@ -170,7 +222,7 @@ class CartPoleSupervisor(SupervisorCSV):
         :return: None
         :rtype: None
         """
-        return None
+        pass
 
     def solved(self):
         """
@@ -184,3 +236,31 @@ class CartPoleSupervisor(SupervisorCSV):
             if np.mean(self.episodeScoreList[-100:]) > 195.0:        # Last 100 episode scores average value
                 return True
         return False
+
+    def reset(self):
+        """
+        Used to reset the world to an initial state.
+        Default, problem-agnostic, implementation of reset method,
+        using Webots-provided methods.
+        *Note that this works properly only with Webots versions >R2020b
+        and must be overridden with a custom reset method when using
+        earlier versions. It is backwards compatible due to the fact
+        that the new reset method gets overridden by whatever the user
+        has previously implemented, so an old supervisor can be migrated
+        easily to use this class.
+        :return: default observation provided by get_default_observation()
+        """
+        self.simulationReset()
+        self.simulationResetPhysics()
+        super(Supervisor, self).step(int(self.getBasicTimeStep()))
+        super(Supervisor, self).step(int(self.getBasicTimeStep()))
+
+        for i in range(9):
+            self.communication[i]['receiver'].disable()
+            self.communication[i]['receiver'].enable(self.timestep)
+
+            receiver = self.communication[i]['receiver']
+            while receiver.getQueueLength() > 0:
+                receiver.nextPacket()
+
+        return self.get_default_observation()
