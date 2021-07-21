@@ -1,6 +1,8 @@
 from deepbots.supervisor.controllers.supervisor_evolutionary import SupervisorEvolutionary
 import numpy as np
-from utilities import normalizeToRange, plotData
+import torch.nn as nn
+import torch
+from utilities import normalizeToRange
 
 class CartpoleSupervisor(SupervisorEvolutionary):
     def __init__(self, model):
@@ -80,7 +82,18 @@ class CartpoleSupervisor(SupervisorEvolutionary):
 
     def get_info(self):
         return None
-            
-        
 
-    
+if __name__ == "__main__":
+    observation_space = 4
+    action_space = 2
+
+    model = nn.Sequential(
+        nn.Linear(observation_space, 16),
+        nn.ReLU(),
+        nn.Linear(16, 16),
+        nn.ReLU(),
+        nn.Linear(16, action_space),
+    )
+
+    supervisor = CartpoleSupervisor(model=model)
+    supervisor.run()

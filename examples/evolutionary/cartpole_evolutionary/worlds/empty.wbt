@@ -56,7 +56,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 4.1138585722960455e-17 -4.16180585569589e-17 1 1.5708000000006916
+        rotation 1.4199131750610684e-16 -1.4247116079362448e-16 1 1.5708000000006916
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -88,7 +88,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 4.949760574365507e-17 -4.999916037684601e-17 1 1.5708000000006936
+        rotation 1.4955684297841104e-16 -1.5005876515044728e-16 1 1.5708000000006936
         children [
           USE WHEEL
         ]
@@ -110,7 +110,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 9.575758457954634e-17 -9.625326295011288e-17 1 1.5708000000006943
+        rotation 2.506246595557883e-16 -2.511209067860373e-16 1 1.5708000000006943
         children [
           USE WHEEL
         ]
@@ -132,7 +132,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -7.142790904783557e-17 7.126605493860052e-17 1 1.5708000000006928
+        rotation -1.117704450214847e-16 1.116087390989588e-16 1 1.5708000000006928
         children [
           USE WHEEL
         ]
@@ -155,8 +155,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220528e-06 0.5299968874104791 -5.683239951941424e-16
-        rotation -5.991988835868618e-16 5.880355830947095e-16 1 1.5708000033841338
+        translation -1.8379558561220528e-06 0.5299968874104791 -1.2902229544429251e-15
+        rotation -1.3210996826769862e-15 1.309939036322421e-15 1 1.5708000033841338
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
@@ -198,7 +198,7 @@ DEF ROBOT Robot {
       }
     }
   ]
-  name "robot(1)"
+  name "robot1"
   boundingObject USE BODY
   physics Physics {
     density -1
@@ -213,5 +213,6 @@ DEF supervisor Robot {
     Emitter {
     }
   ]
+  controller "supervisor_controller"
   supervisor TRUE
 }
