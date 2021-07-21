@@ -1,4 +1,5 @@
 from deepbots.supervisor.controllers.supervisor_evolutionary import SupervisorEvolutionary
+from controller import Supervisor
 import numpy as np
 import torch.nn as nn
 import torch
@@ -10,8 +11,7 @@ class CartpoleSupervisor(SupervisorEvolutionary):
         self.observationSpace = 4
         self.actionSpace = 2
 
-        self.robot = None
-        self.respawnRobot()
+        self.robot = self.getFromDef("ROBOT")
         self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
         self.messageReceived = None
 
@@ -25,18 +25,7 @@ class CartpoleSupervisor(SupervisorEvolutionary):
         q_values = self.model(observation)
         action = torch.argmax(q_values[0])
 
-        return action
-
-    def respawnRobot(self):
-        if self.robot is not None:
-            self.robot.remove()
-
-            rootNode = self.getRoot()
-            childrenField = rootNode.getField('children')
-            childrenField.importMFNode(-2, "CartpoleRobot.wbo")
-
-            self.robot = self.getFromDef("ROBOT")
-            self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
+        return [action.item()]
 
     def get_observations(self):
         cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
@@ -53,6 +42,15 @@ class CartpoleSupervisor(SupervisorEvolutionary):
 
     def get_reward(self, action=None):
         return 1
+
+    def get_default_observation(self):
+        """
+        Simple implementation returning the default observation which is a zero vector in the shape
+        of the observation space.
+        :return: Starting observation zero vector
+        :rtype: list
+        """
+        return [0.0 for _ in range(self.observationSpace)]
 
     def is_done(self):
         if self.messageReceived is not None:
@@ -82,3 +80,37 @@ class CartpoleSupervisor(SupervisorEvolutionary):
 
     def get_info(self):
         return None
+
+    def reset(self):
+        """
+        Used to reset the world to an initial state.
+        Default, problem-agnostic, implementation of reset method,
+        using Webots-provided methods.
+        *Note that this works properly only with Webots versions >R2020b
+        and must be overridden with a custom reset method when using
+        earlier versions. It is backwards compatible due to the fact
+        that the new reset method gets overridden by whatever the user
+        has previously implemented, so an old supervisor can be migrated
+        easily to use this class.
+        :return: default observation provided by get_default_observation()
+        """
+        self.simulationReset()
+        self.simulationResetPhysics()
+        super(Supervisor, self).step(int(self.getBasicTimeStep()))
+        super(Supervisor, self).step(int(self.getBasicTimeStep()))
+
+        # print("Before Supervisor Receiver0: ",
+        #       self.communication[0]['receiver'].getQueueLength())
+        # print("Before Supervisor Receiver1: ",
+        #       self.communication[1]['receiver'].getQueueLength())
+
+        
+        while self.receiver.getQueueLength() > 0:
+            self.receiver.nextPacket()
+
+        # print("After Supervisor Receiver0: ",
+        #       self.communication[0]['receiver'].getQueueLength())
+        # print("After Supervisor Receiver1: ",
+        #       self.communication[1]['receiver'].getQueueLength())
+
+        return self.get_default_observation()

@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.31931616874402746 -0.8912856999644497 -0.3219425188096732 4.578108459635118
-  position 3.4089232871855484 3.2329709473626735 -0.10573715914189685
+  orientation 0.28209321192243997 -0.9199275266865394 -0.2723173983271501 4.650863347497808
+  position 3.934894738291898 2.628133673510564 -0.004110884254837022
 }
 TexturedBackground {
 }
@@ -56,7 +56,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.0922647202820445e-16 -2.0970656228473493e-16 1 1.5708000000006916
+        rotation 9.702026641419774e-14 -9.992493237501935e-14 1 1.5708000000005449
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -88,7 +88,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.1626300113491504e-16 -2.1676516833284814e-16 1 1.5708000000006936
+        rotation 9.38795582677209e-14 -1.0330009596307964e-13 1 1.5708000000005509
         children [
           USE WHEEL
         ]
@@ -110,7 +110,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 3.538693762066164e-16 -3.543660026766536e-16 1 1.5708000000006943
+        rotation 1.5216642006077355e-13 -1.587607966552463e-13 1 1.5708000000005469
         children [
           USE WHEEL
         ]
@@ -132,7 +132,7 @@ DEF ROBOT Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.3866546900391746e-16 1.3850386187253097e-16 1 1.5708000000006928
+        rotation -2.7189444672441142e-14 2.6639913419962886e-14 1 1.5708000000006201
         children [
           USE WHEEL
         ]
@@ -155,8 +155,8 @@ DEF ROBOT Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220528e-06 0.5299968874104791 -1.771488927275447e-15
-        rotation -1.802366882070403e-15 1.791208005140896e-15 1 1.5708000033841338
+        translation -1.8379558561219126e-06 0.5299968874107595 -7.437478253837594e-13
+        rotation -7.417009282095775e-13 7.413869120645223e-13 1 1.5708000033836782
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
