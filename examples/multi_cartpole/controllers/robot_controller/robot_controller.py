@@ -15,8 +15,8 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         """
         super().__init__()
 
-        self.robot_num = int(self.getName()[-1])
-        self.timestep = int(self.getBasicTimeStep())
+        self.robot_num = int(self.robot.getName()[-1])
+        self.timestep = int(self.robot.getBasicTimeStep())
 
         self.emitter, self.reciever = self.initialize_comms()
         self.emitter.setChannel(self.robot_num)
@@ -28,9 +28,9 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
 
-    def initialize_comms(self, emitter_name, receiver_name):
-        emitter = self.getDevice('emitter')
-        receiver = self.getDevice('receiver')
+    def initialize_comms(self, emitter_name="emitter", receiver_name="receiver"):
+        emitter = self.robot.getDevice(emitter_name)
+        receiver = self.robot.getDevice(receiver_name)
         receiver.enable(self.timestep)
 
         return emitter, receiver
@@ -86,7 +86,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :param message: The message the supervisor sent containing the next action.
         :type message: list of strings
         """
-        action = int(message)
+        action = int(message[0])
 
         assert action == 0 or action == 1, "CartPoleRobot controller got incorrect action value: " + str(action)
 
@@ -115,7 +115,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         self.emitter.send(string_message)
     
     def run(self):
-        while self.step(self.timestep) != 1:
+        while self.robot.step(self.timestep) != 1:
             self.handle_receiver()
             self.handle_emitter()
 

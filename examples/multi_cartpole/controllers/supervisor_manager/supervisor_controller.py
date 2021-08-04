@@ -1,10 +1,11 @@
+from deepbots.supervisor.controllers.supervisor_env import SupervisorEnv
 import numpy as np
 from controller import Supervisor
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
 from utilities import normalizeToRange
 
 
-class CartPoleSupervisor(SupervisorCSV):
+class CartPoleSupervisor(SupervisorEnv):
     """
     CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward().
 
@@ -76,7 +77,7 @@ class CartPoleSupervisor(SupervisorCSV):
         communication = []
         for i in range(robots_num):
             emitter = self.getDevice(f'emitter{i}')
-            receiver = self.getDevice(f'reeiver{i}')
+            receiver = self.getDevice(f'receiver{i}')
 
             emitter.setChannel(i)
             receiver.setChannel(i)
@@ -183,8 +184,9 @@ class CartPoleSupervisor(SupervisorCSV):
             return True
 
         if None not in self.messageReceived:                                    # Identify which part of the message list comes from which robot
-            poleAngle = [None for i in range(9)]
+            poleAngle = [None for _ in range(9)]
             for message in self.messageReceived:
+                print(message)
                 robot_no = int(message[0][5])
                 poleAngle[robot_no] = round(float(message[1]), 2)
 
