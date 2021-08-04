@@ -33,7 +33,7 @@ def run():
 
             # Step the supervisor to get the current selectedAction reward, the new state and whether we reached the
             # done condition
-            newState, reward, done, info = supervisorEnv.step(["actions", *selectedActions])
+            newState, reward, done, info = supervisorEnv.step([*selectedActions])
 
             # Save the current state transitions from both robots in agent's memory
             for i in range(9):
