@@ -98,6 +98,7 @@ class CartpoleSupervisor(SupervisorEvolutionary):
         self.simulationResetPhysics()
         super(Supervisor, self).step(int(self.getBasicTimeStep()))
         super(Supervisor, self).step(int(self.getBasicTimeStep()))
+        self.episodeScore = 0
 
         # print("Before Supervisor Receiver0: ",
         #       self.communication[0]['receiver'].getQueueLength())

@@ -53,12 +53,13 @@ supervisor4 = CartpoleSupervisor(model=model)
 _, _, _, fitness4 = supervisor4.train(
                                     num_generations=75, 
                                     num_parents_mating=5,
-                                    num_solutions=5,
-                                    parent_selection_type="sss", 
+                                    num_solutions=10,
+                                    parent_selection_type="tournament", 
                                     crossover_type="single_point",
                                     mutation_type="random",
                                     mutation_percent_genes=10, 
                                     keep_parents=-1,
+                                    K_tournament=1,
                                     )
 
 '''supervisor5 = CartpoleSupervisor(model=model)
