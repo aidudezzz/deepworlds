@@ -4,7 +4,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Deepworlds is a support repository for the [deepbots framework](https://github.com/aidudezzz/deepbots),
@@ -47,6 +47,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/rohit-kumar-j"><img src="https://avatars.githubusercontent.com/u/37873142?v=4?s=100" width="100px;" alt=""/><br /><sub><b>RKJ</b></sub></a><br /><a href="#ideas-rohit-kumar-j" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/wakeupppp"><img src="https://avatars.githubusercontent.com/u/39750646?v=4?s=100" width="100px;" alt=""/><br /><sub><b>wakeupppp</b></sub></a><br /><a href="https://github.com/aidudezzz/deepworlds/issues?q=author%3Awakeupppp" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/kelvin-yang-b7b508198/"><img src="https://avatars.githubusercontent.com/u/49781698?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jiun Kai Yang</b></sub></a><br /><a href="https://github.com/aidudezzz/deepworlds/commits?author=KelvinYang0320" title="Code">💻</a> <a href="https://github.com/aidudezzz/deepworlds/commits?author=KelvinYang0320" title="Documentation">📖</a> <a href="#example-KelvinYang0320" title="Examples">💡</a> <a href="#ideas-KelvinYang0320" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://nickkok.github.io/my-website/"><img src="https://avatars.githubusercontent.com/u/8222731?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nikolaos Kokkinis-Ntrenis</b></sub></a><br /><a href="https://github.com/aidudezzz/deepworlds/commits?author=NickKok" title="Code">💻</a> <a href="https://github.com/aidudezzz/deepworlds/commits?author=NickKok" title="Documentation">📖</a> <a href="#example-NickKok" title="Examples">💡</a></td>
   </tr>
 </table>
 

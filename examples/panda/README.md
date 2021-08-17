@@ -12,6 +12,7 @@ We are trying to solve some interesting problems with reinforcement learning and
 3. Install deepbots 0.1.3.dev2 through pip running the following command:\
 <code>pip install -i https://test.pypi.org/simple/ deepbots</code>
 4. Install PyTorch via pip
+* If you want to solve this task with IKPY, please [install IKPY](https://pypi.org/project/ikpy/) and switch to IKPY controller.
 
 ## Goal reaching with a 7-DoF Panda robotic arm
 The goal is to train an agent to reach the randomly selected goal within limited steps.\

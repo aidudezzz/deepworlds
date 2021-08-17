@@ -1,8 +1,9 @@
 from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
 from gym.spaces import Box, Discrete
 import numpy as np
+import os,sys
+sys.path.insert(1, os.path.join(sys.path[0], '..')) # 
 from ArmUtil import Func, ToArmCoord
-
 from robot_supervisor_manager import STEPS_PER_EPISODE, MOTOR_VELOCITY
 
 class PandaRobotSupervisor(RobotSupervisor):
