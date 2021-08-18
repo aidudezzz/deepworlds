@@ -22,7 +22,6 @@ class CartpoleSupervisor(SupervisorEvolutionary):
         self.episodeLimit = 10000
         self.stepsPerEpisode = 200
         self.episodeScore = 0
-        self.episodeScoreList = [] 
 
     def get_action(self, observation):
         q_values = self.model(observation)
@@ -63,7 +62,7 @@ class CartpoleSupervisor(SupervisorEvolutionary):
         
         if abs(poleAngle) > 0.26179938:
             return True
-
+        
         if self.episodeScore > 195.0:
             return True
 
@@ -102,19 +101,8 @@ class CartpoleSupervisor(SupervisorEvolutionary):
         super(Supervisor, self).step(int(self.getBasicTimeStep()))
         super(Supervisor, self).step(int(self.getBasicTimeStep()))
         self.episodeScore = 0
-
-        # print("Before Supervisor Receiver0: ",
-        #       self.communication[0]['receiver'].getQueueLength())
-        # print("Before Supervisor Receiver1: ",
-        #       self.communication[1]['receiver'].getQueueLength())
-
-        
+ 
         while self.receiver.getQueueLength() > 0:
             self.receiver.nextPacket()
-
-        # print("After Supervisor Receiver0: ",
-        #       self.communication[0]['receiver'].getQueueLength())
-        # print("After Supervisor Receiver1: ",
-        #       self.communication[1]['receiver'].getQueueLength())
 
         return self.get_default_observation()
