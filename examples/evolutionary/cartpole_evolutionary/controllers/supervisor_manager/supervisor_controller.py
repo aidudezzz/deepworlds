@@ -6,8 +6,11 @@ import torch
 from utilities import normalizeToRange
 
 class CartpoleSupervisor(SupervisorEvolutionary):
-    def __init__(self, model):
-        super().__init__(model)
+    def __init__(self, model, device=None):
+        if device is None:
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        super().__init__(model, device)
         self.observationSpace = 4
         self.actionSpace = 2
 
