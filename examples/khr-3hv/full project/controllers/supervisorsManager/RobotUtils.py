@@ -16,21 +16,19 @@ class RobotFunc(object):
             return ['LeftAnkle', 'LeftCrus', 'LeftFemur',
                     'RightAnkle', 'RightCrus','RightFemur']
                     
-                
-                
     def getAllMotors(robot):
         """
-        Get 6 motors from the robot model
+        Get 17 (all) or 6 (leg)  motors from the robot model.
         """
-        
+        # Get the motors names: all or legs
         motorNames = RobotFunc.getMotorNames('legs')
         
         motorList = []
         for motorName in motorNames:
-            motor = robot.getDevice(motorName)	 # Get the motor handle #positionSensor1
+            motor = robot.getDevice(motorName)	 # Get the motor handle
             motor.setPosition(float('inf'))  # Set starting position
             motor.setVelocity(0.0)  # Zero out starting velocity
-            motorList.append(motor)
+            motorList.append(motor) # Append motor to motorList
         return motorList
         
     def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
@@ -62,4 +60,3 @@ class RobotFunc(object):
             return np.clip((newMax - newMin) / (maxVal - minVal) * (value - maxVal) + newMax, newMin, newMax)
         else:
             return (newMax - newMin) / (maxVal - minVal) * (value - maxVal) + newMax
-
