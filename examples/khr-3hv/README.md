@@ -1,6 +1,6 @@
 # khr-3hv: Robot-Supervisor Tutorial
 
-![Solved cartpole demonstration](/images/khr-3hv.gif)
+![Solved cartpole demonstration](images/khr-3hv.gif)
 
 This tutorial shows the creation of the [humanoid](https://gym.openai.com/envs/Humanoid-v2/) problem using the updated
 version of the [*deepbots framework*](https://github.com/aidudezzz/deepbots), utilizing the 
@@ -45,18 +45,18 @@ wandb`
 First of all, we should create a new project.
 
 1. Open Webots and on the menu bar, click *"Wizards -> New Project Directory..."*\
-    ![New project menu option](/images/newProjectMenuScreenshot.png)
+    ![New project menu option](images/newProjectMenuScreenshot.png)
 2. Select a directory of your choice
 3. On world settings, give your world a name, e.g. "khr-3hv.wbt"  \
     ![World settings](images/worldSettingsScreenshot.png)
 4. Press Next
 5. Press Finish.
 6. You should see this:\
-   ![Project created](/images/projectCreatedScreenshot.png)
+   ![Project created](images/projectCreatedScreenshot.png)
 
 7. Then download the khr-3hv [world](https://github.com/aidudezzz/deepworlds/blob/dev/examples/khr-3hv/worlds/khr-3hv.wbt) and replace it with the *created* one (on path: project-name/worlds).
 8. Press the refresh button on Webots. Then you should end up with this:\
-   ![khr-3hv created](/images/end-up-khr-3hv-world.png)
+   ![khr-3hv created](images/end-up-khr-3hv-world.png)
 
 
 
@@ -539,7 +539,7 @@ def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
 
 Now you can click on the *Run the simulation* button and watch the training run!
  
-![Run the simulation](/images/clickPlay.png)
+![Run the simulation](images/clickPlay.png)
 
 Webots allow to speed up the simulation, even run it without graphics.
 The training could take some time, for 8 hours to 2 days for better results. In addition, you can even apply forces 
