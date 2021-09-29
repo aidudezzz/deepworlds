@@ -4,29 +4,33 @@ from supervisor_controller import CartPoleSupervisor
 from agent.PPO_agent import PPOAgent, Transition
 from utilities import plotData
 
+#Change these variables if needed
+EPISODE_LIMIT = 2000
+STEPS_PER_EPISODE = 200
+NUM_ROBOTS = 9
 
 def run():
     # Initialize supervisor object
     supervisorEnv = CartPoleSupervisor()
 
+    episodeCount = 0
+
     # The agent used here is trained with the PPO algorithm (https://arxiv.org/abs/1707.06347).
     agent = PPOAgent(supervisorEnv.observationSpace, supervisorEnv.actionSpace)
 
-    episodeCount = 0
-    episodeLimit = 2000
     solved = False                                    # Whether the solved requirement is met
 
     # Run outer loop until the episodes limit is reached or the task is solved
-    while not solved and episodeCount < episodeLimit:
+    while not solved and episodeCount < EPISODE_LIMIT:
         state = supervisorEnv.reset()                  # Reset robots and get starting observation)
         supervisorEnv.episodeScore = 0
-        actionProbs = [[] for i in range(9)]
+        actionProbs = [[] for i in range(NUM_ROBOTS)]
 
         # Inner loop is the episode loop
-        for step in range(supervisorEnv.stepsPerEpisode):
+        for step in range(STEPS_PER_EPISODE):
             # In training mode the agent samples from the probability distribution, naturally implementing exploration
             selectedActions = []
-            for i in range(9):
+            for i in range(NUM_ROBOTS):
                 selectedAction, actionProb = agent.work(state[i], type_="selectAction")
                 actionProbs[i].append(actionProb)
                 selectedActions.append(selectedAction)
@@ -35,8 +39,8 @@ def run():
             # done condition
             newState, reward, done, info = supervisorEnv.step([*selectedActions])
 
-            # Save the current state transitions from both robots in agent's memory
-            for i in range(9):
+            # Save the current state transitions from all robots in agent's memory
+            for i in range(NUM_ROBOTS):
                 trans = Transition(state[i], selectedActions[i], actionProbs[i][-1], reward, newState[i])
                 agent.storeTransition(trans)
 
@@ -50,10 +54,7 @@ def run():
 
             state = newState  # state for next step is current step's newState
 
-        if supervisorEnv.test:  # If test flag is externally set to True, agent is deployed
-            break
-
-        avgActionProb = [round(mean(actionProbs[i]), 4) for i in range(9)]
+        avgActionProb = [round(mean(actionProbs[i]), 4) for i in range(NUM_ROBOTS)]
         
         # The average action probability tells us how confident the agent was of its actions.
         # By looking at this we can check whether the agent is converging to a certain policy.
@@ -74,7 +75,7 @@ def run():
     supervisorEnv.episodeScore = 0
     while True:
         selectedActions = []
-        for i in range(9):
+        for i in range(NUM_ROBOTS):
             selectedAction, actionProb = agent.work(state[i], type_="selectAction")
             actionProbs[i].append(actionProb)
             selectedActions.append(selectedAction)

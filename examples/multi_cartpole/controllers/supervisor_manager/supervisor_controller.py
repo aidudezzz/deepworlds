@@ -4,7 +4,6 @@ from controller import Supervisor
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
 from utilities import normalizeToRange
 
-
 class CartPoleSupervisor(SupervisorEnv):
     """
     CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward().
@@ -68,8 +67,6 @@ class CartPoleSupervisor(SupervisorEnv):
         self.poleEndpoint = [self.getFromDef("POLE_ENDPOINT_" + str(i)) for i in range(self.num_robots)]
 
         self.messageReceived = None                     # Variable to save the messages received from the robots
-
-        self.stepsPerEpisode = 200                      # Number of steps per episode
         self.episodeScore = 0                           # Score accumulated during an episode
         self.episodeScoreList = []                      # A list to save all the episode scores, used to check if task is solved
         self.test = False                               # Whether the agent is in test mode
