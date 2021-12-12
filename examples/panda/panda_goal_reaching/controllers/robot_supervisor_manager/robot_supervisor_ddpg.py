@@ -1,14 +1,34 @@
-from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
-from gym.spaces import Box, Discrete
-import numpy as np
-import os,sys
-sys.path.insert(1, os.path.join(sys.path[0], '..')) # 
-from ArmUtil import Func, ToArmCoord
 from robot_supervisor_manager import STEPS_PER_EPISODE, MOTOR_VELOCITY
+from deepbots.supervisor.controllers.robot_supervisor import RobotGoalSupervisor
+from gym import spaces
+import numpy as np
+import os
+import sys
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from ArmUtil import Func, ToArmCoord
 
-class PandaRobotSupervisor(RobotSupervisor):
+
+class PandaRobotSupervisor(RobotGoalSupervisor):
     """
     Observation:
+        desired_goal : the goal that the agent should attempt to achieve
+
+        Type: Box(10)
+        Num	Observation                Min(rad)      Max(rad)
+        0	Target x                   -Inf           Inf
+        1	Target y                   -Inf           Inf
+        2	Target z                   -Inf           Inf
+
+        achieved_goal: the goal that it currently achieved
+
+        Type: Box(10)
+        Num	Observation                Min(rad)      Max(rad)
+        0	Target x                   -Inf           Inf
+        1	Target y                   -Inf           Inf
+        2	Target z                   -Inf           Inf
+
+        observation  : the actual observations of the environment as per usual
+
         Type: Box(10)
         Num	Observation                Min(rad)      Max(rad)
         0	Target x                   -Inf           Inf
@@ -21,7 +41,7 @@ class PandaRobotSupervisor(RobotSupervisor):
         7	Position Sensor on A5      -2.8972        2.8972
         8   Position Sensor on A6      -0.0175        3.7525
         9	Position Sensor on A7      -2.8972        2.8972
-        
+
     Actions:
         Type: Continuous
         Num	  Min   Max   Desc
@@ -45,32 +65,61 @@ class PandaRobotSupervisor(RobotSupervisor):
         """
 
         super().__init__()
+        self.obsshape = {
+            "achieved_goal": 3,
+            "observation": 7
+        }
 
         # Set up gym spaces
-        self.observation_space = Box(low=np.array([-np.inf, -np.inf, -np.inf, -2.8972, -1.7628, -2.8972, -3.0718, -2.8972, -0.0175, -2.8972]),
-                                     high=np.array([np.inf,  np.inf,  np.inf, 2.8972,  1.7628,  2.8972, -0.0698,  2.8972,  3.7525,  2.8972]),
-                                     dtype=np.float64)
-        self.action_space = Box(low=np.array([-1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0]), high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]), dtype=np.float64)
+        self.observation_space = spaces.Dict(
+            dict(
+                desired_goal=spaces.Box(
+                    low=np.array([-np.inf, -np.inf, -np.inf]),
+                    high=np.array([np.inf,  np.inf,  np.inf]),
+                    dtype=np.float64
+                ),
+                achieved_goal=spaces.Box(
+                    low=np.array([-np.inf, -np.inf, -np.inf]),
+                    high=np.array([np.inf,  np.inf,  np.inf]),
+                    dtype=np.float64
+                ),
+                observation=spaces.Box(
+                    low=np.array([-np.inf, -np.inf, -np.inf, -2.8972, -
+                                 1.7628, -2.8972, -3.0718, -2.8972, -0.0175, -2.8972]),
+                    high=np.array([np.inf,  np.inf,  np.inf, 2.8972,  1.7628,
+                                  2.8972, -0.0698,  2.8972,  3.7525,  2.8972]),
+                    dtype=np.float64
+                ),
+            )
+        )
 
+        self.action_space = spaces.Box(
+            low=np.array([-1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0]), 
+            high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]), 
+            dtype=np.float64)
         # Set up various robot components
-        self.robot = self.getSelf()  # Grab the robot reference from the supervisor to access various robot methods
-        self.positionSensorList = Func.get_All_positionSensors(self, self.timestep)
+        # Grab the robot reference from the supervisor to access various robot methods
+        self.robot = self.getSelf()
+        self.positionSensorList = Func.get_All_positionSensors(
+            self, self.timestep)
         self.endEffector = self.getFromDef("endEffector")
 
         # Select one of the targets
-        self.target = self.getFromDef("TARGET%s"%(np.random.randint(1, 10, 1)[0]))
+        self.target = self.getFromDef(
+            "TARGET%s" % (np.random.randint(1, 10, 1)[0]))
 
         self.setup_motors()
 
         # Set up misc
         self.episodeScore = 0  # Score accumulated during an episode
-        self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
-        
+        # A list to save all the episode scores, used to check if task is solved
+        self.episodeScoreList = []
+
         # Set these to ensure that the robot stops moving
         self.motorPositionArr = np.zeros(7)
         self.motorPositionArr_target = np.zeros(7)
         self.distance = float("inf")
-        
+
         # handshaking limit
         self.cnt_handshaking = 0
 
@@ -84,20 +133,33 @@ class PandaRobotSupervisor(RobotSupervisor):
         """
         # process of negotiation
         prec = 0.0001
-        err = np.absolute(np.array(self.motorPositionArr)-np.array(self.motorPositionArr_target)) < prec
-        if not np.all(err) and self.cnt_handshaking<20:
+        err = np.absolute(np.array(self.motorPositionArr) -
+                          np.array(self.motorPositionArr_target)) < prec
+        message = None
+        if not np.all(err) and self.cnt_handshaking < 20:
             self.cnt_handshaking = self.cnt_handshaking + 1
-            return ["StillMoving"]
+            message = ["StillMoving"]
         else:
             self.cnt_handshaking = 0
-        # ----------------------
-        
-        targetPosition = ToArmCoord.convert(self.target.getPosition())
-        message = [i for i in targetPosition]
-        message.extend([i for i in self.motorPositionArr])
-        return message
 
-    def get_reward(self, action):
+        # observation and desired_goal
+        targetPosition = ToArmCoord.convert(self.target.getPosition())
+
+        if message == None:
+            message = [i for i in targetPosition]
+            message.extend([i for i in self.motorPositionArr])
+
+        # achieved_goal
+        endEffectorPosition = ToArmCoord.convert(
+            self.endEffector.getPosition())
+
+        return {
+            "observation": message,
+            "achieved_goal": endEffectorPosition,
+            "desired_goal": targetPosition,
+        }
+
+    def compute_reward(self, achieved_goal, desired_goal, info):
         """
         Reward is - 2-norm for every step taken (extra points for getting close enough to the target)
 
@@ -106,15 +168,10 @@ class PandaRobotSupervisor(RobotSupervisor):
         :return: - 2-norm (+ extra points)
         :rtype: float
         """
-        targetPosition = self.target.getPosition()
-        targetPosition = ToArmCoord.convert(targetPosition)
+        self.distance = np.linalg.norm(
+            [desired_goal[0]-achieved_goal[0], desired_goal[1]-achieved_goal[1], desired_goal[2]-achieved_goal[2]])
+        reward = -self.distance  # - 2-norm
 
-        endEffectorPosition = self.endEffector.getPosition()
-        endEffectorPosition = ToArmCoord.convert(endEffectorPosition)
-
-        self.distance = np.linalg.norm([targetPosition[0]-endEffectorPosition[0],targetPosition[1]-endEffectorPosition[1],targetPosition[2]-endEffectorPosition[2]])
-        reward = -self.distance # - 2-norm
-        
         # Extra points
         if self.distance < 0.01:
             reward = reward + 1.5
@@ -145,7 +202,8 @@ class PandaRobotSupervisor(RobotSupervisor):
         :rtype: bool
         """
         if len(self.episodeScoreList) > 500:  # Over 500 trials thus far
-            if np.mean(self.episodeScoreList[-500:]) > 120.0:  # Last 500 episode scores average value
+            # Last 500 episode scores average value
+            if np.mean(self.episodeScoreList[-500:]) > 120.0:
                 return True
         return False
 
@@ -156,24 +214,24 @@ class PandaRobotSupervisor(RobotSupervisor):
         :return: Starting observation zero vector
         :rtype: list
         """
-        Obs = [0.0 for _ in range(self.observation_space.shape[0])]
+        Obs = [0.0 for _ in range(10)]
         Obs[3] = -0.0698
         return Obs
 
     def motorToRange(self, motorPosition, i):
-        if(i==0):
+        if(i == 0):
             motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
-        elif(i==1):
+        elif(i == 1):
             motorPosition = np.clip(motorPosition, -1.7628, 1.7628)
-        elif(i==2):
+        elif(i == 2):
             motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
-        elif(i==3):
+        elif(i == 3):
             motorPosition = np.clip(motorPosition, -3.0718, -0.0698)
-        elif(i==4):
+        elif(i == 4):
             motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
-        elif(i==5):
+        elif(i == 5):
             motorPosition = np.clip(motorPosition, -0.0175, 3.7525)
-        elif(i==6):
+        elif(i == 6):
             motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
         else:
             pass
@@ -188,20 +246,23 @@ class PandaRobotSupervisor(RobotSupervisor):
         :type action: list of float
         """
         # ignore this action and keep moving
-        if action[0]==-1 and len(action)==1:
+        if action[0] == -1 and len(action) == 1:
             for i in range(7):
-                self.motorPositionArr[i] = self.positionSensorList[i].getValue()
+                self.motorPositionArr[i] = self.positionSensorList[i].getValue(
+                )
                 self.motorList[i].setVelocity(MOTOR_VELOCITY)
                 self.motorList[i].setPosition(self.motorPositionArr_target[i])
             return
-        
-        self.motorPositionArr = np.array(Func.getValue(self.positionSensorList))
+
+        self.motorPositionArr = np.array(
+            Func.getValue(self.positionSensorList))
         for i in range(7):
             motorPosition = self.motorPositionArr[i] + action[i]
             motorPosition = self.motorToRange(motorPosition, i)
             self.motorList[i].setVelocity(MOTOR_VELOCITY)
             self.motorList[i].setPosition(motorPosition)
-            self.motorPositionArr_target[i]=motorPosition # Update motorPositionArr_target 
+            # Update motorPositionArr_target
+            self.motorPositionArr_target[i] = motorPosition
 
     def setup_motors(self):
         """
