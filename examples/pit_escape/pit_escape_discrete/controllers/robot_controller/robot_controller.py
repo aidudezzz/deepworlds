@@ -35,7 +35,7 @@ class PitEscapeRobot(RobotEmitterReceiverCSV):
     def create_message(self):
         """
         This method packs the robot's observation into a list of strings to be sent to the supervisor.
-        Some times the two sensors return NaNs. In those cases zero vectors are returned.
+        Sometimes the two sensors return NaNs. In those cases zero vectors are returned.
 
         :return: A list of strings with the robot's observations.
         :rtype: list
