@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from math import sqrt
 
 
 def getDistanceFromCenter(node):
@@ -14,8 +15,8 @@ def getDistanceFromCenter(node):
     position = node.getPosition()
     # Zeros are the center coordinates
     distanceX = position[0] - 0
-    distanceZ = position[2] - 0
-    return (distanceX * distanceX + distanceZ * distanceZ)**0.5  # square root
+    distanceY = position[1] - 0
+    return sqrt(distanceX * distanceX + distanceY * distanceY)
 
 
 def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
