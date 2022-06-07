@@ -46,18 +46,15 @@ class CartPoleSupervisor(SupervisorCSV):
 
     def __init__(self):
         """
-        In the constructor, the agent object is created, the robot is spawned in the world via respawnRobot().
         References to robot and the pole endpoint are initialized here, used for building the observation.
         When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
         """
-        print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
         self.observationSpace = 4
         self.actionSpace = 2
-        self.robot = None
-        self.respawnRobot()
+        self.robot = self.getFromDef("ROBOT")
 
-        self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
+        self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
         self.messageReceived = None  # Variable to save the messages received from the robot
 
         self.stepsPerEpisode = 200  # How many steps to run each episode (changing this messes up the solved condition)
@@ -91,6 +88,15 @@ class CartPoleSupervisor(SupervisorCSV):
         endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True)
 
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
+
+    def get_default_observation(self):
+        """
+        Simple implementation returning the default observation which is a zero vector in the shape
+        of the observation space.
+        :return: Starting observation zero vector
+        :rtype: list
+        """
+        return [0.0 for _ in range(self.observationSpace)]
 
     def get_reward(self, action=None):
         """
@@ -128,36 +134,6 @@ class CartPoleSupervisor(SupervisorCSV):
 
         return False
 
-    def reset(self):
-        """
-        Reset calls respawnRobot() method and returns starting observation.
-        :return: Starting observation zero vector
-        :rtype: list
-        """
-        # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
-        self.respawnRobot()
-        return [0.0 for _ in range(self.observationSpace)]
-
-    def respawnRobot(self):
-        """
-        This method reloads the saved CartPole robot in its initial state from the disk.
-        """
-        # TODO This method will be removed in Webots R2020a rev2
-        if self.robot is not None:
-            # Despawn existing robot
-            self.robot.remove()
-
-        # Respawn robot in starting position and state
-        rootNode = self.supervisor.getRoot()  # This gets the root of the scene tree
-        childrenField = rootNode.getField('children')  # This gets a list of all the children, ie. objects of the scene
-        childrenField.importMFNode(-2, "CartPoleRobot.wbo")  # Load robot from file and add to second-to-last position
-
-        # Get the new robot and pole endpoint references
-        self.robot = self.supervisor.getFromDef("ROBOT")
-        self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
-        # Reset the simulation physics to start over
-        self.supervisor.simulationResetPhysics()
-
     def get_info(self):
         """
         Dummy implementation of get_info.
@@ -166,6 +142,12 @@ class CartPoleSupervisor(SupervisorCSV):
         :rtype: None
         """
         return None
+
+    def render(self, mode="human"):
+        """
+        Dummy implementation of render.
+        """
+        pass
 
     def solved(self):
         """
