@@ -19,7 +19,7 @@ class CartPoleSupervisor(SupervisorCSV):
     Observation:
         Type: Box(4)
         Num	Observation                 Min         Max
-        0	Cart Position z axis      -0.4            0.4
+        0	Cart Position x axis      -0.4            0.4
         1	Cart Velocity             -Inf            Inf
         2	Pole Angle                -1.3 rad        1.3 rad
         3	Pole Velocity At Tip      -Inf            Inf
@@ -27,7 +27,7 @@ class CartPoleSupervisor(SupervisorCSV):
     Actions:
         Type: Continuous(1)
         Num     Min     Max     Desc
-        0       -inf    inf     SValue is directly tied to set motors speed
+        0       -inf    inf     Value is directly tied to set motors speed
 
         Note: The amount the velocity that is reduced or increased is not fixed; it depends on the angle the pole is
         pointing. This is because the center of gravity of the pole increases the amount of energy needed to move the
@@ -38,7 +38,7 @@ class CartPoleSupervisor(SupervisorCSV):
         [0.0, 0.0, 0.0, 0.0]
     Episode Termination:
         Pole Angle is more than 0.261799388 rad (15 degrees)
-        Cart Position is more than 0.39 on z axis (cart has reached arena edge)
+        Cart Position is more than 0.39 on x axis (cart has reached arena edge)
         Episode length is greater than 200
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
@@ -73,10 +73,10 @@ class CartPoleSupervisor(SupervisorCSV):
         :return: Observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
         :rtype: list
         """
-        # Position on z axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
-        # Linear velocity on z axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
+        # Position on x axis
+        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        # Linear velocity on x axis
+        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
 
         self.messageReceived = self.handle_receiver()  # update message received from robot, which contains pole angle
         if self.messageReceived is not None:
