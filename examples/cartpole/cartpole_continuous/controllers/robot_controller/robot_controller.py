@@ -14,8 +14,8 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
         """
         super().__init__()
-        self.positionSensor = self.robot.getPositionSensor("polePosSensor")
-        self.positionSensor.enable(self.get_timestep())
+        self.positionSensor = self.robot.getDevice("polePosSensor")
+        self.positionSensor.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
@@ -25,10 +25,10 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         This method initializes the four wheels, storing the references inside a list and setting the starting
         positions and velocities.
         """
-        self.wheels[0] = self.robot.getMotor('wheel1')
-        self.wheels[1] = self.robot.getMotor('wheel2')
-        self.wheels[2] = self.robot.getMotor('wheel3')
-        self.wheels[3] = self.robot.getMotor('wheel4')
+        self.wheels[0] = self.robot.getDevice('wheel1')
+        self.wheels[1] = self.robot.getDevice('wheel2')
+        self.wheels[2] = self.robot.getDevice('wheel3')
+        self.wheels[3] = self.robot.getDevice('wheel4')
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
             self.wheels[i].setVelocity(0.0)

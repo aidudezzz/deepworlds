@@ -1,8 +1,10 @@
 import numpy as np
+from controller import Supervisor
 
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
 from utilities import normalizeToRange, getDistanceFromCenter, plotData
 from supervisor_manager import MAX_TIME
+
 
 class PitEscapeSupervisor(SupervisorCSV):
     """
@@ -62,17 +64,13 @@ class PitEscapeSupervisor(SupervisorCSV):
 
     def __init__(self):
         """
-        In the constructor the robot is spawned in the world via respawnRobot().
-        Reference to robot is initialized here, through self.respawnRobot(), where it is also spawned.
         When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
         """
-        print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
         self.observationSpace = 6
         self.actionSpace = 4
 
-        self.robot = None
-        self.respawnRobot()
+        self.robot = self.getFromDef("ROBOT")
 
         self.episodeScore = 0  # score accumulated during an episode
         self.episodeScoreList = []  # a list to save all the episode scores, used to check if task is solved
@@ -81,10 +79,7 @@ class PitEscapeSupervisor(SupervisorCSV):
         self.longestDistance = 0.0  # Tracks max distance achieved during an episode
         self.oldMetric = 0.0  # oldMetrics is used to get the difference with new metrics
         self.metric = 0.0
-        self.time = self.supervisor.getTime()  # Current time
-        self.startTime = 0.0  # Episode start time
-        self.episodeTime = 0.0  # Current episode time
-        self.pitRadius = self.supervisor.getFromDef("PIT").getField("pitRadius").getSFFloat()
+        self.pitRadius = self.getFromDef("PIT").getField("pitRadius").getSFFloat()
 
     def get_observations(self):
         """
@@ -101,7 +96,10 @@ class PitEscapeSupervisor(SupervisorCSV):
             return [normalizeToRange(float(messageReceived[i]), -5.0, 5.0, -1.0, 1.0, clip=True) for i in
                     range(len(messageReceived))]
         else:
-            return [0.0 for _ in range(self.observationSpace)]
+            return self.get_default_observation()
+
+    def get_default_observation(self):
+        return [0.0 for _ in range(self.observationSpace)]
 
     def get_reward(self, action=None):
         """
@@ -125,7 +123,7 @@ class PitEscapeSupervisor(SupervisorCSV):
 
         # Escaping increases metric over 0.5 based on time elapsed in episode
         if self.longestDistance > self.pitRadius:
-            self.metric = 0.5 + 0.5 * (MAX_TIME - self.episodeTime) / MAX_TIME
+            self.metric = 0.5 + 0.5 * (MAX_TIME - self.getTime()) / MAX_TIME
 
         # Step reward is how much the metric changed, i.e. the difference from the previous one
         return self.metric - self.oldMetric
@@ -140,13 +138,9 @@ class PitEscapeSupervisor(SupervisorCSV):
         :rtype: bool
         """
         doneFlag = False
-        self.episodeTime = self.time - self.startTime  # Update episode time
 
-        # Time's not up
-        if self.episodeTime < MAX_TIME:
-            self.time = self.supervisor.getTime()  # Update current time
         # Episode time run out
-        else:
+        if self.getTime() > MAX_TIME:
             doneFlag = True
 
         # Episode solved
@@ -154,7 +148,6 @@ class PitEscapeSupervisor(SupervisorCSV):
             doneFlag = True
 
         if doneFlag:
-            self.startTime = self.time  # Update next episode's start time
             # Reset reward related variables
             self.longestDistance = 0.0
             self.metric = 0.0
@@ -162,35 +155,6 @@ class PitEscapeSupervisor(SupervisorCSV):
             return True
 
         return False
-
-    def reset(self):
-        """
-        Reset calls respawnRobot() method and returns starting observation.
-        :return: Starting observation zero vector
-        :rtype: list
-        """
-        # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
-        self.respawnRobot()
-        return [0.0 for _ in range(self.observationSpace)]
-
-    def respawnRobot(self):
-        """
-        This method reloads the saved BB-8 robot in its initial state from the disk.
-        """
-        # TODO This method will be removed in Webots R2020a rev2
-        if self.robot is not None:
-            # Despawn existing robot
-            self.robot.remove()
-
-        # Respawn robot in starting position and state
-        rootNode = self.supervisor.getRoot()  # This gets the root of the scene tree
-        childrenField = rootNode.getField('children')  # This gets a list of all the children, ie. objects of the scene
-        childrenField.importMFNode(-2, "BB-8.wbo")  # Load robot from file and add to second-to-last position
-
-        # Get the new robot reference
-        self.robot = self.supervisor.getFromDef("ROBOT_BB-8")
-        # Reset the simulation physics to start over
-        self.supervisor.simulationResetPhysics()
 
     def get_info(self):
         """
@@ -200,6 +164,12 @@ class PitEscapeSupervisor(SupervisorCSV):
         :rtype: None
         """
         return None
+
+    def render(self, mode="human"):
+        """
+        Dummy implementation of render.
+        """
+        pass
 
     def solved(self):
         """
@@ -230,7 +200,8 @@ class PitEscapeSupervisor(SupervisorCSV):
             raise ValueError("repeatSteps must be > 0")
 
         for _ in range(repeatSteps):
-            self.supervisor.step(self.timestep)  # TODO new version will break this
+            if super(Supervisor, self).step(self.timestep) == -1:
+                exit()
             self.handle_emitter(action)
 
         return (
