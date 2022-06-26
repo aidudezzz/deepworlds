@@ -19,7 +19,7 @@ class CartPoleSupervisor(SupervisorCSV):
     Observation:
         Type: Box(4)
         Num	Observation                 Min         Max
-        0	Cart Position z axis      -0.4            0.4
+        0	Cart Position x axis      -0.4            0.4
         1	Cart Velocity             -Inf            Inf
         2	Pole Angle                -1.3 rad        1.3 rad
         3	Pole Velocity At Tip      -Inf            Inf
@@ -27,7 +27,7 @@ class CartPoleSupervisor(SupervisorCSV):
     Actions:
         Type: Continuous(1)
         Num     Min     Max     Desc
-        0       -inf    inf     SValue is directly tied to set motors speed
+        0       -inf    inf     Value is directly tied to set motors speed
 
         Note: The amount the velocity that is reduced or increased is not fixed; it depends on the angle the pole is
         pointing. This is because the center of gravity of the pole increases the amount of energy needed to move the
@@ -38,7 +38,7 @@ class CartPoleSupervisor(SupervisorCSV):
         [0.0, 0.0, 0.0, 0.0]
     Episode Termination:
         Pole Angle is more than 0.261799388 rad (15 degrees)
-        Cart Position is more than 0.39 on z axis (cart has reached arena edge)
+        Cart Position is more than 0.39 on x axis (cart has reached arena edge)
         Episode length is greater than 200
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
@@ -52,12 +52,11 @@ class CartPoleSupervisor(SupervisorCSV):
         print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
         # observation and action spaces are set as tuples, because that's how DDPG agent expects them
-        self.observationSpace = (4,)
-        self.actionSpace = (1,)
-        self.robot = None
-        self.respawnRobot()
+        self.observationSpace = 4
+        self.actionSpace = 1
+        self.robot = self.getFromDef("ROBOT")
 
-        self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
+        self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
         self.messageReceived = None  # Variable to save the messages received from the robot
 
         self.episodeScore = 0  # Score accumulated during an episode
@@ -74,10 +73,10 @@ class CartPoleSupervisor(SupervisorCSV):
         :return: Observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
         :rtype: list
         """
-        # Position on z axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
-        # Linear velocity on z axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
+        # Position on x axis
+        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        # Linear velocity on x axis
+        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
 
         self.messageReceived = self.handle_receiver()  # update message received from robot, which contains pole angle
         if self.messageReceived is not None:
@@ -90,6 +89,15 @@ class CartPoleSupervisor(SupervisorCSV):
         endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True)
 
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
+
+    def get_default_observation(self):
+        """
+        Simple implementation returning the default observation which is a zero vector in the shape
+        of the observation space.
+        :return: Starting observation zero vector
+        :rtype: list
+        """
+        return [0.0 for _ in range(self.observationSpace)]
 
     def get_reward(self, action=None):
         """
@@ -121,41 +129,11 @@ class CartPoleSupervisor(SupervisorCSV):
         if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
             return True
 
-        cartPosition = round(self.robot.getPosition()[2], 2)  # Position on z axis
+        cartPosition = round(self.robot.getPosition()[0], 2)  # Position on x axis
         if abs(cartPosition) > 0.39:
             return True
 
         return False
-
-    def reset(self):
-        """
-        Reset calls respawnRobot() method and returns starting observation.
-        :return: Starting observation zero vector
-        :rtype: list
-        """
-        # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
-        self.respawnRobot()
-        return [0.0 for _ in range(self.observationSpace[0])]
-
-    def respawnRobot(self):
-        """
-        This method reloads the saved CartPole robot in its initial state from the disk.
-        """
-        # TODO This method will be removed in Webots R2020a rev2
-        if self.robot is not None:
-            # Despawn existing robot
-            self.robot.remove()
-
-        # Respawn robot in starting position and state
-        rootNode = self.supervisor.getRoot()  # This gets the root of the scene tree
-        childrenField = rootNode.getField('children')  # This gets a list of all the children, ie. objects of the scene
-        childrenField.importMFNode(-2, "CartPoleRobot.wbo")  # Load robot from file and add to second-to-last position
-
-        # Get the new robot and pole endpoint references
-        self.robot = self.supervisor.getFromDef("ROBOT")
-        self.poleEndpoint = self.supervisor.getFromDef("POLE_ENDPOINT")
-        # Reset the simulation physics to start over
-        self.supervisor.simulationResetPhysics()
 
     def get_info(self):
         """
@@ -165,6 +143,12 @@ class CartPoleSupervisor(SupervisorCSV):
         :rtype: None
         """
         return None
+
+    def render(self, mode="human"):
+        """
+        Dummy implementation of render.
+        """
+        pass
 
     def solved(self):
         """

@@ -1,30 +1,29 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2022a utf8
 WorldInfo {
-  coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 1 0 0 4.71238898038469
-  position -1.0204376820965868e-16 2.343537727000891 3.6188514266717534e-16
+  orientation 0.002499992187536621 0.9999968750146484 0 1.54
+  position -0.0769789523060592 -0.009762317935755683 1.9019529461174487
 }
 WoodenBox {
-  translation -0.23 0.15 0.15
-  size 0.1 0.3 0.7
-}
-DEF target Ball {
-  translation 0.38 0.06991367201317689 -0.37
-  radius 0.07
+  translation -0.1 0.16 0.07
+  rotation 0.5773509358554485 0.5773489358556708 0.5773509358554485 2.0944
+  size 0.06 0.15 0.5
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 RectangleArena {
+  floorSize 0.7 0.7
 }
 DEF supervisor Robot {
   children [
     DEF emitter Emitter {
+      rotation -0.5773502691896258 -0.5773502691896258 -0.5773502691896258 2.0943951023931953
     }
     DEF receiver Receiver {
+      rotation -0.5773502691896258 -0.5773502691896258 -0.5773502691896258 2.0943951023931953
     }
   ]
   name "supervisor"
@@ -32,16 +31,30 @@ DEF supervisor Robot {
   supervisor TRUE
 }
 DEF robot E-puck {
-  hidden position_0_0 -2.5496523492311853e-11
-  hidden position_0_1 2.6980067249608448e-11
-  hidden translation_1 -0.026 0.02 0
-  hidden rotation_1 -1 0 0 0
-  hidden translation_2 0.026 0.02 0
-  hidden rotation_2 -1 0 0 0
-  translation -0.413245814554288 -6.388972745422807e-05 0.35468382649016655
-  rotation -0.0005534598842282864 0.999999486515061 -0.0008489121103638631 -1.9793525593801036
+  translation -0.26 0.27 0
   name "robot"
   controller "robot"
   emitter_channel 0
   receiver_channel 0
+}
+DEF target Solid {
+  translation 0.26 -0.23 0.01
+  rotation 0 0 1 -1.5707953071795862
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "https://avatars.githubusercontent.com/u/57842071?s=200&v=4"
+          ]
+        }
+      }
+      geometry Plane {
+        size 0.12 0.12
+      }
+    }
+  ]
+  name "target"
 }

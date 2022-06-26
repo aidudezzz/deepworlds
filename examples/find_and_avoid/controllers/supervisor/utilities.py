@@ -17,8 +17,8 @@ def get_distance_from_target(robot_node, target_node):
     targetCoordinate = target_node.getField('translation').getSFVec3f()
 
     dx = robotCoordinates[0] - targetCoordinate[0]
-    dz = robotCoordinates[2] - targetCoordinate[2]
-    distanceFromTarget = math.sqrt(dx * dx + dz * dz)
+    dy = robotCoordinates[1] - targetCoordinate[1]
+    distanceFromTarget = math.sqrt(dx * dx + dy * dy)
     return distanceFromTarget
 
 
@@ -33,24 +33,24 @@ def get_angle_from_target(robot_node,
     targetCoordinate = target_node.getField('translation').getSFVec3f()
 
     x_r = (targetCoordinate[0] - robotCoordinates[0])
-    z_r = (targetCoordinate[2] - robotCoordinates[2])
+    y_r = (targetCoordinate[1] - robotCoordinates[1])
 
-    z_r = -z_r
+    y_r = -y_r
 
-    # robotWorldAngle = math.atan2(robotCoordinates[2], robotCoordinates[0])
+    # robotWorldAngle = math.atan2(robotCoordinates[1], robotCoordinates[0])
 
     if robotAngle < 0.0: robotAngle += 2 * np.pi
 
     x_f = x_r * math.sin(robotAngle) - \
-          z_r * math.cos(robotAngle)
+          y_r * math.cos(robotAngle)
 
-    z_f = x_r * math.cos(robotAngle) + \
-          z_r * math.sin(robotAngle)
+    y_f = x_r * math.cos(robotAngle) + \
+          y_r * math.sin(robotAngle)
 
-    # print("x_f: {} , z_f: {}".format(x_f, z_f) )
+    # print("x_f: {} , y_f: {}".format(x_f, y_f) )
     if is_true_angle:
         x_f = -x_f
-    angleDif = math.atan2(z_f, x_f)
+    angleDif = math.atan2(y_f, x_f)
 
     if is_abs:
         angleDif = abs(angleDif)
