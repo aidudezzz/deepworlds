@@ -23,51 +23,67 @@ DEF SUPERVISOR Robot {
   children [
     Receiver {
       name "receiver8"
+      channel 8
     }
     Emitter {
       name "emitter8"
+      channel 8
     }
     Receiver {
       name "receiver7"
+      channel 7
     }
     Emitter {
       name "emitter7"
+      channel 7
     }
     Receiver {
       name "receiver6"
+      channel 6
     }
     Emitter {
       name "emitter6"
+      channel 6
     }
     Receiver {
       name "receiver5"
+      channel 5
     }
     Emitter {
       name "emitter5"
+      channel 5
     }
     Receiver {
       name "receiver4"
+      channel 4
     }
     Emitter {
       name "emitter4"
+      channel 4
     }
     Receiver {
       name "receiver3"
+      channel 3
     }
     Emitter {
       name "emitter3"
+      channel 3
     }
     Receiver {
       name "receiver2"
+      channel 2
     }
     Emitter {
       name "emitter2"
+      channel 2
     }
     Receiver {
       name "receiver1"
+      channel 1
     }
     Emitter {
       name "emitter1"
+      channel 1
     }
     Receiver {
       name "receiver0"
@@ -85,8 +101,10 @@ DEF ROBOT4 Robot {
   rotation 0 0 -0.9999999999999978 0
   children [
     DEF EMITTER Emitter {
+      channel 4
     }
     DEF RECEIVER Receiver {
+      channel 4
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -124,7 +142,7 @@ DEF ROBOT4 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.8508204716054513e-14 -2.874371876973535e-14 1 1.5708000000006916
+        rotation 3.4811101664737507e-14 -3.571390329387885e-14 1 1.5708000000006788
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -156,7 +174,7 @@ DEF ROBOT4 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.866389118264606e-14 -2.7800342528930354e-14 1 1.5708000000006919
+        rotation 3.359401774588681e-14 -3.457532385280937e-14 1 1.570800000000678
         children [
           USE WHEEL
         ]
@@ -178,7 +196,7 @@ DEF ROBOT4 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.3121557190638424e-14 -4.422062084127662e-14 1 1.570800000000692
+        rotation 5.16683171382706e-14 -5.539728006864697e-14 1 1.5708000000006836
         children [
           USE WHEEL
         ]
@@ -200,7 +218,7 @@ DEF ROBOT4 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.1214873542849167e-14 1.1057864832321474e-14 1 1.5708000000006879
+        rotation -1.598910893817962e-14 1.3123695513099139e-14 1 1.5708000000006774
         children [
           USE WHEEL
         ]
@@ -223,8 +241,8 @@ DEF ROBOT4 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220375e-06 0.5299968874104757 -2.047348009214881e-13
-        rotation -2.0452976762418273e-13 2.043727630905054e-13 1 1.5708000033841265
+        translation -1.837955856122018e-06 0.529996887410473 -2.5441925558044194e-13
+        rotation -2.542320611147558e-13 2.5386897878585104e-13 1 1.5708000033841067
         children [
           DEF POLE_ENDPOINT_4 Solid {
             translation 0.5000000000000002 0 0
@@ -279,8 +297,10 @@ DEF ROBOT5 Robot {
   rotation 0 0 -0.9999999999999978 0
   children [
     DEF EMITTER Emitter {
+      channel 5
     }
     DEF RECEIVER Receiver {
+      channel 5
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -318,7 +338,7 @@ DEF ROBOT5 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.945025846108778e-14 -2.8272691897218786e-14 1 1.570800000000688
+        rotation 3.394755239845705e-14 -3.4340074915705404e-14 1 1.570800000000679
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -350,7 +370,7 @@ DEF ROBOT5 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.8506882225140596e-14 -2.7721838050177648e-14 1 1.5708000000006865
+        rotation 3.229869384646632e-14 -3.5281864161584494e-14 1 1.570800000000666
         children [
           USE WHEEL
         ]
@@ -372,7 +392,7 @@ DEF ROBOT5 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.484865572319931e-14 -4.374959396876e-14 1 1.5708000000006925
+        rotation 5.4141208218982726e-14 -5.3984199451097066e-14 1 1.5708000000006868
         children [
           USE WHEEL
         ]
@@ -394,7 +414,7 @@ DEF ROBOT5 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.1371882500354691e-14 1.082235139606316e-14 1 1.5708000000006899
+        rotation -1.5007802953770033e-14 1.4379767173143453e-14 1 1.5708000000006752
         children [
           USE WHEEL
         ]
@@ -417,8 +437,8 @@ DEF ROBOT5 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220515e-06 0.5299968874104807 -2.0470704534587248e-13
-        rotation -2.0460827210280257e-13 2.0547182579118473e-13 1 1.570800003384128
+        translation -1.8379558561220337e-06 0.5299968874104826 -2.545927279280396e-13
+        rotation -2.5351570774734914e-13 2.5498766760618594e-13 1 1.5708000033841027
         children [
           DEF POLE_ENDPOINT_5 Solid {
             translation 0.5000000000000002 0 0
@@ -473,8 +493,10 @@ DEF ROBOT8 Robot {
   rotation 0 0 -0.9999999999999978 0
   children [
     DEF EMITTER Emitter {
+      channel 8
     }
     DEF RECEIVER Receiver {
+      channel 8
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -512,7 +534,7 @@ DEF ROBOT8 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 3.0313807727368234e-14 -2.8272691897218805e-14 1 1.5708000000006879
+        rotation 3.638119123979294e-14 -3.496811074572761e-14 1 1.570800000000675
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -544,7 +566,7 @@ DEF ROBOT8 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.897790909765717e-14 -2.8271369401447006e-14 1 1.570800000000689
+        rotation 3.426130581528535e-14 -3.4967846246573216e-14 1 1.5708000000006774
         children [
           USE WHEEL
         ]
@@ -566,7 +588,7 @@ DEF ROBOT8 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.445613332943559e-14 -4.390660292626564e-14 1 1.5708000000006874
+        rotation 5.414120821898284e-14 -5.327765914232228e-14 1 1.5708000000006819
         children [
           USE WHEEL
         ]
@@ -588,7 +610,7 @@ DEF ROBOT8 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.4433557171712658e-14 1.1685900662343619e-14 1 1.570800000000688
+        rotation -1.7441441795105827e-14 1.359472238561574e-14 1 1.5708000000006792
         children [
           USE WHEEL
         ]
@@ -611,8 +633,8 @@ DEF ROBOT8 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220549e-06 0.529996887410481 -2.0456826746779434e-13
-        rotation -2.0468677658142258e-13 2.0539332131256484e-13 1 1.5708000033841274
+        translation -1.8379558561220312e-06 0.5299968874104797 -2.541070053547661e-13
+        rotation -2.5389841708062e-13 2.5494841536687455e-13 1 1.5708000033841145
         children [
           DEF POLE_ENDPOINT_8 Solid {
             translation 0.5000000000000002 0 0
@@ -667,8 +689,10 @@ DEF ROBOT7 Robot {
   rotation 0 0 -0.9999999999999978 0
   children [
     DEF EMITTER Emitter {
+      channel 7
     }
     DEF RECEIVER Receiver {
+      channel 7
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -706,7 +730,7 @@ DEF ROBOT7 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.968577189734607e-14 -2.9175493402875605e-14 1 1.5708000000006896
+        rotation 2.2399481026668435e-11 -2.2400815602930724e-11 1 1.5708000000006792
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -738,7 +762,7 @@ DEF ROBOT7 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.9880710603314e-14 -2.862463955583445e-14 1 1.5708000000006896
+        rotation 2.211152633410513e-11 -2.211293941484519e-11 1 1.5708000000006768
         children [
           USE WHEEL
         ]
@@ -760,7 +784,7 @@ DEF ROBOT7 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.261127807874549e-14 -4.367108949000729e-14 1 1.5708000000006896
+        rotation 5.170756937764714e-14 -5.465148752049584e-14 1 1.570800000000677
         children [
           USE WHEEL
         ]
@@ -782,7 +806,7 @@ DEF ROBOT7 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -9.330766052782706e-15 1.1254126029203372e-14 1 1.5708000000006919
+        rotation -1.1121831255507962e-14 1.516481196067111e-14 1 1.5708000000006788
         children [
           USE WHEEL
         ]
@@ -805,8 +829,8 @@ DEF ROBOT7 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220418e-06 0.5299968874104786 -2.0498460110202877e-13
-        rotation -2.056288303248621e-13 2.0476528548360514e-13 1 1.5708000033841274
+        translation -1.8379558561220197e-06 0.5299968874104792 -2.5442619447434585e-13
+        rotation -2.5530168463595225e-13 2.543400056575703e-13 1 1.5708000033841114
         children [
           DEF POLE_ENDPOINT_7 Solid {
             translation 0.5000000000000002 0 0
@@ -860,8 +884,10 @@ DEF ROBOT6 Robot {
   translation 1.2 0.045 -1.21
   children [
     DEF EMITTER Emitter {
+      channel 6
     }
     DEF RECEIVER Receiver {
+      channel 6
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -899,7 +925,7 @@ DEF ROBOT6 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.9685771897346056e-14 -2.937175459975752e-14 1 1.5708000000006899
+        rotation 3.504661510099577e-14 -3.5517642096996884e-14 1 1.5708000000006812
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -931,7 +957,7 @@ DEF ROBOT6 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.7486324001354573e-14 -2.8506882837705313e-14 1 1.5708000000006883
+        rotation 3.4575323730296394e-14 -3.512485520407873e-14 1 1.5708000000006792
         children [
           USE WHEEL
         ]
@@ -953,7 +979,7 @@ DEF ROBOT6 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.3278566148144025e-14 -4.359258501125452e-14 1 1.5708000000006896
+        rotation 1.2445304478016467e-10 -1.2445328029379051e-10 1 1.5708000000006805
         children [
           USE WHEEL
         ]
@@ -975,7 +1001,7 @@ DEF ROBOT6 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.0586837712827022e-14 1.0508333481052095e-14 1 1.570800000000688
+        rotation 1.3290296628980634e-10 -1.329020242360119e-10 1 1.570800000000676
         children [
           USE WHEEL
         ]
@@ -998,8 +1024,8 @@ DEF ROBOT6 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.837955856122043e-06 0.5299968874104781 -2.04818067648335e-13
-        rotation -2.0609985719658163e-13 2.0555033026980449e-13 1 1.57080000338413
+        translation -1.8379558561220083e-06 0.529996887410472 -2.5473844470002167e-13
+        rotation -2.559689727042223e-13 2.549974806660128e-13 1 1.5708000033841083
         children [
           DEF POLE_ENDPOINT_6 Solid {
             translation 0.5000000000000002 0 0
@@ -1054,8 +1080,10 @@ DEF ROBOT3 Robot {
   rotation 0 0 -0.9999999999999978 0
   children [
     DEF EMITTER Emitter {
+      channel 3
     }
     DEF RECEIVER Receiver {
+      channel 3
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -1093,7 +1121,7 @@ DEF ROBOT3 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.929324950358225e-14 -2.85082053334771e-14 1 1.5708000000006874
+        rotation 3.571390317039447e-14 -3.496811074572767e-14 1 1.570800000000672
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -1125,7 +1153,7 @@ DEF ROBOT3 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.952744044892657e-14 -2.878164851334003e-14 1 1.5708000000006874
+        rotation 3.567438643283517e-14 -3.693045821539242e-14 1 1.570800000000678
         children [
           USE WHEEL
         ]
@@ -1147,7 +1175,7 @@ DEF ROBOT3 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.418136765380085e-14 -4.3317819335619844e-14 1 1.5708000000006896
+        rotation 5.3199154473949807e-14 -5.461223528111953e-14 1 1.5708000000006745
         children [
           USE WHEEL
         ]
@@ -1169,7 +1197,7 @@ DEF ROBOT3 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.0822351149085314e-14 1.2510197689247675e-14 1 1.5708000000006894
+        rotation -1.5400325347533846e-14 1.3947992540003196e-14 1 1.570800000000679
         children [
           USE WHEEL
         ]
@@ -1192,8 +1220,8 @@ DEF ROBOT3 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220506e-06 0.5299968874104792 -2.0506786782887566e-13
-        rotation -2.046867765814228e-13 2.057073392270449e-13 1 1.5708000033841252
+        translation -1.8379558561220354e-06 0.5299968874104812 -2.549466115171389e-13
+        rotation -2.5447002781557265e-13 2.554292552984228e-13 1 1.5708000033841065
         children [
           DEF POLE_ENDPOINT_3 Solid {
             translation 0.5000000000000002 0 0
@@ -1286,8 +1314,8 @@ DEF ROBOT0 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.06000000000000005 6.779894116991709e-18 0.050000000000000044
-        rotation 2.3012891203360785e-14 -2.1992333596997333e-14 1 1.570800000000688
+        translation 0.06000000000000005 2.3669540734973882e-17 0.050000000000000044
+        rotation 2.6018600044427418e-14 -2.911952707864628e-14 1 1.5708000000006797
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -1318,8 +1346,8 @@ DEF ROBOT0 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06000000000000005 6.779894121489877e-18 0.050000000000000044
-        rotation 2.1991010488660766e-14 -2.2148020058731044e-14 1 1.5708000000006916
+        translation -0.06000000000000005 2.3669540746476667e-17 0.050000000000000044
+        rotation 2.966879380824837e-14 -2.790244315882403e-14 1 1.570800000000679
         children [
           USE WHEEL
         ]
@@ -1340,8 +1368,8 @@ DEF ROBOT0 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.06000000000000005 -6.779882265153399e-18 -0.050000000000000044
-        rotation 3.440756004908115e-14 -3.4329056518427866e-14 1 1.5708000000006919
+        translation 0.06000000000000005 -2.3669538278056156e-17 -0.050000000000000044
+        rotation 4.4445905093016036e-14 -4.6094499336444064e-14 1 1.570800000000678
         children [
           USE WHEEL
         ]
@@ -1362,8 +1390,8 @@ DEF ROBOT0 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.06000000000000005 -6.779882283969025e-18 -0.050000000000000044
-        rotation -7.839180956480142e-15 9.173757342255053e-15 1 1.570800000000685
+        translation -0.06000000000000005 -2.3669538290695905e-17 -0.050000000000000044
+        rotation -1.2063885000541205e-14 1.3202199991851917e-14 1 1.5708000000006752
         children [
           USE WHEEL
         ]
@@ -1386,8 +1414,8 @@ DEF ROBOT0 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558146541657e-06 0.529996887410499 -1.6165814756603216e-13
-        rotation -1.6050838123803934e-13 1.611756737298717e-13 1 1.5708000033841285
+        translation -1.837955814654153e-06 0.5299968874105008 -2.1157158572381483e-13
+        rotation -2.1004385271154435e-13 2.10819085322629e-13 1 1.5708000033841114
         children [
           DEF POLE_ENDPOINT_0 Solid {
             translation 0.5000000000000002 0 0
@@ -1442,8 +1470,10 @@ DEF ROBOT1 Robot {
   rotation 0 0 -0.9999999999999978 0
   children [
     DEF EMITTER Emitter {
+      channel 1
     }
     DEF RECEIVER Receiver {
+      channel 1
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -1481,7 +1511,7 @@ DEF ROBOT1 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.7782038287591447e-14 -2.862596205160624e-14 1 1.5708000000006888
+        rotation 3.431063561268863e-14 -3.4045683120382546e-14 1 1.570800000000677
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -1513,7 +1543,7 @@ DEF ROBOT1 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.781996803605388e-14 -2.897790971022198e-14 1 1.570800000000685
+        rotation 3.3731400583704133e-14 -3.546831229862209e-14 1 1.570800000000679
         children [
           USE WHEEL
         ]
@@ -1535,7 +1565,7 @@ DEF ROBOT1 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.4122489294736287e-14 -4.443650815784681e-14 1 1.5708000000006888
+        rotation 5.572111085388251e-14 -5.458279610158725e-14 1 1.570800000000675
         children [
           USE WHEEL
         ]
@@ -1557,7 +1587,7 @@ DEF ROBOT1 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.0881229508149895e-14 1.2019544697042876e-14 1 1.570800000000689
+        rotation -1.2152202539138045e-14 1.3997057839223676e-14 1 1.5708000000006797
         children [
           USE WHEEL
         ]
@@ -1580,8 +1610,8 @@ DEF ROBOT1 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561220447e-06 0.5299968874104775 -2.047348009214881e-13
-        rotation -2.0476528106004264e-13 2.0539332131256494e-13 1 1.5708000033841265
+        translation -1.8379558561220223e-06 0.5299968874104755 -2.542943554901716e-13
+        rotation -2.542418741745827e-13 2.5487481741816874e-13 1 1.5708000033841114
         children [
           DEF POLE_ENDPOINT_1 Solid {
             translation 0.5000000000000002 0 0
@@ -1636,8 +1666,10 @@ DEF ROBOT2 Robot {
   rotation 0 0 -0.9999999999999978 0
   children [
     DEF EMITTER Emitter {
+      channel 2
     }
     DEF RECEIVER Receiver {
+      channel 2
     }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
@@ -1675,7 +1707,7 @@ DEF ROBOT2 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation 2.8900727109818384e-14 -2.8194187418466014e-14 1 1.5708000000006888
+        rotation 3.6067173324781824e-14 -3.5517642096996947e-14 1 1.570800000000678
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -1707,7 +1739,7 @@ DEF ROBOT2 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 0.05
-        rotation 2.7643332958860063e-14 -2.8035855965188658e-14 1 1.5708000000006919
+        rotation 3.598840434784614e-14 -3.630242238537016e-14 1 1.570800000000684
         children [
           USE WHEEL
         ]
@@ -1729,7 +1761,7 @@ DEF ROBOT2 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 -0.05
-        rotation 4.3828097499413346e-14 -4.4377629798782157e-14 1 1.5708000000006919
+        rotation 5.500475748526329e-14 -5.547578454739979e-14 1 1.5708000000006828
         children [
           USE WHEEL
         ]
@@ -1751,7 +1783,7 @@ DEF ROBOT2 Robot {
       ]
       endPoint Solid {
         translation -0.06 0 -0.05
-        rotation -1.0743846670332554e-14 1.0979360353568702e-14 1 1.5708000000006883
+        rotation -1.1318092452389883e-14 1.2103137289313137e-14 1 1.5708000000006788
         children [
           USE WHEEL
         ]
@@ -1774,8 +1806,8 @@ DEF ROBOT2 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.837955856122051e-06 0.52999688741048 -2.0487357879956625e-13
-        rotation -2.0523630793176237e-13 2.0515780787670503e-13 1 1.570800003384127
+        translation -1.837955856122024e-06 0.5299968874104758 -2.540792497791505e-13
+        rotation -2.544381353711326e-13 2.549680414865299e-13 1 1.5708000033841112
         children [
           DEF POLE_ENDPOINT_2 Solid {
             translation 0.5000000000000002 0 0
@@ -1825,323 +1857,327 @@ DEF ROBOT2 Robot {
   }
   controller "robot_controller"
 }
-SolidBox {
-  translation 1.6 0.1 -0.6
-  name "box(30)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 1.4 0.1 -0.6
-  name "box(31)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 1.2 0.1 -0.6
-  name "box(32)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 1 0.1 -0.6
-  name "box(33)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.8 0.1 -0.6
-  name "box(34)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -0.6
-  name "box(35)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -0.8
-  name "box(41)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -1
-  name "box(42)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -1.2
-  name "box(43)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -1.4
-  name "box(44)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -1.6
-  name "box(45)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -0.4
-  name "box(36)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 -0.2
-  name "box(37)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 0
-  name "box(38)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 0.2
-  name "box(39)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 0.4
-  name "box(40)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 1.6 0.1 0.6
-  name "box(12)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 1.6
-  name "box(64)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 1.4
-  name "box(65)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 1.2
-  name "box(66)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 1
-  name "box(67)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 0.8
-  name "box(68)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 0.6
-  name "box(69)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 0.4
-  name "box(75)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 0.2
-  name "box(76)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 0
-  name "box(77)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -0.2
-  name "box(78)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -0.4
-  name "box(79)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -0.6
-  name "box(80)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -0.8
-  name "box(86)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -1
-  name "box(87)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -1.2
-  name "box(88)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -1.4
-  name "box(89)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.6 0.1 -1.6
-  name "box(90)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1.6 0.1 -0.6
-  name "box(109)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1.4 0.1 -0.6
-  name "box(111)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1.2 0.1 -0.6
-  name "box(112)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1 0.1 -0.6
-  name "box(113)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.8 0.1 -0.6
-  name "box(114)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1.6 0.1 0.6
-  name "box(121)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1.4 0.1 0.6
-  name "box(122)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1.2 0.1 0.6
-  name "box(123)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -1 0.1 0.6
-  name "box(124)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.8 0.1 0.6
-  name "box(125)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.4 0.1 -0.6
-  name "box(81)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.2 0.1 -0.6
-  name "box(82)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0 0.1 -0.6
-  name "box(83)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.2 0.1 -0.6
-  name "box(84)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.4 0.1 -0.6
-  name "box(85)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.4 0.1 0.6
-  name "box(70)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation -0.2 0.1 0.6
-  name "box(71)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0 0.1 0.6
-  name "box(72)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.2 0.1 0.6
-  name "box(73)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.4 0.1 0.6
-  name "box(74)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 1.6
-  name "box(15)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 1.4
-  name "box(16)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 1.2
-  name "box(17)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 1
-  name "box(18)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 0.8
-  name "box(19)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.6 0.1 0.6
-  name "box(20)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 1.4 0.1 0.6
-  name "box(21)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 1.2 0.1 0.6
-  name "box(22)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 1 0.1 0.6
-  name "box(23)"
-  size 0.2 0.2 0.2
-}
-SolidBox {
-  translation 0.8 0.1 0.6
-  name "box(24)"
-  size 0.2 0.2 0.2
+DEF Boundary_Boxes Group {
+  children [
+    SolidBox {
+      translation 0.8 0.1 0.6
+      name "box(24)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1 0.1 0.6
+      name "box(23)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1.4 0.1 0.6
+      name "box(21)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1.2 0.1 0.6
+      name "box(22)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 0.6
+      name "box(20)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 0.8
+      name "box(19)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 1
+      name "box(18)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 1.2
+      name "box(17)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 1.4
+      name "box(16)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 1.6
+      name "box(15)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.4 0.1 0.6
+      name "box(74)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.2 0.1 0.6
+      name "box(73)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0 0.1 0.6
+      name "box(72)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.2 0.1 0.6
+      name "box(71)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.4 0.1 0.6
+      name "box(70)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.4 0.1 -0.6
+      name "box(85)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.2 0.1 -0.6
+      name "box(84)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0 0.1 -0.6
+      name "box(83)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.2 0.1 -0.6
+      name "box(82)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.4 0.1 -0.6
+      name "box(81)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.8 0.1 0.6
+      name "box(125)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1 0.1 0.6
+      name "box(124)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1.2 0.1 0.6
+      name "box(123)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1.4 0.1 0.6
+      name "box(122)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1.6 0.1 0.6
+      name "box(121)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.8 0.1 -0.6
+      name "box(114)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1 0.1 -0.6
+      name "box(113)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1.2 0.1 -0.6
+      name "box(112)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1.4 0.1 -0.6
+      name "box(111)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -1.6 0.1 -0.6
+      name "box(109)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -1.6
+      name "box(90)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -1.4
+      name "box(89)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -1.2
+      name "box(88)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -1
+      name "box(87)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -0.8
+      name "box(86)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -0.6
+      name "box(80)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -0.4
+      name "box(79)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 -0.2
+      name "box(78)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 0
+      name "box(77)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 0.2
+      name "box(76)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 0.4
+      name "box(75)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 0.6
+      name "box(69)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 0.8
+      name "box(68)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 1
+      name "box(67)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 1.2
+      name "box(66)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 1.4
+      name "box(65)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation -0.6 0.1 1.6
+      name "box(64)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1.6 0.1 0.6
+      name "box(12)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 0.4
+      name "box(40)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 0.2
+      name "box(39)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 0
+      name "box(38)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -0.2
+      name "box(37)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -0.4
+      name "box(36)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -1.6
+      name "box(45)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -1.4
+      name "box(44)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -1.2
+      name "box(43)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -1
+      name "box(42)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -0.8
+      name "box(41)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.6 0.1 -0.6
+      name "box(35)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 0.8 0.1 -0.6
+      name "box(34)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1 0.1 -0.6
+      name "box(33)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1.2 0.1 -0.6
+      name "box(32)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1.4 0.1 -0.6
+      name "box(31)"
+      size 0.2 0.2 0.2
+    }
+    SolidBox {
+      translation 1.6 0.1 -0.6
+      name "box(30)"
+      size 0.2 0.2 0.2
+    }
+  ]
 }
