@@ -61,6 +61,10 @@ def run():
         print(f"Episode: {episodeCount} Score = {supervisorEnv.episodeScore} | Average Action Probabilities = {avgActionProb}")
 
         episodeCount += 1  # Increment episode counter
+    
+    movingAvgN = 10
+    plotData(convolve(supervisorEnv.episodeScoreList, ones((movingAvgN,))/movingAvgN, mode='valid'),
+             "episode", "episode score", "Episode scores over episodes")
 
     if not solved and not supervisorEnv.test:
         print("Reached episode limit and task was not solved.")
