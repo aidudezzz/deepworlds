@@ -24,7 +24,7 @@ class CartPoleRobotSupervisor(RobotSupervisor):
     Observation:
         Type: Box(4)
         Num	Observation                 Min         Max
-        0	Cart Position z axis      -0.4            0.4
+        0	Cart Position x axis      -0.4            0.4
         1	Cart Velocity             -Inf            Inf
         2	Pole Angle                -1.3 rad        1.3 rad
         3	Pole Velocity At Tip      -Inf            Inf
@@ -43,7 +43,7 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         [0.0, 0.0, 0.0, 0.0]
     Episode Termination:
         Pole Angle is more than 0.261799388 rad (15 degrees)
-        Cart Position is more than 0.39 on z axis (cart has reached arena edge)
+        Cart Position is more than 0.39 on x axis (cart has reached arena edge)
         Episode length is greater than 200
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
@@ -85,14 +85,14 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         :return: Observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
         :rtype: list
         """
-        # Position on z axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[2], -0.4, 0.4, -1.0, 1.0)
-        # Linear velocity on z axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True)
+        # Position on x axis
+        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        # Linear velocity on x axis
+        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
         # Pole angle off vertical
         poleAngle = normalizeToRange(self.positionSensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
-        # Angular velocity x of endpoint
-        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True)
+        # Angular velocity y of endpoint
+        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
 
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
 
@@ -122,7 +122,7 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
             return True
 
-        cartPosition = round(self.robot.getPosition()[2], 2)  # Position on z axis
+        cartPosition = round(self.robot.getPosition()[0], 2)  # Position on x axis
         if abs(cartPosition) > 0.39:
             return True
 
