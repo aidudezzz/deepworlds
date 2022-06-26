@@ -193,7 +193,7 @@ class CartPoleSupervisor(SupervisorEnv):
     def is_done(self):
         """
         An episode is done if the score is over 195.0, or if the pole is off balance, or the cart position is a certain distance 
-        awat from the initial position for either of the carts
+        away from the initial position for either of the carts
 
         :return: True if termination conditions are met, False otherwise
         :rtype: bool
