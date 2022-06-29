@@ -1,6 +1,6 @@
 # CartPole
 
-This example is a recreation of the classic [CartPole](https://gym.openai.com/envs/CartPole-v0/)
+This example is a recreation of the classic [CartPole](https://www.gymlibrary.ml/environments/classic_control/cart_pole/)
 problem in [Webots](https://cyberbotics.com) as seen in [OpenAI's gym](https://gym.openai.com/).
 
 Two solutions of the problem are provided, one with discrete action space and one with continuous action space.
@@ -20,7 +20,7 @@ with plans of providing the same examples using the
 
 ## Contents
 - [CartPole discrete](https://github.com/aidudezzz/deepworlds/tree/dev/examples/cartpole/cartpole_discrete)
-- [CartPole continuous](https://github.com/aidudezzz/deepworlds/tree/dev/examples/cartpole/cartpole_continous)
+- [CartPole continuous](https://github.com/aidudezzz/deepworlds/tree/dev/examples/cartpole/cartpole_continuous)
 
 
 ## Solved CartPole - PPO discrete
