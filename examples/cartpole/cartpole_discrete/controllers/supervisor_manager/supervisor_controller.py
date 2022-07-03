@@ -84,8 +84,8 @@ class CartPoleSupervisor(SupervisorCSV):
             # method is called before messageReceived is initialized
             poleAngle = 0.0
 
-        # Angular velocity x of endpoint
-        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True)
+        # Angular velocity y of endpoint
+        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
 
         return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
 
