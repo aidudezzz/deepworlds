@@ -20,7 +20,7 @@ class CartPoleSupervisor(SupervisorEnv):
     Observation:
         Type: Box(4)
         Num	Observation                 Min         Max
-        0	Cart Position z axis      -0.4            0.4
+        0	Cart Position x axis      -0.4            0.4
         1	Cart Velocity             -Inf            Inf
         2	Pole Angle                -1.3 rad        1.3 rad
         3	Pole Velocity At Tip      -Inf            Inf
@@ -40,7 +40,7 @@ class CartPoleSupervisor(SupervisorEnv):
         [0.0, 0.0, 0.0, 0.0]
     Episode Termination:
         Pole Angle is more than 0.261799388 rad (15 degrees)
-        Cart Position is more than absolute 0.89 on z axis (cart has reached arena edge)
+        Cart Position is more than absolute 0.89 on x axis (cart has reached arena edge)
         Episode length is greater than 200
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
@@ -153,10 +153,10 @@ class CartPoleSupervisor(SupervisorEnv):
         :rtype: list(list(list(float), list(float), float, float))   
         """
         # Position on z axis
-        cartPosition = [normalizeToRange(self.robot[i].getPosition()[2], -0.4, 0.4, -1.0, 1.0) for i in range(self.num_robots)]
+        cartPosition = [normalizeToRange(self.robot[i].getPosition()[0], -0.4, 0.4, -1.0, 1.0) for i in range(self.num_robots)]
 
         # Linear velocity on z axis
-        cartVelocity = [normalizeToRange(self.robot[i].getVelocity()[2], -0.2, 0.2, -1.0, 1.0, clip=True) for i in range(self.num_robots)]
+        cartVelocity = [normalizeToRange(self.robot[i].getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True) for i in range(self.num_robots)]
 
         self.messageReceived = self.handle_receiver()
 
@@ -213,7 +213,7 @@ class CartPoleSupervisor(SupervisorEnv):
         if not all(abs(x) < 0.261799388 for x in poleAngle):                    # 15 degrees off vertical
             return True
 
-        cartPosition = [round(self.robot[i].getPosition()[2] - self.initPositions[i][2], 2) for i in range(self.num_robots)]      
+        cartPosition = [round(self.robot[i].getPosition()[0] - self.initPositions[i][0], 2) for i in range(self.num_robots)]      
         if not all(abs(x) < 0.89 for x in cartPosition):
             return True
 
