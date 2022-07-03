@@ -17,7 +17,8 @@ This example is a modified version of the classic [Cartpole](https://www.gymlibr
 
 ## Contents
 
-[Multi Cartpole Discrete](./multi_cartpole_discrete/)
+* [Controllers](./controllers/)
+* [Worlds](./worlds/)
 
 ## Graphics
 
