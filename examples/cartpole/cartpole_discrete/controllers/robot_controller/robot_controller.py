@@ -1,12 +1,12 @@
-from deepbots.robots.controllers.robot_emitter_receiver_csv import RobotEmitterReceiverCSV
+from deepbots.robots import CSVRobot
 
 
-class CartPoleRobot(RobotEmitterReceiverCSV):
+class CartPoleRobot(CSVRobot):
     """
     CartPole robot has 4 wheels and pole connected by an unactuated hinge to its body.
     The hinge contains a Position Sensor device to measure the angle from vertical needed in the observation.
     Hinge: https://cyberbotics.com/doc/reference/hingejoint
-    Position Sensor: https://cyberbotics.com/doc/reference/position_sensor
+    Position Sensor: https://cyberbotics.com/doc/reference/positionsensor
     """
 
     def __init__(self):
@@ -14,7 +14,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
         """
         super().__init__()
-        self.position_sensor = self.robot.getDevice("polePosSensor")
+        self.position_sensor = self.getDevice("polePosSensor")
         self.position_sensor.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
@@ -25,10 +25,10 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         This method initializes the four wheels, storing the references inside a list and setting the starting
         positions and velocities.
         """
-        self.wheels[0] = self.robot.getDevice('wheel1')
-        self.wheels[1] = self.robot.getDevice('wheel2')
-        self.wheels[2] = self.robot.getDevice('wheel3')
-        self.wheels[3] = self.robot.getDevice('wheel4')
+        self.wheels[0] = self.getDevice('wheel1')
+        self.wheels[1] = self.getDevice('wheel2')
+        self.wheels[2] = self.getDevice('wheel3')
+        self.wheels[3] = self.getDevice('wheel4')
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
             self.wheels[i].setVelocity(0.0)

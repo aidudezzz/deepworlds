@@ -1,8 +1,7 @@
 import gym
 import numpy as np
-from deepbots.supervisor.controllers.supervisor_emitter_receiver import \
-    SupervisorCSV
-from deepbots.supervisor.wrappers.keyboard_printer import KeyboardPrinter
+from deepbots.supervisor import CSVSupervisorEnv
+from deepbots.supervisor.wrappers import KeyboardPrinter
 
 import utilities as utils
 from models.networks import DDPG
@@ -16,7 +15,7 @@ ACTION_MM = {'min': -1, 'max': 1}
 ANGLE_MM = {'min': -np.pi, 'max': np.pi}
 
 
-class FindTargetSupervisor(SupervisorCSV):
+class FindTargetSupervisor(CSVSupervisorEnv):
     def __init__(self, robot, target):
         super(FindTargetSupervisor, self).__init__(emitter_name='emitter',
                                                    receiver_name='receiver')

@@ -1,11 +1,11 @@
-from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
+from deepbots.supervisor import RobotSupervisorEnv
 from utilities import normalize_to_range
 
 from gym.spaces import Box, Discrete
 import numpy as np
 
 
-class CartPoleRobotSupervisor(RobotSupervisor):
+class CartPoleRobotSupervisor(RobotSupervisorEnv):
     """
     CartPoleRobotSupervisor acts as an environment having all the appropriate methods such as get_reward().
     This class utilizes the robot-supervisor scheme combining both the robot controls and the environment

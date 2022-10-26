@@ -1,6 +1,5 @@
 import numpy as np
-from deepbots.robots.controllers.robot_emitter_receiver_csv import \
-    RobotEmitterReceiverCSV
+from deepbots.robots import CSVRobot
 
 
 def normalize_to_range(value, min, max, new_min, new_max):
@@ -12,7 +11,7 @@ def normalize_to_range(value, min, max, new_min, new_max):
     return (new_max - new_min) / (max - min) * (value - max) + new_max
 
 
-class FindTargetRobot(RobotEmitterReceiverCSV):
+class FindTargetRobot(CSVRobot):
     def __init__(self, n_rangefinders):
         super(FindTargetRobot, self).__init__()
         self.setup_rangefinders(n_rangefinders)
@@ -56,13 +55,13 @@ class FindTargetRobot(RobotEmitterReceiverCSV):
                         ]  # 'ps0', 'ps1',...,'ps7'
 
         for i in range(self.n_rangefinders):
-            self.rangefinders.append(self.robot.getDevice(self.ps_names[i]))
+            self.rangefinders.append(self.getDevice(self.ps_names[i]))
             self.rangefinders[i].enable(self.timestep)
 
     def setup_motors(self):
         # Motor setup
-        self.left_motor = self.robot.getDevice('left wheel motor')
-        self.right_motor = self.robot.getDevice('right wheel motor')
+        self.left_motor = self.getDevice('left wheel motor')
+        self.right_motor = self.getDevice('right wheel motor')
         self._set_velocity(0.0, 0.0)
         self.motor_speeds = [0.0, 0.0]
     
