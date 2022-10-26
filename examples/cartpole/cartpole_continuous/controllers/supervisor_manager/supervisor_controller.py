@@ -1,10 +1,10 @@
 import numpy as np
 
-from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from utilities import normalize_to_range, plot_data
+from deepbots.supervisor import CSVSupervisorEnv
+from utilities import normalize_to_range
 
 
-class CartPoleSupervisor(SupervisorCSV):
+class CartPoleSupervisor(CSVSupervisorEnv):
     """
     CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward().
 

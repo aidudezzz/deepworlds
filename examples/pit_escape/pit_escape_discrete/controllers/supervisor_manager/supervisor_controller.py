@@ -1,12 +1,12 @@
 import numpy as np
 from controller import Supervisor
 
-from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from utilities import normalize_to_range, get_distance_from_center, plot_data
+from deepbots.supervisor import CSVSupervisorEnv
+from utilities import normalize_to_range, get_distance_from_center
 from supervisor_manager import MAX_TIME
 
 
-class PitEscapeSupervisor(SupervisorCSV):
+class PitEscapeSupervisor(CSVSupervisorEnv):
     """
     This example is taken from Webots https://robotbenchmark.net/benchmark/pit_escape/ example.
 

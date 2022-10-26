@@ -1,4 +1,4 @@
-from deepbots.supervisor.wrappers.keyboard_printer import KeyboardPrinter
+from deepbots.supervisor.wrappers import KeyboardPrinter
 
 
 class KeyboardControllerPitEscape(KeyboardPrinter):

@@ -1,10 +1,10 @@
 import numpy as np
-from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
+from deepbots.supervisor import RobotSupervisorEnv
 from gym.spaces import Box
 import wandb
 
 
-class KHR3HVRobotSupervisor(RobotSupervisor):
+class KHR3HVRobotSupervisor(RobotSupervisorEnv):
     """
     This example is similar to Webots https://robotbenchmark.net/benchmark/humanoid_sprint/ example and
     Gym https://www.gymlibrary.dev/environments/mujoco/humanoid/#humanoid environment.

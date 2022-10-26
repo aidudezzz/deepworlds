@@ -1,8 +1,8 @@
-from deepbots.robots.controllers.robot_emitter_receiver_csv import RobotEmitterReceiverCSV
+from deepbots.robots import CSVRobot
 from numpy import isnan
 
 
-class PitEscapeRobot(RobotEmitterReceiverCSV):
+class PitEscapeRobot(CSVRobot):
     """
     The BB-8 robot consists of a big ball which acts as a wheel, that moves it around.
     With this controller, it has 2 possible actions, pitch and yaw. It also uses a
@@ -16,17 +16,17 @@ class PitEscapeRobot(RobotEmitterReceiverCSV):
         """
         super().__init__()
         # Set up sensors
-        self.gyro_sensor = self.robot.getDevice("body gyro")
+        self.gyro_sensor = self.getDevice("body gyro")
         self.gyro_sensor.enable(self.timestep)
-        self.accelerometer_sensor = self.robot.getDevice("body accelerometer")
+        self.accelerometer_sensor = self.getDevice("body accelerometer")
         self.accelerometer_sensor.enable(self.timestep)
 
         # Max possible speed for the motor
         self.max_speed = 8.72
 
         # Configuration of the main motors of the robot
-        self.pitch_motor = self.robot.getDevice("body pitch motor")
-        self.yaw_motor = self.robot.getDevice("body yaw motor")
+        self.pitch_motor = self.getDevice("body pitch motor")
+        self.yaw_motor = self.getDevice("body yaw motor")
         self.pitch_motor.setPosition(float('inf'))
         self.yaw_motor.setPosition(float('inf'))
         self.pitch_motor.setVelocity(0.0)
