@@ -155,8 +155,8 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         This method uses the action list provided, which contains the next action to be executed by the robot.
         The message contains a float value that is applied on all wheels as velocity.
 
-        :param message: The message the supervisor sent containing the next action.
-        :type message: list of strings
+        :param action: The message the supervisor sent containing the next action.
+        :type action: list of strings
         """
         motorSpeed = float(action[0]) * 5.0  # Scale from [-1.0, 1.0] to [-5.0, 5.0]
 
