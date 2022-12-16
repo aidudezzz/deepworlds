@@ -9,7 +9,42 @@
 
 Deepworlds is a support repository for the [deepbots framework](https://github.com/aidudezzz/deepbots),
 containing examples of the framework's usage on the [Webots](https://www.cyberbotics.com) robot simulator.
-For more information on the examples, refer to the each example's README. 
+
+If the following sections feel overwhelming, feel free to start on our [deepbots-tutorials repository](https://github.com/aidudezzz/deepbots-tutorials)
+for a beginner's in-depth introduction to the way the deepbots framework is used.
+
+## Run an example in Webots
+
+1. Clone the repository using:
+   ```
+   git clone https://github.com/aidudezzz/deepworlds.git
+   ```
+
+2. Install specific packages for each example you want to use by running the following:
+   ```
+   pip install -r <path to requirements file> --extra-index-url https://test.pypi.org/simple/
+   ``` 
+   You can find the requirement files on the `/requirements/<example-name>.txt` path of each example, 
+   e.g., [/examples/cartpole/cartpole_discrete/requirements/](./examples/cartpole/cartpole_discrete/requirements).
+
+3. Through Webots, open the .wbt file of the example you are interested in and hit run to train the provided agent. 
+You can find the .wbt files under `/worlds/`, e.g., [/examples/cartpole/cartpole_discrete/worlds/](./examples/cartpole/cartpole_discrete/worlds).
+
+For more information on the examples, refer to each one's README, and examine the code within their `/controllers/` directory. 
+
+## Some important notes
+
+Each example might be split into discrete and continuous action space cases. The reason for this split is that depending on the action space, 
+different kinds of reinforcement learning agents need to be used, and thus quite large changes are needed in the code. 
+
+Keep in mind that each example can have multiple solutions provided using the two schemes of deepbots 
+([robot supervisor](https://github.com/aidudezzz/deepbots#combined-robot-supervisor-scheme) and 
+[emitter-receiver](https://github.com/aidudezzz/deepbots#emitter---receiver-scheme)) and with different reinforcement learning agents, backends, etc.
+
+We suggest starting your exploration from the **discrete cartpole example using the robot supervisor scheme**, 
+as it is also the example used in the tutorial. The main class/controller implementation can be found 
+[here](./examples/cartpole/cartpole_discrete/controllers/robot_supervisor_manager/robot_supervisor.py), and the corresponding 
+tutorial to create it from scratch is [here](https://github.com/aidudezzz/deepbots-tutorials/blob/master/robotSupervisorSchemeTutorial/README.md).
 
 ## Directories structure
 
@@ -18,20 +53,28 @@ For more information on the examples, refer to the each example's README.
     \examples
         \cartpole
             \cartpole_discrete
+                \controllers
+                \requirements
+                \worlds
             \cartpole_continuous
+                \controllers
+                \requirements
+                \worlds
             \...
         \find_and_avoid
             \find_and_avoid_continuous
+                \controllers
+                \requirements
+                \worlds
             \...
         \pit_escape
             \pit_escape_discrete
+                \controllers
+                \requirements
+                \worlds
             \...
         \(more examples)       
 ```
-
-## Installation of an example
-
-(Setup instructions to be added) 
 
 ## Contributors ✨
 
