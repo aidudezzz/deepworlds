@@ -1,7 +1,7 @@
 import numpy as np
 
 from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from utilities import normalizeToRange
+from utilities import normalize_to_range
 
 
 class CartPoleSupervisor(SupervisorCSV):
@@ -50,44 +50,44 @@ class CartPoleSupervisor(SupervisorCSV):
         When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
         """
         super().__init__()
-        self.observationSpace = 4
-        self.actionSpace = 2
+        self.observation_space = 4
+        self.action_space = 2
         self.robot = self.getFromDef("ROBOT")
 
-        self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
-        self.messageReceived = None  # Variable to save the messages received from the robot
+        self.pole_endpoint = self.getFromDef("POLE_ENDPOINT")
+        self.message_received = None  # Variable to save the messages received from the robot
 
-        self.stepsPerEpisode = 200  # How many steps to run each episode (changing this messes up the solved condition)
-        self.episodeScore = 0  # Score accumulated during an episode
-        self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
+        self.steps_per_episode = 200  # How many steps to run each episode (changing this messes up the solved condition)
+        self.episode_score = 0  # Score accumulated during an episode
+        self.episode_score_list = []  # A list to save all the episode scores, used to check if task is solved
         self.test = False  # Whether the agent is in test mode
 
     def get_observations(self):
         """
         This get_observation implementation builds the required observation for the CartPole problem.
-        All values apart from pole angle are gathered here from the robot and poleEndpoint objects.
+        All values apart from pole angle are gathered here from the robot and pole_endpoint objects.
         The pole angle value is taken from the message sent by the robot.
         All values are normalized appropriately to [-1, 1], according to their original ranges.
 
-        :return: Observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
+        :return: Observation: [cart_position, cart_velocity, pole_angle, poleTipVelocity]
         :rtype: list
         """
         # Position on x axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        cart_position = normalize_to_range(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
         # Linear velocity on x axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
+        cart_velocity = normalize_to_range(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
 
-        self.messageReceived = self.handle_receiver()  # update message received from robot, which contains pole angle
-        if self.messageReceived is not None:
-            poleAngle = normalizeToRange(float(self.messageReceived[0]), -0.23, 0.23, -1.0, 1.0, clip=True)
+        self.message_received = self.handle_receiver()  # update message received from robot, which contains pole angle
+        if self.message_received is not None:
+            pole_angle = normalize_to_range(float(self.message_received[0]), -0.23, 0.23, -1.0, 1.0, clip=True)
         else:
-            # method is called before messageReceived is initialized
-            poleAngle = 0.0
+            # method is called before message_received is initialized
+            pole_angle = 0.0
 
         # Angular velocity y of endpoint
-        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
+        endpoint_velocity = normalize_to_range(self.pole_endpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
 
-        return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
+        return [cart_position, cart_velocity, pole_angle, endpoint_velocity]
 
     def get_default_observation(self):
         """
@@ -96,7 +96,7 @@ class CartPoleSupervisor(SupervisorCSV):
         :return: Starting observation zero vector
         :rtype: list
         """
-        return [0.0 for _ in range(self.observationSpace)]
+        return [0.0 for _ in range(self.observation_space)]
 
     def get_reward(self, action=None):
         """
@@ -117,19 +117,19 @@ class CartPoleSupervisor(SupervisorCSV):
         :return: True if termination conditions are met, False otherwise
         :rtype: bool
         """
-        if self.episodeScore > 195.0:
+        if self.episode_score > 195.0:
             return True
 
-        if self.messageReceived is not None:
-            poleAngle = round(float(self.messageReceived[0]), 2)
+        if self.message_received is not None:
+            pole_angle = round(float(self.message_received[0]), 2)
         else:
-            # method is called before messageReceived is initialized
-            poleAngle = 0.0
-        if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
+            # method is called before message_received is initialized
+            pole_angle = 0.0
+        if abs(pole_angle) > 0.261799388:  # 15 degrees off vertical
             return True
 
-        cartPosition = round(self.robot.getPosition()[0], 2)  # Position on x axis
-        if abs(cartPosition) > 0.39:
+        cart_position = round(self.robot.getPosition()[0], 2)  # Position on x axis
+        if abs(cart_position) > 0.39:
             return True
 
         return False
@@ -157,7 +157,7 @@ class CartPoleSupervisor(SupervisorCSV):
         :return: True if task is solved, False otherwise
         :rtype: bool
         """
-        if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-100:]) > 195.0:  # Last 100 episode scores average value
+        if len(self.episode_score_list) > 100:  # Over 100 trials thus far
+            if np.mean(self.episode_score_list[-100:]) > 195.0:  # Last 100 episode scores average value
                 return True
         return False

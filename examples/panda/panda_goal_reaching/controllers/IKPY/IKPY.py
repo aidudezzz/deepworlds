@@ -10,11 +10,11 @@ supervisor = Supervisor()
 timestep = int(supervisor.getBasicTimeStep())
 
 # IKPY Chain
-armChain = Chain.from_urdf_file("./panda_with_bound.URDF")
+arm_chain = Chain.from_urdf_file("./panda_with_bound.URDF")
 # get position sensors
-positionSensorList = Func.get_All_positionSensors(supervisor, timestep)
+position_sensors = Func.get_all_position_sensors(supervisor, timestep)
 # get motors
-motorList = Func.get_All_motors(supervisor)
+motors = Func.get_all_motors(supervisor)
 # get a target
 target = supervisor.getFromDef('TARGET'+str(np.random.randint(1, 10, 1)[0]))
 
@@ -22,27 +22,27 @@ rst_flag = 0
 print("[IKPY start]")
 while supervisor.step(timestep) != -1:
 
-    targetPosition = ToArmCoord.convert(target.getPosition())
+    target_position = ToArmCoord.convert(target.getPosition())
 
     # get values from position sensors
-    psValue = Func.getValue(positionSensorList)
-    psValue.append(0)
-    psValue = np.array(psValue)
-    psValue = np.insert(psValue, 0, 0)
+    ps_value = Func.get_value(position_sensors)
+    ps_value.append(0)
+    ps_value = np.array(ps_value)
+    ps_value = np.insert(ps_value, 0, 0)
     
     if rst_flag:
         # get another target
         target = supervisor.getFromDef('TARGET'+str(np.random.randint(1, 10, 1)[0]))
         # reset all motors
-        done = Func.reset_All_motors(motorList, psValue)
+        done = Func.reset_All_motors(motors, ps_value)
         rst_flag = 0 if done else 1
     else:
-        ikResults = armChain.inverse_kinematics(
-            target_position=targetPosition, 
-            initial_position=psValue)
+        ik_results = arm_chain.inverse_kinematics(
+            target_position=target_position,
+            initial_position=ps_value)
         for i in range(7):
-            motorList[i].setPosition(ikResults[i+1])
-            motorList[i].setVelocity(1.0)
+            motors[i].setPosition(ik_results[i+1])
+            motors[i].setVelocity(1.0)
         prec = 0.0001
-        err = np.absolute(np.array(psValue)-np.array(ikResults)) < prec
+        err = np.absolute(np.array(ps_value)-np.array(ik_results)) < prec
         rst_flag = 1 if np.all(err) else 0

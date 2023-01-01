@@ -2,7 +2,7 @@ from numpy import convolve, ones, mean
 import gym
 
 from robot_supervisor import CartPoleRobotSupervisor
-from utilities import plotData
+from utilities import plot_data
 
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_checker import  check_env
@@ -33,14 +33,14 @@ def run():
     
     # Initialize the environment
     obs = env.reset()
-    env.episodeScore = 0
+    env.episode_score = 0
     while True:
         action, _states = model.predict(obs)
         obs, reward, done, _ = env.step(action)
-        env.episodeScore += reward  # Accumulate episode reward
+        env.episode_score += reward  # Accumulate episode reward
 
         if done:
-            print("Reward accumulated =", env.episodeScore)
-            env.episodeScore = 0
+            print("Reward accumulated =", env.episode_score)
+            env.episode_score = 0
             obs = env.reset()
 

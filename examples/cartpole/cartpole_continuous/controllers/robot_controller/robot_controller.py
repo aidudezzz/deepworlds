@@ -14,8 +14,8 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
         """
         super().__init__()
-        self.positionSensor = self.robot.getDevice("polePosSensor")
-        self.positionSensor.enable(self.timestep)
+        self.position_sensor = self.robot.getDevice("polePosSensor")
+        self.position_sensor.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
@@ -44,7 +44,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :return: A list of strings with the robot's observations.
         :rtype: list
         """
-        message = [str(self.positionSensor.getValue())]
+        message = [str(self.position_sensor.getValue())]
         return message
 
     def use_message_data(self, message):
@@ -55,11 +55,11 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :param message: The message the supervisor sent containing the next action.
         :type message: list of strings
         """
-        motorSpeed = float(message[0]) * 5.0  # Scale from [-1.0, 1.0] to [-5.0, 5.0]
+        motor_speed = float(message[0]) * 5.0  # Scale from [-1.0, 1.0] to [-5.0, 5.0]
 
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
-            self.wheels[i].setVelocity(motorSpeed)
+            self.wheels[i].setVelocity(motor_speed)
 
 
 # Create the robot controller object and run it

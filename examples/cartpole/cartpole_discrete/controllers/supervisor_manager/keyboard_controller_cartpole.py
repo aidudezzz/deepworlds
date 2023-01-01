@@ -21,7 +21,7 @@ class KeyboardControllerCartPole(KeyboardPrinter):
 
         "R" invokes the environment's reset method resetting the simulation to its initial state.
         """
-        observation, reward, isDone, info = self.controller.step(action)
+        observation, reward, is_done, info = self.controller.step(action)
         key = self.keyboard.getKey()
 
         if key == ord("T") and not self.controller.test:
@@ -31,4 +31,4 @@ class KeyboardControllerCartPole(KeyboardPrinter):
             print("User invoked reset method.")
             self.controller.reset()
 
-        return observation, reward, isDone, info
+        return observation, reward, is_done, info
