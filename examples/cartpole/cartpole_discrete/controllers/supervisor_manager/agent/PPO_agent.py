@@ -21,7 +21,7 @@ class PPOAgent:
     It uses the Actor and Critic neural network classes defined below.
     """
 
-    def __init__(self, numberOfInputs, numberOfActorOutputs, clip_param=0.2, max_grad_norm=0.5, ppo_update_iters=5,
+    def __init__(self, number_of_inputs, number_of_actor_outputs, clip_param=0.2, max_grad_norm=0.5, ppo_update_iters=5,
                  batch_size=8, gamma=0.99, use_cuda=False, actor_lr=0.001, critic_lr=0.003, seed=None):
         super().__init__()
         if seed is not None:
@@ -36,8 +36,8 @@ class PPOAgent:
         self.use_cuda = use_cuda
 
         # models
-        self.actor_net = Actor(numberOfInputs, numberOfActorOutputs)
-        self.critic_net = Critic(numberOfInputs)
+        self.actor_net = Actor(number_of_inputs, number_of_actor_outputs)
+        self.critic_net = Critic(number_of_inputs)
 
         if self.use_cuda:
             self.actor_net.cuda()
@@ -50,23 +50,23 @@ class PPOAgent:
         # Training stats
         self.buffer = []
 
-    def work(self, agentInput, type_="selectAction"):
+    def work(self, agent_input, type_="selectAction"):
         """
         Forward pass of the PPO agent. Depending on the type_ argument, it either explores by sampling its actor's
         softmax output, or eliminates exploring by selecting the action with the maximum probability (argmax).
 
-        :param agentInput: The actor neural network input vector
-        :type agentInput: vector
+        :param agent_input: The actor neural network input vector
+        :type agent_input: vector
         :param type_: "selectAction" or "selectActionMax", defaults to "selectAction"
         :type type_: str, optional
         """
-        agentInput = from_numpy(np.array(agentInput)).float().unsqueeze(0)  # Add batch dimension with unsqueeze
+        agent_input = from_numpy(np.array(agent_input)).float().unsqueeze(0)  # Add batch dimension with unsqueeze
 
         if self.use_cuda:
-            agentInput = agentInput.cuda()
+            agent_input = agent_input.cuda()
 
         with no_grad():
-            action_prob = self.actor_net(agentInput)
+            action_prob = self.actor_net(agent_input)
 
         if type_ == "selectAction":
             c = Categorical(action_prob)
@@ -97,7 +97,7 @@ class PPOAgent:
         self.actor_net.load_state_dict(actor_state_dict)
         self.critic_net.load_state_dict(critic_state_dict)
 
-    def storeTransition(self, transition):
+    def store_transition(self, transition):
         """
         Stores a transition in the buffer to be used later.
 
@@ -106,19 +106,19 @@ class PPOAgent:
         """
         self.buffer.append(transition)
 
-    def trainStep(self, batchSize=None):
+    def train_step(self, batch_size=None):
         """
         Performs a training step for the actor and critic models, based on transitions gathered in the
         buffer. It then resets the buffer.
 
-        :param batchSize: Overrides agent set batch size, defaults to None
-        :type batchSize: int, optional
+        :param batch_size: Overrides agent set batch size, defaults to None
+        :type batch_size: int, optional
         """
         # Default behaviour waits for buffer to collect at least one batch_size of transitions
-        if batchSize is None:
+        if batch_size is None:
             if len(self.buffer) < self.batch_size:
                 return
-            batchSize = self.batch_size
+            batch_size = self.batch_size
 
         # Extract states, actions, rewards and action probabilities from transitions in buffer
         state = tensor([t.state for t in self.buffer], dtype=torch_float)
@@ -127,26 +127,26 @@ class PPOAgent:
         old_action_log_prob = tensor([t.a_log_prob for t in self.buffer], dtype=torch_float).view(-1, 1)
 
         # Unroll rewards
-        R = 0
-        Gt = []
+        reward_unroll = 0
+        gain = []
         for r in reward[::-1]:
-            R = r + self.gamma * R
-            Gt.insert(0, R)
-        Gt = tensor(Gt, dtype=torch_float)
+            reward_unroll = r + self.gamma * reward_unroll
+            gain.insert(0, reward_unroll)
+        gain = tensor(gain, dtype=torch_float)
 
         # Send everything to cuda if used
         if self.use_cuda:
             state, action, old_action_log_prob = state.cuda(), action.cuda(), old_action_log_prob.cuda()
-            Gt = Gt.cuda()
+            gain = gain.cuda()
 
         # Repeat the update procedure for ppo_update_iters
         for i in range(self.ppo_update_iters):
-            # Create randomly ordered batches of size batchSize from buffer
-            for index in BatchSampler(SubsetRandomSampler(range(len(self.buffer))), batchSize, False):
+            # Create randomly ordered batches of size batch_size from buffer
+            for index in BatchSampler(SubsetRandomSampler(range(len(self.buffer))), batch_size, False):
                 # Calculate the advantage at each step
-                Gt_index = Gt[index].view(-1, 1)
-                V = self.critic_net(state[index])
-                delta = Gt_index - V
+                gain_index = gain[index].view(-1, 1)
+                value = self.critic_net(state[index])
+                delta = gain_index - value
                 advantage = delta.detach()
 
                 # Get the current probabilities
@@ -166,7 +166,7 @@ class PPOAgent:
                 self.actor_optimizer.step()  # Perform training step based on gradients
 
                 # update critic network
-                value_loss = F.mse_loss(Gt_index, V)
+                value_loss = F.mse_loss(gain_index, value)
                 self.critic_net_optimizer.zero_grad()
                 value_loss.backward()
                 nn.utils.clip_grad_norm_(self.critic_net.parameters(), self.max_grad_norm)
@@ -177,11 +177,11 @@ class PPOAgent:
 
 
 class Actor(nn.Module):
-    def __init__(self, numberOfInputs, numberOfOutputs):
+    def __init__(self, number_of_inputs, number_of_outputs):
         super(Actor, self).__init__()
-        self.fc1 = nn.Linear(numberOfInputs, 10)
+        self.fc1 = nn.Linear(number_of_inputs, 10)
         self.fc2 = nn.Linear(10, 10)
-        self.action_head = nn.Linear(10, numberOfOutputs)
+        self.action_head = nn.Linear(10, number_of_outputs)
 
     def forward(self, x):
         x = F.relu(self.fc1(x))
@@ -191,9 +191,9 @@ class Actor(nn.Module):
 
 
 class Critic(nn.Module):
-    def __init__(self, numberOfInputs):
+    def __init__(self, number_of_inputs):
         super(Critic, self).__init__()
-        self.fc1 = nn.Linear(numberOfInputs, 10)
+        self.fc1 = nn.Linear(number_of_inputs, 10)
         self.fc2 = nn.Linear(10, 10)
         self.state_value = nn.Linear(10, 1)
 

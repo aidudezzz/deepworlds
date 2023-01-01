@@ -5,63 +5,63 @@ class ToArmCoord:
 	to arm coordinate (x, -z, y)
 	"""
 	@staticmethod
-	def convert(worldCoord):
+	def convert(world_coord):
 		"""
 		arg:
-			worldCoord: [x, y, z]
+			world_coord: [x, y, z]
 				An array of 3 containing the 3 world coordinate.
 		"""
-		return [worldCoord[0], -worldCoord[2], worldCoord[1]]
+		return [world_coord[0], -world_coord[2], world_coord[1]]
 
 class Func:
 	@staticmethod
-	def getValue(positionSensorList):
+	def get_value(position_sensors):
 		"""
 		Get values from the position sensors
 		"""
-		psValue = []
-		for i in positionSensorList:
-			psValue.append(i.getValue())
-		return psValue
+		ps_value = []
+		for i in position_sensors:
+			ps_value.append(i.getValue())
+		return ps_value
 	
 	@staticmethod
-	def get_All_motors(robot):
+	def get_all_motors(robot):
 		"""
 		Get 7 motors from the robot model
 		"""
-		nameList = ['motor' + str(i + 1) for i in range(7)]
-		motorList = []
-		for i in nameList:
-			motor = robot.getDevice(i)	 # Get the motor handle #positionSensor1
+		names = ['motor' + str(i + 1) for i in range(7)]
+		motors = []
+		for i in names:
+			motor = robot.getDevice(i)	 # Get the motor handle #position_sensor1
 			motor.setPosition(float('inf'))  # Set starting position
 			motor.setVelocity(0.0)  # Zero out starting velocity
-			motorList.append(motor)
-		return motorList
+			motors.append(motor)
+		return motors
 		
 	@staticmethod
-	def get_All_positionSensors(robot, timestep):
+	def get_all_position_sensors(robot, timestep):
 		"""
 		Get 7 position sensors from the robot model
 		"""
-		positionSensorList = []
+		position_sensors = []
 		for i in range(7):
-			positionSensorName = 'positionSensor' + str(i+1)
-			positionSensor = robot.getDevice(positionSensorName)
-			positionSensor.enable(timestep)
-			positionSensorList.append(positionSensor)
-		return positionSensorList
+			name = 'positionSensor' + str(i+1)
+			position_sensor = robot.getDevice(name)
+			position_sensor.enable(timestep)
+			position_sensors.append(position_sensor)
+		return position_sensors
 	
 	@staticmethod
-	def reset_All_motors(motorList, psValue):
+	def reset_all_motors(motors, ps_value):
 		"""
 		Reset 7 motors on the robot model
 		"""
-		resetValue = [0.0, 0.0, 0.0, -0.0698, 0.0, 0.0, 0.0]
+		reset_value = [0.0, 0.0, 0.0, -0.0698, 0.0, 0.0, 0.0]
 
-		for i in range(len(motorList)):
-			motorList[i].setPosition(resetValue[i])  # Set starting position
-			motorList[i].setVelocity(1.0)  # Zero out starting velocity
+		for i in range(len(motors)):
+			motors[i].setPosition(reset_value[i])  # Set starting position
+			motors[i].setVelocity(1.0)  # Zero out starting velocity
 		
 		prec = 0.0001
-		err = np.absolute(np.array(psValue[1:8])-np.array(resetValue)) < prec
+		err = np.absolute(np.array(ps_value[1:8])-np.array(reset_value)) < prec
 		return 1 if np.all(err) else 0

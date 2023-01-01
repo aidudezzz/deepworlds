@@ -10,7 +10,7 @@ class KeyboardControllerPitEscape(KeyboardPrinter):
         print("(simulation window must be in focus)")
         print("------------------------------------")
 
-    def step(self, action, repeatSteps=1):
+    def step(self, action, repeat_steps=1):
         """
         Overriding the default KeyboardPrinter step to add custom keyboard controls for Pit Escape problem.
 
@@ -21,7 +21,7 @@ class KeyboardControllerPitEscape(KeyboardPrinter):
 
         "R" invokes the environment's reset method resetting the simulation to its initial state.
         """
-        observation, reward, isDone, info = self.controller.step(action, repeatSteps)
+        observation, reward, is_done, info = self.controller.step(action, repeat_steps)
         key = self.keyboard.getKey()
 
         if key == ord("T") and not self.controller.test:
@@ -31,4 +31,4 @@ class KeyboardControllerPitEscape(KeyboardPrinter):
             print("User invoked reset method.")
             self.controller.reset()
 
-        return observation, reward, isDone, info
+        return observation, reward, is_done, info

@@ -54,8 +54,8 @@ class PandaRobotSupervisor(RobotSupervisor):
 
         # Set up various robot components
         self.robot = self.getSelf()  # Grab the robot reference from the supervisor to access various robot methods
-        self.positionSensorList = Func.get_All_positionSensors(self, self.timestep)
-        self.endEffector = self.getFromDef("endEffector")
+        self.position_sensors = Func.get_all_position_sensors(self, self.timestep)
+        self.end_effector = self.getFromDef("endEffector")
 
         # Select one of the targets
         self.target = self.getFromDef("TARGET%s"%(np.random.randint(1, 10, 1)[0]))
@@ -63,12 +63,12 @@ class PandaRobotSupervisor(RobotSupervisor):
         self.setup_motors()
 
         # Set up misc
-        self.episodeScore = 0  # Score accumulated during an episode
-        self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
+        self.episode_score = 0  # Score accumulated during an episode
+        self.episode_score_list = []  # A list to save all the episode scores, used to check if task is solved
         
         # Set these to ensure that the robot stops moving
-        self.motorPositionArr = np.zeros(7)
-        self.motorPositionArr_target = np.zeros(7)
+        self.motor_position_values = np.zeros(7)
+        self.motor_position_values_target = np.zeros(7)
         self.distance = float("inf")
         
         # handshaking limit
@@ -84,7 +84,7 @@ class PandaRobotSupervisor(RobotSupervisor):
         """
         # process of negotiation
         prec = 0.0001
-        err = np.absolute(np.array(self.motorPositionArr)-np.array(self.motorPositionArr_target)) < prec
+        err = np.absolute(np.array(self.motor_position_values)-np.array(self.motor_position_values_target)) < prec
         if not np.all(err) and self.cnt_handshaking<20:
             self.cnt_handshaking = self.cnt_handshaking + 1
             return ["StillMoving"]
@@ -92,9 +92,9 @@ class PandaRobotSupervisor(RobotSupervisor):
             self.cnt_handshaking = 0
         # ----------------------
         
-        targetPosition = ToArmCoord.convert(self.target.getPosition())
-        message = [i for i in targetPosition]
-        message.extend([i for i in self.motorPositionArr])
+        target_position = ToArmCoord.convert(self.target.getPosition())
+        message = [i for i in target_position]
+        message.extend([i for i in self.motor_position_values])
         return message
 
     def get_reward(self, action):
@@ -106,13 +106,13 @@ class PandaRobotSupervisor(RobotSupervisor):
         :return: - 2-norm (+ extra points)
         :rtype: float
         """
-        targetPosition = self.target.getPosition()
-        targetPosition = ToArmCoord.convert(targetPosition)
+        target_position = self.target.getPosition()
+        target_position = ToArmCoord.convert(target_position)
 
-        endEffectorPosition = self.endEffector.getPosition()
-        endEffectorPosition = ToArmCoord.convert(endEffectorPosition)
+        end_effector_position = self.end_effector.getPosition()
+        end_effector_position = ToArmCoord.convert(end_effector_position)
 
-        self.distance = np.linalg.norm([targetPosition[0]-endEffectorPosition[0],targetPosition[1]-endEffectorPosition[1],targetPosition[2]-endEffectorPosition[2]])
+        self.distance = np.linalg.norm([target_position[0]-end_effector_position[0],target_position[1]-end_effector_position[1],target_position[2]-end_effector_position[2]])
         reward = -self.distance # - 2-norm
         
         # Extra points
@@ -126,7 +126,7 @@ class PandaRobotSupervisor(RobotSupervisor):
 
     def is_done(self):
         """
-        An episode is done if the distance between "endEffector" and "TARGET" < 0.005 
+        An episode is done if the distance between "end_effector" and "TARGET" < 0.005 
         :return: True if termination conditions are met, False otherwise
         :rtype: bool
         """
@@ -144,8 +144,8 @@ class PandaRobotSupervisor(RobotSupervisor):
         :return: True if task is solved, False otherwise
         :rtype: bool
         """
-        if len(self.episodeScoreList) > 500:  # Over 500 trials thus far
-            if np.mean(self.episodeScoreList[-500:]) > 120.0:  # Last 500 episode scores average value
+        if len(self.episode_score_list) > 500:  # Over 500 trials thus far
+            if np.mean(self.episode_score_list[-500:]) > 120.0:  # Last 500 episode scores average value
                 return True
         return False
 
@@ -156,28 +156,28 @@ class PandaRobotSupervisor(RobotSupervisor):
         :return: Starting observation zero vector
         :rtype: list
         """
-        Obs = [0.0 for _ in range(self.observation_space.shape[0])]
-        Obs[3] = -0.0698
-        return Obs
+        obs = [0.0 for _ in range(self.observation_space.shape[0])]
+        obs[3] = -0.0698
+        return obs
 
-    def motorToRange(self, motorPosition, i):
+    def motor_to_range(self, motor_position, i):
         if(i==0):
-            motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
+            motor_position = np.clip(motor_position, -2.8972, 2.8972)
         elif(i==1):
-            motorPosition = np.clip(motorPosition, -1.7628, 1.7628)
+            motor_position = np.clip(motor_position, -1.7628, 1.7628)
         elif(i==2):
-            motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
+            motor_position = np.clip(motor_position, -2.8972, 2.8972)
         elif(i==3):
-            motorPosition = np.clip(motorPosition, -3.0718, -0.0698)
+            motor_position = np.clip(motor_position, -3.0718, -0.0698)
         elif(i==4):
-            motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
+            motor_position = np.clip(motor_position, -2.8972, 2.8972)
         elif(i==5):
-            motorPosition = np.clip(motorPosition, -0.0175, 3.7525)
+            motor_position = np.clip(motor_position, -0.0175, 3.7525)
         elif(i==6):
-            motorPosition = np.clip(motorPosition, -2.8972, 2.8972)
+            motor_position = np.clip(motor_position, -2.8972, 2.8972)
         else:
             pass
-        return motorPosition
+        return motor_position
 
     def apply_action(self, action):
         """
@@ -190,25 +190,25 @@ class PandaRobotSupervisor(RobotSupervisor):
         # ignore this action and keep moving
         if action[0]==-1 and len(action)==1:
             for i in range(7):
-                self.motorPositionArr[i] = self.positionSensorList[i].getValue()
-                self.motorList[i].setVelocity(MOTOR_VELOCITY)
-                self.motorList[i].setPosition(self.motorPositionArr_target[i])
+                self.motor_position_values[i] = self.position_sensors[i].getValue()
+                self.motor_list[i].setVelocity(MOTOR_VELOCITY)
+                self.motor_list[i].setPosition(self.motor_position_values_target[i])
             return
         
-        self.motorPositionArr = np.array(Func.getValue(self.positionSensorList))
+        self.motor_position_values = np.array(Func.get_value(self.position_sensors))
         for i in range(7):
-            motorPosition = self.motorPositionArr[i] + action[i]
-            motorPosition = self.motorToRange(motorPosition, i)
-            self.motorList[i].setVelocity(MOTOR_VELOCITY)
-            self.motorList[i].setPosition(motorPosition)
-            self.motorPositionArr_target[i]=motorPosition # Update motorPositionArr_target 
+            motor_position = self.motor_position_values[i] + action[i]
+            motor_position = self.motor_to_range(motor_position, i)
+            self.motor_list[i].setVelocity(MOTOR_VELOCITY)
+            self.motor_list[i].setPosition(motor_position)
+            self.motor_position_values_target[i]=motor_position # Update motor_position_values_target 
 
     def setup_motors(self):
         """
         This method initializes the seven motors, storing the references inside a list and setting the starting
         positions and velocities.
         """
-        self.motorList = Func.get_All_motors(self)
+        self.motor_list = Func.get_all_motors(self)
 
     def get_info(self):
         """

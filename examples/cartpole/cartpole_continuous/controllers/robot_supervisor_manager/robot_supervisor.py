@@ -1,5 +1,5 @@
 from deepbots.supervisor.controllers.robot_supervisor import RobotSupervisor
-from utilities import normalizeToRange
+from utilities import normalize_to_range
 
 from gym.spaces import Box, Discrete
 import numpy as np
@@ -64,37 +64,37 @@ class CartPoleRobotSupervisor(RobotSupervisor):
 
         # Set up various robot components
         self.robot = self.getSelf()  # Grab the robot reference from the supervisor to access various robot methods
-        self.positionSensor = self.getDevice("polePosSensor")
-        self.positionSensor.enable(self.timestep)
+        self.position_sensor = self.getDevice("polePosSensor")
+        self.position_sensor.enable(self.timestep)
 
-        self.poleEndpoint = self.getFromDef("POLE_ENDPOINT")
+        self.pole_endpoint = self.getFromDef("POLE_ENDPOINT")
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
 
         # Set up misc
-        self.episodeScore = 0  # Score accumulated during an episode
-        self.episodeScoreList = []  # A list to save all the episode scores, used to check if task is solved
+        self.episode_score = 0  # Score accumulated during an episode
+        self.episode_score_list = []  # A list to save all the episode scores, used to check if task is solved
 
     def get_observations(self):
         """
         This get_observation implementation builds the required observation for the CartPole problem.
-        All values apart are gathered here from the robot and poleEndpoint objects.
+        All values apart are gathered here from the robot and pole_endpoint objects.
         All values are normalized appropriately to [-1, 1], according to their original ranges.
 
-        :return: Observation: [cartPosition, cartVelocity, poleAngle, poleTipVelocity]
+        :return: Observation: [cart_position, cart_velocity, pole_angle, endpoint_velocity]
         :rtype: list
         """
         # Position on x axis
-        cartPosition = normalizeToRange(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
+        cart_position = normalize_to_range(self.robot.getPosition()[0], -0.4, 0.4, -1.0, 1.0)
         # Linear velocity on x axis
-        cartVelocity = normalizeToRange(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
+        cart_velocity = normalize_to_range(self.robot.getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True)
         # Pole angle off vertical
-        poleAngle = normalizeToRange(self.positionSensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
+        pole_angle = normalize_to_range(self.position_sensor.getValue(), -0.23, 0.23, -1.0, 1.0, clip=True)
         # Angular velocity y of endpoint
-        endpointVelocity = normalizeToRange(self.poleEndpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
+        endpoint_velocity = normalize_to_range(self.pole_endpoint.getVelocity()[4], -1.5, 1.5, -1.0, 1.0, clip=True)
 
-        return [cartPosition, cartVelocity, poleAngle, endpointVelocity]
+        return [cart_position, cart_velocity, pole_angle, endpoint_velocity]
 
     def get_reward(self, action):
         """
@@ -115,15 +115,15 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         :return: True if termination conditions are met, False otherwise
         :rtype: bool
         """
-        if self.episodeScore > 195.0:
+        if self.episode_score > 195.0:
             return True
 
-        poleAngle = round(self.positionSensor.getValue(), 2)
-        if abs(poleAngle) > 0.261799388:  # 15 degrees off vertical
+        pole_angle = round(self.position_sensor.getValue(), 2)
+        if abs(pole_angle) > 0.261799388:  # 15 degrees off vertical
             return True
 
-        cartPosition = round(self.robot.getPosition()[0], 2)  # Position on x axis
-        if abs(cartPosition) > 0.39:
+        cart_position = round(self.robot.getPosition()[0], 2)  # Position on x axis
+        if abs(cart_position) > 0.39:
             return True
 
         return False
@@ -136,8 +136,8 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         :return: True if task is solved, False otherwise
         :rtype: bool
         """
-        if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-100:]) > 195.0:  # Last 100 episode scores average value
+        if len(self.episode_score_list) > 100:  # Over 100 trials thus far
+            if np.mean(self.episode_score_list[-100:]) > 195.0:  # Last 100 episode scores average value
                 return True
         return False
 
@@ -158,11 +158,11 @@ class CartPoleRobotSupervisor(RobotSupervisor):
         :param action: The message the supervisor sent containing the next action.
         :type action: list of strings
         """
-        motorSpeed = float(action[0]) * 5.0  # Scale from [-1.0, 1.0] to [-5.0, 5.0]
+        motor_speed = float(action[0]) * 5.0  # Scale from [-1.0, 1.0] to [-5.0, 5.0]
 
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
-            self.wheels[i].setVelocity(motorSpeed)
+            self.wheels[i].setVelocity(motor_speed)
 
     def setup_motors(self):
         """

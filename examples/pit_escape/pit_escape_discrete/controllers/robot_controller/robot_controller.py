@@ -16,21 +16,21 @@ class PitEscapeRobot(RobotEmitterReceiverCSV):
         """
         super().__init__()
         # Set up sensors
-        self.gyroSensor = self.robot.getDevice("body gyro")
-        self.gyroSensor.enable(self.timestep)
-        self.accelerometerSensor = self.robot.getDevice("body accelerometer")
-        self.accelerometerSensor.enable(self.timestep)
+        self.gyro_sensor = self.robot.getDevice("body gyro")
+        self.gyro_sensor.enable(self.timestep)
+        self.accelerometer_sensor = self.robot.getDevice("body accelerometer")
+        self.accelerometer_sensor.enable(self.timestep)
 
         # Max possible speed for the motor
-        self.maxSpeed = 8.72
+        self.max_speed = 8.72
 
         # Configuration of the main motors of the robot
-        self.pitchMotor = self.robot.getDevice("body pitch motor")
-        self.yawMotor = self.robot.getDevice("body yaw motor")
-        self.pitchMotor.setPosition(float('inf'))
-        self.yawMotor.setPosition(float('inf'))
-        self.pitchMotor.setVelocity(0.0)
-        self.yawMotor.setVelocity(0.0)
+        self.pitch_motor = self.robot.getDevice("body pitch motor")
+        self.yaw_motor = self.robot.getDevice("body yaw motor")
+        self.pitch_motor.setPosition(float('inf'))
+        self.yaw_motor.setPosition(float('inf'))
+        self.pitch_motor.setVelocity(0.0)
+        self.yaw_motor.setVelocity(0.0)
 
     def create_message(self):
         """
@@ -40,18 +40,18 @@ class PitEscapeRobot(RobotEmitterReceiverCSV):
         :return: A list of strings with the robot's observations.
         :rtype: list
         """
-        gyroValues = self.gyroSensor.getValues()
-        accelerometerValues = self.accelerometerSensor.getValues()
-        if True in isnan(gyroValues):
+        gyro_values = self.gyro_sensor.getValues()
+        accelerometer_values = self.accelerometer_sensor.getValues()
+        if True in isnan(gyro_values):
             # A nan is found in the sensor values
             message = ["0" for _ in range(3)]
         else:
-            message = [str(gyroValues[i]) for i in range(len(gyroValues))]
-        if True in isnan(accelerometerValues):
+            message = [str(gyro_values[i]) for i in range(len(gyro_values))]
+        if True in isnan(accelerometer_values):
             # A nan is found in the sensor values
             message.extend(["0" for _ in range(3)])
         else:
-            message.extend([str(accelerometerValues[i]) for i in range(len(accelerometerValues))])
+            message.extend([str(accelerometer_values[i]) for i in range(len(accelerometer_values))])
 
         return message
 
@@ -64,27 +64,27 @@ class PitEscapeRobot(RobotEmitterReceiverCSV):
         :param message: The message the supervisor sent containing the next action.
         :type message: list of strings
         """
-        pitchSpeed = 0
-        yawSpeed = 0
+        pitch_speed = 0
+        yaw_speed = 0
         action = int(message[0])
         # print("new action:", end="")
         if action == 0:
             # print("pitch +")
-            pitchSpeed = self.maxSpeed
+            pitch_speed = self.max_speed
         elif action == 1:
             # print("pitch -")
-            pitchSpeed = -self.maxSpeed
+            pitch_speed = -self.max_speed
         elif action == 2:
             # print("yaw +")
-            yawSpeed = self.maxSpeed
+            yaw_speed = self.max_speed
         elif action == 3:
             # print("yaw -")
-            yawSpeed = -self.maxSpeed
+            yaw_speed = -self.max_speed
 
-        self.pitchMotor.setPosition(float('inf'))
-        self.yawMotor.setPosition(float('inf'))
-        self.pitchMotor.setVelocity(pitchSpeed)
-        self.yawMotor.setVelocity(yawSpeed)
+        self.pitch_motor.setPosition(float('inf'))
+        self.yaw_motor.setPosition(float('inf'))
+        self.pitch_motor.setVelocity(pitch_speed)
+        self.yaw_motor.setVelocity(yaw_speed)
 
 
 # Create the robot controller object and run it

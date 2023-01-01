@@ -6,7 +6,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
     CartPole robot has 4 wheels and pole connected by an unactuated hinge to its body.
     The hinge contains a Position Sensor device to measure the angle from vertical needed in the observation.
     Hinge: https://cyberbotics.com/doc/reference/hingejoint
-    Position Sensor: https://cyberbotics.com/doc/reference/positionsensor
+    Position Sensor: https://cyberbotics.com/doc/reference/position_sensor
     """
 
     def __init__(self):
@@ -14,8 +14,8 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
         """
         super().__init__()
-        self.positionSensor = self.robot.getDevice("polePosSensor")
-        self.positionSensor.enable(self.timestep)
+        self.position_sensor = self.robot.getDevice("polePosSensor")
+        self.position_sensor.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
@@ -44,14 +44,14 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :return: A list of strings with the robot's observations.
         :rtype: list
         """
-        message = [str(self.positionSensor.getValue())]
+        message = [str(self.position_sensor.getValue())]
         return message
 
     def use_message_data(self, message):
         """
         This method unpacks the supervisor's message, which contains the next action to be executed by the robot.
         In this case it contains an integer denoting the action, either 0 or 1, with 0 being forward and
-        1 being backward movement. The corresponding motorSpeed value is applied to the wheels.
+        1 being backward movement. The corresponding motor_speed value is applied to the wheels.
 
         :param message: The message the supervisor sent containing the next action.
         :type message: list of strings
@@ -61,13 +61,13 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         assert action == 0 or action == 1, "CartPoleRobot controller got incorrect action value: " + str(action)
 
         if action == 0:
-            motorSpeed = 5.0
+            motor_speed = 5.0
         else:
-            motorSpeed = -5.0
+            motor_speed = -5.0
 
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
-            self.wheels[i].setVelocity(motorSpeed)
+            self.wheels[i].setVelocity(motor_speed)
 
 
 # Create the robot controller object and run it

@@ -2,62 +2,62 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def normalizeToRange(value, minVal, maxVal, newMin, newMax, clip=False):
+def normalize_to_range(value, min_val, max_val, new_min, new_max, clip=False):
     """
     Normalizes value to a specified new range by supplying the current range.
 
     :param value: value to be normalized
     :type value: float
-    :param minVal: value's min value, value ∈ [minVal, maxVal]
-    :type minVal: float
-    :param maxVal: value's max value, value ∈ [minVal, maxVal]
-    :type maxVal: float
-    :param newMin: normalized range min value
-    :type newMin: float
-    :param newMax: normalized range max value
-    :type newMax: float
+    :param min_val: value's min value, value ∈ [min_val, max_val]
+    :type min_val: float
+    :param max_val: value's max value, value ∈ [min_val, max_val]
+    :type max_val: float
+    :param new_min: normalized range min value
+    :type new_min: float
+    :param new_max: normalized range max value
+    :type new_max: float
     :param clip: whether to clip normalized value to new range or not, defaults to False
     :type clip: bool, optional
-    :return: normalized value ∈ [newMin, newMax]
+    :return: normalized value ∈ [new_min, new_max]
     :rtype: float
     """
     value = float(value)
-    minVal = float(minVal)
-    maxVal = float(maxVal)
-    newMin = float(newMin)
-    newMax = float(newMax)
+    min_val = float(min_val)
+    max_val = float(max_val)
+    new_min = float(new_min)
+    new_max = float(new_max)
 
     if clip:
-        return np.clip((newMax - newMin) / (maxVal - minVal) * (value - maxVal) + newMax, newMin, newMax)
+        return np.clip((new_max - new_min) / (max_val - min_val) * (value - max_val) + new_max, new_min, new_max)
     else:
-        return (newMax - newMin) / (maxVal - minVal) * (value - maxVal) + newMax
+        return (new_max - new_min) / (max_val - min_val) * (value - max_val) + new_max
 
 
-def plotData(data, xLabel, yLabel, plotTitle, save=False, saveName=None):
+def plot_data(data, x_label, y_label, plot_title, save=False, save_name=None):
     """
     Uses matplotlib to plot data.
 
     :param data: List of data to plot
     :type data: list
-    :param xLabel: Label on x axis
-    :type xLabel: str
-    :param yLabel: Label on y axis
-    :type yLabel: str
-    :param plotTitle: Plot title
-    :type plotTitle: str
+    :param x_label: Label on x axis
+    :type x_label: str
+    :param y_label: Label on y axis
+    :type y_label: str
+    :param plot_title: Plot title
+    :type plot_title: str
     :param save: Whether to save plot automatically or not, defaults to False
     :type save: bool, optional
-    :param saveName: Filename of saved plot, defaults to None
-    :type saveName: str, optional
+    :param save_name: Filename of saved plot, defaults to None
+    :type save_name: str, optional
     """
     fig, ax = plt.subplots()
     ax.plot(data)
-    ax.set(xlabel=xLabel, ylabel=yLabel,
-           title=plotTitle)
+    ax.set(xlabel=x_label, ylabel=y_label,
+           title=plot_title)
     ax.grid()
     if save:
-        if saveName is not None:
-            fig.savefig(saveName)
+        if save_name is not None:
+            fig.savefig(save_name)
         else:
             fig.savefig("figure")
     plt.show()

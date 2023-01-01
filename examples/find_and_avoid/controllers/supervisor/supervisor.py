@@ -26,7 +26,7 @@ class FindTargetSupervisor(SupervisorCSV):
         self.target_name = target
         self.robot = self.getFromDef(robot)
         self.target = self.getFromDef(target)
-        self.findThreshold = 0.05
+        self.find_threshold = 0.05
         self.steps = 0
         self.steps_threshold = 500
         self.message = []
@@ -59,22 +59,22 @@ class FindTargetSupervisor(SupervisorCSV):
                                              DIST_SENSORS_MM['min'],
                                              DIST_SENSORS_MM['max'], 0, 1))
 
-            distanceFromTarget = utils.get_distance_from_target(
+            distance_from_target = utils.get_distance_from_target(
                 self.robot, self.target)
-            self.message.append(distanceFromTarget)
-            distanceFromTarget = utils.normalize_to_range(
-                distanceFromTarget, EUCL_MM['min'], EUCL_MM['max'], 0, 1)
-            observation.append(distanceFromTarget)
+            self.message.append(distance_from_target)
+            distance_from_target = utils.normalize_to_range(
+                distance_from_target, EUCL_MM['min'], EUCL_MM['max'], 0, 1)
+            observation.append(distance_from_target)
 
-            angleFromTarget = utils.get_angle_from_target(self.robot,
+            angle_from_target = utils.get_angle_from_target(self.robot,
                                                           self.target,
                                                           is_true_angle=True,
                                                           is_abs=False)
-            self.message.append(angleFromTarget)
-            angleFromTarget = utils.normalize_to_range(angleFromTarget,
+            self.message.append(angle_from_target)
+            angle_from_target = utils.normalize_to_range(angle_from_target,
                                                        ANGLE_MM['min'],
                                                        ANGLE_MM['max'], 0, 1)
-            observation.append(angleFromTarget)
+            observation.append(angle_from_target)
 
         else:
             observation = [0 for i in range(OBSERVATION_SPACE)]
@@ -108,7 +108,7 @@ class FindTargetSupervisor(SupervisorCSV):
             self.pre_distance = cur_distance
             
         # # (3) Find the target
-        # if utils.get_distance_from_target(self.robot, self.target) < self.findThreshold:
+        # if utils.get_distance_from_target(self.robot, self.target) < self.find_threshold:
         #     reward += 5
 
         # # (4) Action 1 (gas) or Action 0 (turning) should <= 1.5
@@ -131,7 +131,7 @@ class FindTargetSupervisor(SupervisorCSV):
         self.steps += 1
         distance = utils.get_distance_from_target(self.robot, self.target)
 
-        if distance < self.findThreshold:
+        if distance < self.find_threshold:
             print("======== + Solved + ========")
             self.is_solved = True
             return True
@@ -191,8 +191,8 @@ if __name__ == '__main__':
     score_history = []
 
     np.random.seed(0)
-    N_episode = 600
-    for i in range(N_episode+1):
+    n_episode = 600
+    for i in range(n_episode+1):
         done = False
         score = 0
         obs = list(map(float, supervisor_env.reset()))
