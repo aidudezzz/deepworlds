@@ -1,0 +1,5 @@
+deepbots>=0.1.3.dev4
+sb3-contrib
+stable-baselines3
+numpy
+torch

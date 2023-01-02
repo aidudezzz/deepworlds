@@ -1,0 +1,82 @@
+{
+    "experiment_description": "The baseline agent trained on default parameters.",
+    "seed": 1,
+    "n_steps:": 2048,
+    "batch_size": 64,
+    "maximum_episode_steps": 16384,
+    "add_action_to_obs": true,
+    "step_window": 1,
+    "seconds_window": 1,
+    "ds_params": {
+        "max range": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+        ],
+        "type": "sonar",
+        "rays": 4,
+        "aperture": 0.1,
+        "resolution": -1.0,
+        "noise": 0.025,
+        "minimum thresholds": [
+            8.0,
+            8.0,
+            8.0,
+            10.15,
+            14.7,
+            13.15,
+            12.7,
+            13.15,
+            14.7,
+            10.15,
+            8.0,
+            8.0,
+            8.0
+        ]
+    },
+    "rewards_weights": {
+        "dist_tar": 1.0,
+        "ang_tar": 1.0,
+        "dist_sensors": 10.0,
+        "tar_reach": 1000.0,
+        "collision": 100.0,
+        "smoothness_weight": 0.0,
+        "speed_weight": 0.0
+    },
+    "map_width": 7,
+    "map_height": 7,
+    "cell_size": [
+        0.5,
+        0.5
+    ],
+    "difficulty": {},
+    "ppo_params": {
+        "net_arch": {
+            "pi": [
+                1024,
+                512,
+                256
+            ],
+            "vf": [
+                2048,
+                1024,
+                512
+            ]
+        },
+        "gamma": 0.999,
+        "gae_lambda": 0.95,
+        "target_kl": null,
+        "vf_coef": 0.5,
+        "ent_coef": 0.001
+    }
+}
