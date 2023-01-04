@@ -24,10 +24,23 @@ def get_distance_from_target(robot_node, target_node):
 
 def get_angle_from_target(robot_node,
                           target_node,
-                          is_true_angle=False,
                           is_abs=False):
-
-    robot_angle = robot_node.getField('rotation').getSFRotation()[3]
+    """
+    Returns the angle between the facing vector of the robot and the target position.
+    Explanation can be found here https://math.stackexchange.com/a/14180.
+    :param robot_node: The robot Webots node
+    :type robot_node: controller.node.Node
+    :param target_node: The target Webots node
+    :type target_node: controller.node.Node
+    :param is_abs: Whether to return the absolute value of the angle.
+    :type is_abs: bool
+    :return: The angle between the facing vector of the robot and the target position
+    :rtype: float, [-π, π]
+    """
+    # The sign of the z-axis is needed to flip the rotation sign, because Webots seems to randomly
+    # switch between positive and negative z-axis as the robot rotates.
+    robot_rotation = robot_node.getField('rotation').getSFRotation()
+    robot_angle = robot_rotation[3] if robot_rotation[2] > 0 else -robot_rotation[3]
 
     robot_coordinates = robot_node.getField('translation').getSFVec3f()
     target_coordinate = target_node.getField('translation').getSFVec3f()
@@ -35,24 +48,5 @@ def get_angle_from_target(robot_node,
     x_r = (target_coordinate[0] - robot_coordinates[0])
     y_r = (target_coordinate[1] - robot_coordinates[1])
 
-    y_r = -y_r
-
-    # robotWorldAngle = math.atan2(robot_coordinates[1], robot_coordinates[0])
-
-    if robot_angle < 0.0: robot_angle += 2 * np.pi
-
-    x_f = x_r * math.sin(robot_angle) - \
-          y_r * math.cos(robot_angle)
-
-    y_f = x_r * math.cos(robot_angle) + \
-          y_r * math.sin(robot_angle)
-
-    # print("x_f: {} , y_f: {}".format(x_f, y_f) )
-    if is_true_angle:
-        x_f = -x_f
-    angle_diff = math.atan2(y_f, x_f)
-
-    if is_abs:
-        angle_diff = abs(angle_diff)
-
-    return angle_diff
+    angle_diff = math.remainder(math.atan2(y_r, x_r) - robot_angle, math.tau)
+    return abs(angle_diff) if is_abs else angle_diff

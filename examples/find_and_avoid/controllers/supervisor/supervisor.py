@@ -66,10 +66,7 @@ class FindTargetSupervisor(SupervisorCSV):
                 distance_from_target, EUCL_MM['min'], EUCL_MM['max'], 0, 1)
             observation.append(distance_from_target)
 
-            angle_from_target = utils.get_angle_from_target(self.robot,
-                                                          self.target,
-                                                          is_true_angle=True,
-                                                          is_abs=False)
+            angle_from_target = utils.get_angle_from_target(self.robot, self.target, is_abs=False)
             self.message.append(angle_from_target)
             angle_from_target = utils.normalize_to_range(angle_from_target,
                                                        ANGLE_MM['min'],
