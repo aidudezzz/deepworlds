@@ -22,7 +22,7 @@ for a beginner's in-depth introduction to the way the deepbots framework is used
 
 2. Install specific packages for each example you want to use by running the following:
    ```
-   pip install -r <path to requirements file> --extra-index-url https://test.pypi.org/simple/
+   pip install -r <path to requirements file>
    ``` 
    You can find the requirement files on the `/requirements/<example-name>.txt` path of each example, 
    e.g., [/examples/cartpole/cartpole_discrete/requirements/](./examples/cartpole/cartpole_discrete/requirements).
