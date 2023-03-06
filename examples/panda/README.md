@@ -5,15 +5,6 @@
 The Panda robot model was made from [these files](https://github.com/mkrizmancic/franka_gazebo/tree/master/meshes).\
 We are trying to solve some interesting problems with reinforcement learning and finally deploy the models in the real world.
 
-## Installation
-1. [Install Webots R2021a](https://www.cyberbotics.com/)
-2. Install Python versions 3.8
-    * Follow the Using Python guide provided by Webots
-3. Install deepbots 0.1.3.dev2 through pip running the following command:\
-<code>pip install -i https://test.pypi.org/simple/ deepbots</code>
-4. Install PyTorch via pip
-* If you want to solve this task with IKPY, please [install IKPY](https://pypi.org/project/ikpy/) and switch to IKPY controller.
-
 ## Goal reaching with a 7-DoF Panda robotic arm
 The goal is to train an agent to reach the randomly selected goal within limited steps.\
 Here, the problem is solved with the [Deep Deterministic Policy Gradient RL algorithm](https://arxiv.org/abs/1509.02971). The agent observes its seven motor positions and the Cartesian coordinates of the selected goal, and then controls the seven motor positions. 
@@ -21,7 +12,7 @@ Here, the problem is solved with the [Deep Deterministic Policy Gradient RL algo
 |----------------------|-----------------------|
 |![image](https://github.com/KelvinYang0320/deepworlds/blob/dev/examples/panda/doc/demo.gif)|![image](https://github.com/KelvinYang0320/deepworlds/blob/dev/examples/panda/doc/trend.png)|
 
-
+If you want to solve this task with [IKPY](https://pypi.org/project/ikpy/), you can switch to [IKPY controller](./panda_goal_reaching/controllers/IKPY/).
 
 ## Acknowledgments
 This project is part of the System Integration Implementation teamwork, an undergraduate course supervised by [Prof. Chih-Tsun Huang](http://www.cs.nthu.edu.tw/~cthuang) of [Dept. of Computer Science, National Tsing Hua University](http://dcs.site.nthu.edu.tw/).\
