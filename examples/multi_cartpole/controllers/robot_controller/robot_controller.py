@@ -1,4 +1,5 @@
-from deepbots.robots.controllers.robot_emitter_receiver_csv import RobotEmitterReceiverCSV
+from deepbots.robots.controllers.robot_emitter_receiver_csv import \
+    RobotEmitterReceiverCSV
 
 
 class CartPoleRobot(RobotEmitterReceiverCSV):
@@ -8,7 +9,6 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
     Hinge: https://cyberbotics.com/doc/reference/hingejoint
     Position Sensor: https://cyberbotics.com/doc/reference/positionsensor
     """
-
     def __init__(self):
         """
         The constructor gets the Position Sensor reference and enables it and also initializes the wheels.
@@ -22,19 +22,21 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         self.emitter.setChannel(self.robot_num)
         self.reciever.setChannel(self.robot_num)
 
-        self.positionSensor = self.robot.getDevice("polePosSensor")
-        self.positionSensor.enable(self.timestep)
+        self.pole_position = self.robot.getDevice("polePosSensor")
+        self.pole_position.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
         self.setup_motors()
 
-    def initialize_comms(self, emitter_name="emitter", receiver_name="receiver"):
+    def initialize_comms(self,
+                         emitter_name="emitter",
+                         receiver_name="receiver"):
         emitter = self.robot.getDevice(emitter_name)
         receiver = self.robot.getDevice(receiver_name)
         receiver.enable(self.timestep)
 
         return emitter, receiver
-    
+
     def setup_motors(self):
         """
         This method initializes the four wheels, storing the references inside a list and setting the starting
@@ -59,7 +61,8 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :return: A list of strings with the robot's observations.
         :rtype: list
         """
-        message = [self.positionSensor.getValue()]
+        message = [self.pole_position.getValue()]
+
         return message
 
     def handle_receiver(self):
@@ -88,7 +91,8 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         """
         action = int(message[0])
 
-        assert action == 0 or action == 1, "CartPoleRobot controller got incorrect action value: " + str(action)
+        assert action == 0 or action == 1, "CartPoleRobot controller got incorrect action value: " + str(
+            action)
 
         if action == 0:
             motorSpeed = 5.0
@@ -113,11 +117,12 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
 
         string_message = string_message.encode("utf-8")
         self.emitter.send(string_message)
-    
+
     def run(self):
         while self.robot.step(self.timestep) != 1:
             self.handle_receiver()
             self.handle_emitter()
+
 
 # Create the robot controller object and run it
 robot_controller = CartPoleRobot()

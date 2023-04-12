@@ -1,8 +1,11 @@
-from deepbots.supervisor.controllers.supervisor_env import SupervisorEnv
 import numpy as np
 from controller import Supervisor
-from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
+from deepbots.supervisor.controllers.supervisor_emitter_receiver import \
+    SupervisorCSV
+from deepbots.supervisor.controllers.supervisor_env import SupervisorEnv
+
 from utilities import normalizeToRange
+
 
 class CartPoleSupervisor(SupervisorEnv):
     """
@@ -44,7 +47,6 @@ class CartPoleSupervisor(SupervisorEnv):
         Episode length is greater than 200
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
-
     def __init__(self, num_robots=9):
         """
         In the constructor, the agent object is created.
@@ -62,14 +64,31 @@ class CartPoleSupervisor(SupervisorEnv):
 
         self.observationSpace = 4
         self.actionSpace = 2
-        self.robot = [self.getFromDef("ROBOT" + str(i)) for i in range(self.num_robots)]
-        self.initPositions = [self.robot[i].getField("translation").getSFVec3f() for i in range(self.num_robots)]
-        self.poleEndpoint = [self.getFromDef("POLE_ENDPOINT_" + str(i)) for i in range(self.num_robots)]
+        self.robot = [
+            self.getFromDef("ROBOT" + str(i)) for i in range(self.num_robots)
+        ]
 
-        self.messageReceived = None                     # Variable to save the messages received from the robots
-        self.episodeScore = 0                           # Score accumulated during an episode
-        self.episodeScoreList = []                      # A list to save all the episode scores, used to check if task is solved
-        self.test = False                               # Whether the agent is in test mode
+        self.poleEndpoint = [
+            self.getFromDef("POLE_ENDPOINT_" + str(i))
+            for i in range(self.num_robots)
+        ]
+
+        # self.pole_sensor = [
+        #     self.getFromDevice('POLE_POS_SENSOR_' + str(i))
+        #     for i in range(self.num_robots)
+        # ]
+
+        self.messageReceived = None  # Variable to save the messages received from the robots
+        self.episodeScore = 0  # Score accumulated during an episode
+        self.episodeScoreList = [
+        ]  # A list to save all the episode scores, used to check if task is solved
+        self.test = False  # Whether the agent is in test mode
+
+        self.init_positions = [
+            self.robot[i].getPosition()[0] for i in range(self.num_robots)
+        ]
+
+        print('Init positions:', self.init_positions)
 
     def initialize_comms(self):
         """
@@ -120,6 +139,7 @@ class CartPoleSupervisor(SupervisorEnv):
         Emits actions to the robots through robot specific emitter channels
         """
         for i, action in enumerate(actions):
+
             message = str(action).encode("utf-8")
             self.communication[i]['emitter'].send(message)
 
@@ -139,7 +159,7 @@ class CartPoleSupervisor(SupervisorEnv):
                 messages.append(None)
 
         return messages
-    
+
     def get_observations(self):
         """
         This get_observation implementation builds the required observations for the MultiCartPole problem.
@@ -152,32 +172,51 @@ class CartPoleSupervisor(SupervisorEnv):
                               [cartPosition9, cartVelocity9, poleAngle9, poleTipVelocity9]]
         :rtype: list(list(list(float), list(float), float, float))   
         """
+        self.messageReceived = np.array(
+            list(map(float, self.handle_receiver())))
+
         # Position on z axis
-        cartPosition = [normalizeToRange(self.robot[i].getPosition()[0], -0.4, 0.4, -1.0, 1.0) for i in range(self.num_robots)]
-
-        # Linear velocity on z axis
-        cartVelocity = [normalizeToRange(self.robot[i].getVelocity()[0], -0.2, 0.2, -1.0, 1.0, clip=True) for i in range(self.num_robots)]
-
-        self.messageReceived = self.handle_receiver()
-
-        poleAngle = [None for _ in range(self.num_robots)]
-
-        for i, message in enumerate(self.messageReceived):    
-            if message is not None:
-                poleAngle[i] = normalizeToRange(message, -0.23, 0.23, -1.0, 1.0, clip=True)
-            else:
-                # method is called before messageReceived is initialized
-                poleAngle = [0.0 for _ in range(self.num_robots)]
-
-        # Angular velocity x of endpoint
-        endpointVelocity = [normalizeToRange(self.poleEndpoint[i].getVelocity()[3], -1.5, 1.5, -1.0, 1.0, clip=True) for i in range(self.num_robots)]
+        relative_positions = [
+            self.robot[i].getPosition()[0] - self.init_positions[i]
+            for i in range(self.num_robots)
+        ]
 
 
-        observations = [None for _ in range(self.num_robots)]
+        cart_positions, cart_velocities, pole_angles, endpoint_velocities = [], [], [], []
         for i in range(self.num_robots):
-            observations[i] = [cartPosition[i], cartVelocity[i], poleAngle[i], endpointVelocity[i]]
-        
-        return observations
+            # Position on x axis
+            cart_positions.append(
+                normalizeToRange(relative_positions[i], -0.4, 0.4, -1.0, 1.0))
+
+            # Linear velocity on x axis
+            cart_velocities.append(
+                normalizeToRange(self.robot[i].getVelocity()[4],
+                                 -0.2,
+                                 0.2,
+                                 -1.0,
+                                 1.0,
+                                 clip=True))
+            # Pole angle off vertical
+            pole_angles.append(
+                normalizeToRange(self.messageReceived[i],
+                                 -0.23,
+                                 0.23,
+                                 -1.0,
+                                 1.0,
+                                 clip=True))
+
+            # Angular velocity y of endpoint
+            endpoint_velocities.append(
+                normalizeToRange(self.poleEndpoint[i].getVelocity()[4],
+                                 -1.5,
+                                 1.5,
+                                 -1.0,
+                                 1.0,
+                                 clip=True))
+
+        return np.array([
+            cart_positions, cart_velocities, pole_angles, endpoint_velocities
+        ]).T
 
     def get_reward(self, action=None):
         """
@@ -188,7 +227,8 @@ class CartPoleSupervisor(SupervisorEnv):
         :return: Always 1
         :rtype: int
         """
-        return 1
+
+        return (np.abs(self.messageReceived) < 0.261799388).astype(int)
 
     def is_done(self):
         """
@@ -202,19 +242,15 @@ class CartPoleSupervisor(SupervisorEnv):
         if self.episodeScore > 195.0:
             return True
 
-        if None not in self.messageReceived:                                    # Identify which part of the message list comes from which robot
-            poleAngle = []
-            for i, message in enumerate(self.messageReceived):
-                poleAngle.append(round(float(message), 2))
-
-        else:                                                                   # if method is called before messageReceived is initialized
-            poleAngle = [0.0 for _ in range(self.num_robots)]
-        
-        if not all(abs(x) < 0.261799388 for x in poleAngle):                    # 15 degrees off vertical
+        if not any(np.abs(self.messageReceived) < 0.261799388
+                   ):  # 15 degrees off vertical
             return True
 
-        cartPosition = [round(self.robot[i].getPosition()[0] - self.initPositions[i][0], 2) for i in range(self.num_robots)]      
-        if not all(abs(x) < 0.89 for x in cartPosition):
+        relative_positions = np.array([
+            self.robot[i].getPosition()[0] - self.init_positions[i]
+            for i in range(self.num_robots)
+        ])
+        if not any(np.abs(relative_positions) < 0.89):
             return True
 
         return False
@@ -251,8 +287,9 @@ class CartPoleSupervisor(SupervisorEnv):
         :return: True if task is solved, False otherwise
         :rtype: bool
         """
-        if len(self.episodeScoreList) > 100:                         # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-100:]) > 195.0:        # Last 100 episode scores average value
+        if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
+            if np.mean(self.episodeScoreList[-100:]
+                       ) > 195.0:  # Last 100 episode scores average value
                 return True
         return False
 
@@ -260,7 +297,7 @@ class CartPoleSupervisor(SupervisorEnv):
         """
         Used to reset the world to an initial state. Default, problem-agnostic, implementation of reset method,
         using Webots-provided methods.
-        
+
         *Note that this works properly only with Webots versions >R2020b and must be overridden with a custom reset method when using
         earlier versions. It is backwards compatible due to the fact that the new reset method gets overridden by whatever the user
         has previously implemented, so an old supervisor can be migrated easily to use this class.
