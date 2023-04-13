@@ -5,7 +5,7 @@ from agent.PPO_agent import PPOAgent, Transition
 from supervisor_controller import CartPoleSupervisor
 from utilities import plotData
 
-#Change these variables if needed
+# Change these variables if needed
 EPISODE_LIMIT = 5000
 STEPS_PER_EPISODE = 200
 NUM_ROBOTS = 9
@@ -13,7 +13,7 @@ NUM_ROBOTS = 9
 
 def run():
     # Initialize supervisor object
-    supervisorEnv = CartPoleSupervisor()
+    supervisorEnv = CartPoleSupervisor(num_robots=NUM_ROBOTS)
 
     episodeCount = 0
 
@@ -35,8 +35,7 @@ def run():
 
     # Run outer loop until the episodes limit is reached or the task is solved
     while not solved and episodeCount < EPISODE_LIMIT:
-        state = supervisorEnv.reset(
-        )  # Reset robots and get starting observation)
+        state = supervisorEnv.reset()  # Reset robots and get starting observation
         supervisorEnv.episodeScore = 0
         action_probs = []
         # Inner loop is the episode loop
@@ -56,7 +55,7 @@ def run():
 
             # Save the current state transitions from all robots in agent's memory
             for i in range(NUM_ROBOTS):
-                agent.storeTransition(
+                agent.store_transition(
                     Transition(state[i], selectedActions[i], action_probs[i],
                                reward[i], newState[i]))
 
@@ -66,7 +65,7 @@ def run():
                 # Save the episode's score
                 supervisorEnv.episodeScoreList.append(
                     supervisorEnv.episodeScore)
-                agent.trainStep(batchSize=step + 1)
+                agent.train_step(batch_size=step + 1)
                 solved = supervisorEnv.solved(
                 )  # Check whether the task is solved
                 break
@@ -88,7 +87,7 @@ def run():
     movingAvgN = 10
     plotData(
         convolve(supervisorEnv.episodeScoreList,
-                 ones((movingAvgN, )) / movingAvgN,
+                 ones((movingAvgN,)) / movingAvgN,
                  mode='valid'), "episode", "episode score",
         "Episode scores over episodes")
 
