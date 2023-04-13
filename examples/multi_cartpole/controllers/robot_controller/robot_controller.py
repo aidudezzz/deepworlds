@@ -1,8 +1,7 @@
-from deepbots.robots.controllers.robot_emitter_receiver_csv import \
-    RobotEmitterReceiverCSV
+from deepbots.robots import CSVRobot
 
 
-class CartPoleRobot(RobotEmitterReceiverCSV):
+class CartPoleRobot(CSVRobot):
     """
     CartPole robot has 4 wheels and pole connected by an unactuated hinge to its body.
     The hinge contains a Position Sensor device to measure the angle from vertical needed in the observation.
@@ -15,14 +14,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         """
         super().__init__()
 
-        self.robot_num = int(self.robot.getName()[-1])
-        self.timestep = int(self.robot.getBasicTimeStep())
-
-        self.emitter, self.reciever = self.initialize_comms()
-        self.emitter.setChannel(self.robot_num)
-        self.reciever.setChannel(self.robot_num)
-
-        self.pole_position = self.robot.getDevice("polePosSensor")
+        self.pole_position = self.getDevice("polePosSensor")
         self.pole_position.enable(self.timestep)
 
         self.wheels = [None for _ in range(4)]
@@ -31,9 +23,11 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
     def initialize_comms(self,
                          emitter_name="emitter",
                          receiver_name="receiver"):
-        emitter = self.robot.getDevice(emitter_name)
-        receiver = self.robot.getDevice(receiver_name)
+        emitter = self.getDevice(emitter_name)
+        receiver = self.getDevice(receiver_name)
         receiver.enable(self.timestep)
+        emitter.setChannel(int(self.getName()[-1]))
+        receiver.setChannel(int(self.getName()[-1]))
 
         return emitter, receiver
 
@@ -42,10 +36,10 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         This method initializes the four wheels, storing the references inside a list and setting the starting
         positions and velocities.
         """
-        self.wheels[0] = self.robot.getDevice('wheel1')
-        self.wheels[1] = self.robot.getDevice('wheel2')
-        self.wheels[2] = self.robot.getDevice('wheel3')
-        self.wheels[3] = self.robot.getDevice('wheel4')
+        self.wheels[0] = self.getDevice('wheel1')
+        self.wheels[1] = self.getDevice('wheel2')
+        self.wheels[2] = self.getDevice('wheel3')
+        self.wheels[3] = self.getDevice('wheel4')
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
             self.wheels[i].setVelocity(0.0)
@@ -61,9 +55,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         :return: A list of strings with the robot's observations.
         :rtype: list
         """
-        message = [self.pole_position.getValue()]
-
-        return message
+        return str(self.pole_position.getValue())
 
     def handle_receiver(self):
         """
@@ -72,7 +64,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         """
         while self.receiver.getQueueLength() > 0:
             # Receive and decode message from supervisor
-            message = self.receiver.getData().decode("utf-8")
+            message = self.receiver.getString()
             # Convert string message into a list
             message = message.split(",")
 
@@ -84,7 +76,7 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
         """
         This method unpacks the supervisor's message, which contains the next action to be executed by the robot.
         In this case it contains an integer denoting the action, either 0 or 1, with 0 being forward and
-        1 being backward movement. The corresponding motorSpeed value is applied to the wheels.
+        1 being backward movement. The corresponding motor_speed value is applied to the wheels.
 
         :param message: The message the supervisor sent containing the next action.
         :type message: list of strings
@@ -95,33 +87,13 @@ class CartPoleRobot(RobotEmitterReceiverCSV):
             action)
 
         if action == 0:
-            motorSpeed = 5.0
+            motor_speed = 5.0
         else:
-            motorSpeed = -5.0
+            motor_speed = -5.0
 
         for i in range(len(self.wheels)):
             self.wheels[i].setPosition(float('inf'))
-            self.wheels[i].setVelocity(motorSpeed)
-
-    def handle_emitter(self):
-        data = self.create_message()
-        string_message = ""
-
-        if type(data) is list:
-            string_message = ",".join(map(str, data))
-        elif type(data) is str:
-            string_message = data
-        else:
-            raise TypeError(
-                "message must be either a comma-separater string or a 1D list")
-
-        string_message = string_message.encode("utf-8")
-        self.emitter.send(string_message)
-
-    def run(self):
-        while self.robot.step(self.timestep) != 1:
-            self.handle_receiver()
-            self.handle_emitter()
+            self.wheels[i].setVelocity(motor_speed)
 
 
 # Create the robot controller object and run it
