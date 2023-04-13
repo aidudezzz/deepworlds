@@ -1,13 +1,10 @@
 import numpy as np
-from controller import Supervisor
-from deepbots.supervisor.controllers.supervisor_emitter_receiver import \
-    SupervisorCSV
-from deepbots.supervisor.controllers.supervisor_env import SupervisorEnv
+from deepbots.supervisor import EmitterReceiverSupervisorEnv
 
 from utilities import normalizeToRange
 
 
-class CartPoleSupervisor(SupervisorEnv):
+class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
     """
     CartPoleSupervisor acts as an environment having all the appropriate methods such as get_reward().
 
@@ -47,6 +44,7 @@ class CartPoleSupervisor(SupervisorEnv):
         Episode length is greater than 200
         Solved Requirements (average episode score in last 100 episodes > 195.0)
     """
+
     def __init__(self, num_robots=9):
         """
         In the constructor, the agent object is created.
@@ -56,12 +54,8 @@ class CartPoleSupervisor(SupervisorEnv):
         :param num_robots: Number of robots in the environment
         :type num_robots: int
         """
-        super().__init__()
-
         self.num_robots = num_robots
-        self.timestep = int(self.getBasicTimeStep())
-        self.communication = self.initialize_comms()
-
+        super(CartPoleSupervisor, self).__init__()
         self.observationSpace = 4
         self.actionSpace = 2
         self.robot = [
@@ -85,19 +79,20 @@ class CartPoleSupervisor(SupervisorEnv):
         self.test = False  # Whether the agent is in test mode
 
         self.init_positions = [
-            self.robot[i].getPosition()[0] for i in range(self.num_robots)
+            self.robot[i].getPosition()[1] for i in range(self.num_robots)
         ]
 
         print('Init positions:', self.init_positions)
 
-    def initialize_comms(self):
+    def initialize_comms(self, emitter_name=None, receiver_name=None):
         """
         Initializes emitter and receiver channels for each robot
         :return communication: A list of dictionaries, each corresponding to 1 robot with keys "emitter" and "receiver" and values
                                 as emitter and receiver instances of the robot
         :rtype: list(dict)
         """
-        communication = []
+        emitter_list = []
+        receiver_list = []
         for i in range(self.num_robots):
             emitter = self.getDevice(f'emitter{i}')
             receiver = self.getDevice(f'receiver{i}')
@@ -107,41 +102,18 @@ class CartPoleSupervisor(SupervisorEnv):
 
             receiver.enable(self.timestep)
 
-            communication.append({
-                'emitter': emitter,
-                'receiver': receiver,
-            })
+            emitter_list.append(emitter)
+            receiver_list.append(receiver)
 
-        return communication
-
-    def step(self, action):
-        """
-        Take one step in the environment - transmits the actions to be taken to the robots
-        :param action: actions to be taken by the robots in the environment
-        :type action: list(int)
-        :return: observations, rewards, done, info after taking the step
-        :rtype: tuple(list(float), list(float), bool, dict)
-        """
-        if super(Supervisor, self).step(self.timestep) == -1:
-            exit()
-
-        self.handle_emitter(action)
-
-        return (
-            self.get_observations(),
-            self.get_reward(action),
-            self.is_done(),
-            self.get_info(),
-        )
+        return emitter_list, receiver_list
 
     def handle_emitter(self, actions):
         """
         Emits actions to the robots through robot specific emitter channels
         """
         for i, action in enumerate(actions):
-
             message = str(action).encode("utf-8")
-            self.communication[i]['emitter'].send(message)
+            self.emitter[i].send(message)
 
     def handle_receiver(self):
         """
@@ -150,10 +122,9 @@ class CartPoleSupervisor(SupervisorEnv):
         :rtype: list(int)
         """
         messages = []
-        for com in self.communication:
-            receiver = com['receiver']
+        for receiver in self.receiver:
             if receiver.getQueueLength() > 0:
-                messages.append(receiver.getData().decode("utf-8"))
+                messages.append(receiver.getString())
                 receiver.nextPacket()
             else:
                 messages.append(None)
@@ -172,47 +143,40 @@ class CartPoleSupervisor(SupervisorEnv):
                               [cartPosition9, cartVelocity9, poleAngle9, poleTipVelocity9]]
         :rtype: list(list(list(float), list(float), float, float))   
         """
-        self.messageReceived = np.array(
-            list(map(float, self.handle_receiver())))
+        message_received = self.handle_receiver()
+        if None not in message_received:
+            self.messageReceived = np.array(
+                list(map(float, message_received)))
+        else:
+            self.messageReceived = np.array([0.0 for _ in range(self.num_robots)])
 
-        # Position on z axis
+        # Position on y-axis
         relative_positions = [
-            self.robot[i].getPosition()[0] - self.init_positions[i]
+            self.robot[i].getPosition()[1] - self.init_positions[i]
             for i in range(self.num_robots)
         ]
 
-
         cart_positions, cart_velocities, pole_angles, endpoint_velocities = [], [], [], []
         for i in range(self.num_robots):
-            # Position on x axis
+            # Position on y-axis
             cart_positions.append(
-                normalizeToRange(relative_positions[i], -0.4, 0.4, -1.0, 1.0))
+                normalizeToRange(relative_positions[i], -0.35, 0.35, -1.0, 1.0))
 
-            # Linear velocity on x axis
+            # Linear velocity of cart on y-axis
             cart_velocities.append(
-                normalizeToRange(self.robot[i].getVelocity()[4],
-                                 -0.2,
-                                 0.2,
-                                 -1.0,
-                                 1.0,
-                                 clip=True))
+                normalizeToRange(self.robot[i].getVelocity()[1], -0.2, 0.2, -1.0, 1.0, clip=True))
+
             # Pole angle off vertical
             pole_angles.append(
                 normalizeToRange(self.messageReceived[i],
-                                 -0.23,
-                                 0.23,
+                                 -0.261799388,
+                                 0.261799388,
                                  -1.0,
                                  1.0,
                                  clip=True))
 
-            # Angular velocity y of endpoint
-            endpoint_velocities.append(
-                normalizeToRange(self.poleEndpoint[i].getVelocity()[4],
-                                 -1.5,
-                                 1.5,
-                                 -1.0,
-                                 1.0,
-                                 clip=True))
+            # Angular velocity x of endpoint
+            endpoint_velocities.append(np.clip(self.poleEndpoint[i].getVelocity()[3], -1.0, 1.0))
 
         return np.array([
             cart_positions, cart_velocities, pole_angles, endpoint_velocities
@@ -242,15 +206,14 @@ class CartPoleSupervisor(SupervisorEnv):
         if self.episodeScore > 195.0:
             return True
 
-        if not any(np.abs(self.messageReceived) < 0.261799388
-                   ):  # 15 degrees off vertical
+        if not all(np.abs(self.messageReceived) < 0.261799388):  # 15 degrees off vertical
             return True
 
         relative_positions = np.array([
-            self.robot[i].getPosition()[0] - self.init_positions[i]
+            self.robot[i].getPosition()[1] - self.init_positions[i]
             for i in range(self.num_robots)
         ])
-        if not any(np.abs(relative_positions) < 0.89):
+        if not any(np.abs(relative_positions) < 0.35):
             return True
 
         return False
@@ -273,9 +236,6 @@ class CartPoleSupervisor(SupervisorEnv):
     def get_info(self):
         """
         Dummy implementation of get_info.
-
-        :return: None
-        :rtype: None
         """
         pass
 
@@ -288,8 +248,7 @@ class CartPoleSupervisor(SupervisorEnv):
         :rtype: bool
         """
         if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-100:]
-                       ) > 195.0:  # Last 100 episode scores average value
+            if np.mean(self.episodeScoreList[-100:]) > 195.0:  # Last 100 episode scores average value
                 return True
         return False
 
@@ -304,17 +263,12 @@ class CartPoleSupervisor(SupervisorEnv):
 
         :return: default observation provided by get_default_observation()
         """
-        self.simulationReset()
-        self.simulationResetPhysics()
-        super(Supervisor, self).step(int(self.getBasicTimeStep()))
-        super(Supervisor, self).step(int(self.getBasicTimeStep()))
+        default_observation = super().reset()
 
-        for i in range(self.num_robots):
-            self.communication[i]['receiver'].disable()
-            self.communication[i]['receiver'].enable(self.timestep)
-
-            receiver = self.communication[i]['receiver']
+        for receiver in self.receiver:
+            receiver.disable()
+            receiver.enable(self.timestep)
             while receiver.getQueueLength() > 0:
                 receiver.nextPacket()
 
-        return self.get_default_observation()
+        return default_observation
