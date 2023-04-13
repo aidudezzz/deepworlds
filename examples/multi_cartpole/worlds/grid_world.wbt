@@ -1,18 +1,24 @@
-#VRML_SIM R2022a utf8
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/appearances/protos/Parquetry.proto"
+
 WorldInfo {
-  coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.796017226768089 -0.5836543996278021 -0.16032503386418095 4.169459355131641
-  position -2.735019547750672 3.7377231540207183 4.454693033958413
+  orientation -0.018081031949984942 -0.9998272172973338 -0.004314143610692123 5.604343902852503
+  position -4.442375471698305 0.08085657896039135 3.565329164216274
+  followType "None"
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 RectangleArena {
-  rotation -0.5773484629300635 0.5773511723172876 0.5773511723172877 2.094397811784658
-  floorSize 3.4 3.4
+  rotation -2.353589999987042e-06 -2.339209999987121e-06 -0.9999999999944944 -1.5707953071795862
+  floorSize 2.9 2.9
   floorTileSize 0.4 0.4
   floorAppearance Parquetry {
   }
@@ -114,397 +120,9 @@ DEF SUPERVISOR Robot {
   controller "supervisor_manager"
   supervisor TRUE
 }
-DEF Boundary_Boxes Group {
-  children [
-    SolidBox {
-      translation 0.8 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(24)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(23)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1.4 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(21)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1.2 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(22)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(20)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 0.8
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(19)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 1
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(18)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 1.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(17)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 1.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(16)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 1.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(15)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.4 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(74)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.2 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(73)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(72)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.2 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(71)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.4 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(70)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.4 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(85)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.2 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(84)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(83)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.2 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(82)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.4 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(81)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.8 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(125)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(124)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1.2 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(123)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1.4 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(122)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1.6 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(121)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.8 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(114)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(113)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1.2 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(112)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1.4 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(111)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -1.6 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(109)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -1.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(90)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -1.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(89)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -1.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(88)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -1
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(87)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -0.8
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(86)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(80)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -0.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(79)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 -0.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(78)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 0
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(77)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 0.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(76)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 0.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(75)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(69)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 0.8
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(68)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 1
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(67)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 1.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(66)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 1.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(65)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation -0.6 0.1 1.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(64)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1.6 0.1 0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(12)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 0.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(40)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 0.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(39)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 0
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(38)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -0.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(37)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -0.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(36)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -1.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(45)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -1.4
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(44)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -1.2
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(43)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -1
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(42)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -0.8
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(41)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.6 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(35)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 0.8 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(34)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(33)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1.2 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(32)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1.4 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(31)"
-      size 0.2 0.2 0.2
-    }
-    SolidBox {
-      translation 1.6 0.1 -0.6
-      rotation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0943951023931953
-      name "box(30)"
-      size 0.2 0.2 0.2
-    }
-  ]
-}
 DEF ROBOT2 Robot {
-  translation 1.2 0.04 -1.2
-  rotation 0 0 -0.9999999999999978 0
+  translation 1 -1 0.04
+  rotation 1 0 0 1.5708
   children [
     Receiver {
       channel 2
@@ -647,8 +265,8 @@ DEF ROBOT2 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561206763e-06 0.5299968874105057 -1.1687285415657023e-10
-        rotation -1.1685117900947696e-10 1.1687645745336203e-10 1 1.570800003382605
+        translation -1.8379558561206763e-06 0.5299968874105057 -1.1687405732150237e-10
+        rotation -1.168523821774754e-10 1.1687766062578409e-10 1 1.570800003382605
         children [
           DEF POLE_ENDPOINT_2 Solid {
             translation 0.5000000000000002 0 0
@@ -700,8 +318,8 @@ DEF ROBOT2 Robot {
   supervisor TRUE
 }
 DEF ROBOT1 Robot {
-  translation 0 0.04 -1.2
-  rotation 0 0 -0.9999999999999978 0
+  translation 1 0 0.04
+  rotation 1 0 0 1.5708
   children [
     Receiver {
       channel 1
@@ -844,8 +462,8 @@ DEF ROBOT1 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561205501e-06 0.5299968874105183 -1.16830193836849e-10
-        rotation -1.1682937439053972e-10 1.1682784355497608e-10 1 1.5708000033826142
+        translation -1.8379558561205501e-06 0.5299968874105183 -1.1683139700178115e-10
+        rotation -1.1683057755853816e-10 1.1682904672739813e-10 1 1.5708000033826142
         children [
           DEF POLE_ENDPOINT_1 Solid {
             translation 0.5000000000000002 0 0
@@ -897,8 +515,8 @@ DEF ROBOT1 Robot {
   supervisor TRUE
 }
 DEF ROBOT3 Robot {
-  translation -1.2 0.04 1.2
-  rotation 0 0 -0.9999999999999978 0
+  translation 0 1 0.04
+  rotation 1 0 0 1.5708
   children [
     Receiver {
       channel 3
@@ -1041,8 +659,8 @@ DEF ROBOT3 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561204582e-06 0.5299968874104672 -1.1678942089626965e-10
-        rotation -1.1679292868634407e-10 1.1679661839860864e-10 1 1.5708000033825504
+        translation -1.8379558561204582e-06 0.5299968874104672 -1.1679086469418822e-10
+        rotation -1.1679437248794225e-10 1.167980622055151e-10 1 1.5708000033825504
         children [
           DEF POLE_ENDPOINT_3 Solid {
             translation 0.5000000000000002 0 0
@@ -1094,8 +712,8 @@ DEF ROBOT3 Robot {
   supervisor TRUE
 }
 DEF ROBOT4 Robot {
-  translation -1.2 0.04 0
-  rotation 0 0 -0.9999999999999978 0
+  translation 0 0 0.04
+  rotation 1 0 0 1.5708
   children [
     Emitter {
       channel 4
@@ -1238,8 +856,8 @@ DEF ROBOT4 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561204722e-06 0.5299968874104697 -1.1658785990614895e-10
-        rotation -1.1656852363420845e-10 1.1659327217286282e-10 1 1.5708000033825562
+        translation -1.8379558561204722e-06 0.5299968874104697 -1.1658930370406752e-10
+        rotation -1.165699674358066e-10 1.165947159797693e-10 1 1.5708000033825562
         children [
           DEF POLE_ENDPOINT_4 Solid {
             translation 0.5000000000000002 0 0
@@ -1291,8 +909,8 @@ DEF ROBOT4 Robot {
   supervisor TRUE
 }
 DEF ROBOT5 Robot {
-  translation 0 0.04 0
-  rotation 0 0 -0.9999999999999978 0
+  translation 0 -1 0.04
+  rotation 1 0 0 1.5708
   children [
     Receiver {
       channel 5
@@ -1435,8 +1053,8 @@ DEF ROBOT5 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561205137e-06 0.529996887410491 -1.1658000507824973e-10
-        rotation -1.165865011598136e-10 1.1657507875994387e-10 1 1.5708000033825351
+        translation -1.8379558561205137e-06 0.529996887410491 -1.165814488761683e-10
+        rotation -1.1658794496141174e-10 1.1657652256685033e-10 1 1.5708000033825351
         children [
           DEF POLE_ENDPOINT_5 Solid {
             translation 0.5000000000000002 0 0
@@ -1488,8 +1106,8 @@ DEF ROBOT5 Robot {
   supervisor TRUE
 }
 DEF ROBOT6 Robot {
-  translation 1.2 0.04 0
-  rotation 0 0 -0.9999999999999978 0
+  translation -1 1 0.04
+  rotation 1 0 0 1.5708
   children [
     Receiver {
       channel 6
@@ -1533,7 +1151,7 @@ DEF ROBOT6 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation -0.5773489359555871 -0.5773509356556262 0.5773509359553547 2.0943953074785577
+        rotation -0.5773489359555872 -0.5773509356556263 0.5773509359553548 2.0943953074785577
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -1632,8 +1250,8 @@ DEF ROBOT6 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.837955856120426e-06 0.5299968874104661 -1.166991042532164e-10
-        rotation -1.1668545605511365e-10 1.1671285411992145e-10 1 1.5708000033825444
+        translation -1.837955856120426e-06 0.5299968874104661 -1.1670054805113496e-10
+        rotation -1.166868998567118e-10 1.1671429792682793e-10 1 1.5708000033825444
         children [
           DEF POLE_ENDPOINT_6 Solid {
             translation 0.5000000000000002 0 0
@@ -1685,8 +1303,8 @@ DEF ROBOT6 Robot {
   supervisor TRUE
 }
 DEF ROBOT7 Robot {
-  translation 0 0.04 1.2
-  rotation 0 0 -0.9999999999999978 0
+  translation -1 0 0.04
+  rotation 1 0 0 1.5708
   children [
     Receiver {
       channel 7
@@ -1829,8 +1447,8 @@ DEF ROBOT7 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561204908e-06 0.5299968874104941 -1.165904411746812e-10
-        rotation -1.165905441404668e-10 1.1658928807057834e-10 1 1.5708000033824618
+        translation -1.8379558561204908e-06 0.5299968874104941 -1.1659188497259978e-10
+        rotation -1.1659198794206496e-10 1.165907318774848e-10 1 1.5708000033824618
         children [
           DEF POLE_ENDPOINT_7 Solid {
             translation 0.5000000000000002 0 0
@@ -1882,8 +1500,8 @@ DEF ROBOT7 Robot {
   supervisor TRUE
 }
 DEF ROBOT8 Robot {
-  translation 1.2 0.04 1.2
-  rotation 0 0 -0.9999999999999978 0
+  translation -1 -1 0.04
+  rotation 1 0 0 1.5708
   children [
     Receiver {
       channel 8
@@ -2026,8 +1644,8 @@ DEF ROBOT8 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561205268e-06 0.5299968874104899 -1.1662427522135666e-10
-        rotation -1.1660958147652356e-10 1.1663242628157146e-10 1 1.5708000033826095
+        translation -1.8379558561205268e-06 0.5299968874104899 -1.1662571901927523e-10
+        rotation -1.166110252781217e-10 1.1663387008847794e-10 1 1.5708000033826095
         children [
           DEF POLE_ENDPOINT_8 Solid {
             translation 0.5000000000000002 0 0
@@ -2079,8 +1697,8 @@ DEF ROBOT8 Robot {
   supervisor TRUE
 }
 DEF ROBOT0 Robot {
-  translation -1.2 0.04 -1.2
-  rotation 0 0 -0.9999999999999978 0
+  translation 1 1 0.040003
+  rotation 1 0 0 1.5708
   children [
     Receiver {
     }
@@ -2122,7 +1740,7 @@ DEF ROBOT0 Robot {
       ]
       endPoint Solid {
         translation 0.06 0 0.05
-        rotation -0.5773489358320916 -0.5773509359025693 0.5773509358319068 2.094395307107651
+        rotation -0.5773489358320916 -0.5773509359025694 0.5773509358319068 2.0943953071076504
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -2221,8 +1839,8 @@ DEF ROBOT0 Robot {
         }
       ]
       endPoint Solid {
-        translation -1.8379558561204925e-06 0.5299968874104712 2.1624948959454977e-09
-        rotation 2.1625086942152185e-09 -2.1625072026283554e-09 1 1.5708000033825311
+        translation -1.8379558561204925e-06 0.5299968874104712 2.162493692780565e-09
+        rotation 2.16250749104722e-09 -2.162505999455933e-09 1 1.5708000033825311
         children [
           DEF POLE_ENDPOINT_0 Solid {
             translation 0.5000000000000002 0 0
@@ -2272,4 +1890,70 @@ DEF ROBOT0 Robot {
   }
   controller "robot_controller"
   supervisor TRUE
+}
+DEF WALLS Group {
+  children [
+    Solid {
+      translation 0.5 0 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 3 0.1
+          }
+        }
+      ]
+      name "wall1"
+    }
+    Solid {
+      translation -0.5 0 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 3 0.1
+          }
+        }
+      ]
+      name "wall2"
+    }
+    Solid {
+      translation 0 0.5 0.05
+      rotation 0 0 1 -1.5707953071795862
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 3 0.1
+          }
+        }
+      ]
+      name "wall3"
+    }
+    Solid {
+      translation 0 -0.5 0.05
+      rotation 0 0 1 -1.5707953071795862
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 3 0.1
+          }
+        }
+      ]
+      name "wall4"
+    }
+  ]
 }
