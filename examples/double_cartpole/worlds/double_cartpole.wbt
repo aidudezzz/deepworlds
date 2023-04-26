@@ -7,8 +7,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.3041475407122699 0.30797505645240913 0.9014686007187459 1.6619035483756615
-  position -0.047379432731197456 -4.499368392090517 3.918107793632122
+  orientation -0.22438816324297137 0.18581999328958307 0.9566195075840263 1.8016787924741189
+  position 0.970011609840356 -5.281963045756185 2.9764464701238467
 }
 TexturedBackground {
 }
@@ -21,6 +21,12 @@ DEF ROBOT1 Robot {
   translation -0.175 0 0.04
   rotation 1 0 0 1.5708
   children [
+    Receiver {
+      channel 1
+    }
+    Emitter {
+      channel 1
+    }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
       rotation 0 1 0 -1.5707953071795862
@@ -58,8 +64,8 @@ DEF ROBOT1 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.060001004644818584 1.339276918416963e-05 0.050000010543824816
-        rotation 1.7671082538995992e-08 -1.7671248834016876e-08 0.9999999999999998 1.5708000430119498
+        translation 0.060001004644818584 1.3392769184156323e-05 0.050000010543824816
+        rotation 1.7671082538981295e-08 -1.767124883400224e-08 0.9999999999999998 1.5708000430119768
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -91,8 +97,8 @@ DEF ROBOT1 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060001095993954395 7.616338723251707e-07 0.05000000952472374
-        rotation 1.76096540431902e-08 -1.7609826183889808e-08 0.9999999999999997 1.5707999569897093
+        translation -0.060001095993954395 7.616338723237992e-07 0.05000000952472374
+        rotation 1.7609654043176984e-08 -1.760982618387657e-08 0.9999999999999997 1.5707999569897166
         children [
           USE WHEEL
         ]
@@ -114,8 +120,8 @@ DEF ROBOT1 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.06000100379909951 1.3392659934531687e-05 -0.05000000738328558
-        rotation -1.7671380018270767e-08 1.7671539284228046e-08 0.9999999999999998 1.5708000430119113
+        translation 0.06000100379909951 1.3392659934541313e-05 -0.05000000738328558
+        rotation -1.7671380018249366e-08 1.7671539284206642e-08 0.9999999999999998 1.5708000430119422
         children [
           USE WHEEL
         ]
@@ -137,8 +143,8 @@ DEF ROBOT1 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060001096839924606 7.615246225854488e-07 -0.05000000839401549
-        rotation -1.761000837263908e-08 1.761018020913388e-08 0.9999999999999997 1.5707999569897055
+        translation -0.060001096839924606 7.615246225931939e-07 -0.05000000839401549
+        rotation -1.761000837262806e-08 1.7610180209122837e-08 0.9999999999999997 1.570799956989715
         children [
           USE WHEEL
         ]
@@ -162,10 +168,10 @@ DEF ROBOT1 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.0004655326854952333 0.5300037594690288 -5.369584240411801e-07
-        rotation -0.5769874410964118 -0.5775313877690036 0.577531807746226 2.0949379676602047
+        translation -0.00046553268547138316 0.5300037594690259 -5.369584240411779e-07
+        rotation -0.5769874410964262 -0.5775313877689972 0.5775318077462179 2.094937967660199
         children [
-          DEF POLE_ENDPOINT Solid {
+          DEF POLE_ENDPOINT_1 Solid {
             translation 0.5000000000000002 0 0
             scale 0.1 0.1 0.1
             children [
@@ -201,8 +207,8 @@ DEF ROBOT1 Robot {
               anchor 0.4925 0 -0.0099993
             }
             endPoint DEF CONNECTION_POLE Solid {
-              translation 0.4925 0 -0.091
-              rotation 0 1 0 1.5708
+              translation 0.49249999999999994 0 -0.09099999999999987
+              rotation 0 1 0 1.5707999999999929
               children [
                 DEF CONNECTIONG_POLE Shape {
                   appearance PBRAppearance {
@@ -243,13 +249,19 @@ DEF ROBOT1 Robot {
     density -1
     mass 2
   }
-  controller ""
+  controller "robot_controller"
   supervisor TRUE
 }
 DEF ROBOT2 Robot {
   translation 0.175 0 0.04
   rotation 1 0 0 1.5708
   children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+      channel 2
+    }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
       rotation 0 1 0 -1.5707953071795862
@@ -287,8 +299,8 @@ DEF ROBOT2 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.060001004644818584 1.339276918416963e-05 0.050000010543824816
-        rotation 1.7671082538995992e-08 -1.7671248834016876e-08 0.9999999999999998 1.5708000430119498
+        translation 0.060001004644818584 1.339276918415257e-05 0.050000010543824816
+        rotation 1.767108253898783e-08 -1.767124883400869e-08 0.9999999999999998 1.5708000430119542
         children [
           DEF WHEEL Shape {
             appearance PBRAppearance {
@@ -320,8 +332,8 @@ DEF ROBOT2 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060001095993954395 7.616338723251707e-07 0.05000000952472374
-        rotation 1.76096540431902e-08 -1.7609826183889808e-08 0.9999999999999997 1.5707999569897093
+        translation -0.060001095993954395 7.616338723367299e-07 0.05000000952472374
+        rotation 1.7609654043185626e-08 -1.7609826183885216e-08 0.9999999999999997 1.5707999569897144
         children [
           USE WHEEL
         ]
@@ -343,8 +355,8 @@ DEF ROBOT2 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.06000100379909951 1.3392659934531687e-05 -0.05000000738328558
-        rotation -1.7671380018270767e-08 1.7671539284228046e-08 0.9999999999999998 1.5708000430119113
+        translation 0.06000100379909951 1.3392659934548092e-05 -0.05000000738328558
+        rotation -1.7671380018269606e-08 1.7671539284226908e-08 0.9999999999999998 1.5708000430119105
         children [
           USE WHEEL
         ]
@@ -366,8 +378,8 @@ DEF ROBOT2 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.060001096839924606 7.615246225854488e-07 -0.05000000839401549
-        rotation -1.761000837263908e-08 1.761018020913388e-08 0.9999999999999997 1.5707999569897055
+        translation -0.060001096839924606 7.615246225906312e-07 -0.05000000839401549
+        rotation -1.7610008372633182e-08 1.761018020912797e-08 0.9999999999999997 1.570799956989704
         children [
           USE WHEEL
         ]
@@ -391,10 +403,10 @@ DEF ROBOT2 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.0004655326854952333 0.5300037594690288 -5.369584240411801e-07
-        rotation -0.5769874410964118 -0.5775313877690036 0.577531807746226 2.0949379676602047
+        translation -0.0004655326854714942 0.5300037594690241 -5.369584240411765e-07
+        rotation -0.5769874410964244 -0.5775313877689967 0.5775318077462203 2.0949379676602016
         children [
-          DEF POLE_ENDPOINT Solid {
+          DEF POLE_ENDPOINT_2 Solid {
             translation 0.5000000000000002 0 0
             scale 0.1 0.1 0.1
             children [
@@ -430,8 +442,8 @@ DEF ROBOT2 Robot {
               anchor 0.4925 0 0.0099993
             }
             endPoint DEF CONNECTION_POLE Solid {
-              translation 0.4925 0 0.091
-              rotation 0 1 0 1.5708
+              translation 0.49250000000000005 0 0.0910000000000004
+              rotation 0 1 0 1.5707999999999942
               children [
                 DEF CONNECTIONG_POLE Shape {
                   appearance PBRAppearance {
@@ -472,6 +484,28 @@ DEF ROBOT2 Robot {
     density -1
     mass 2
   }
-  controller ""
+  controller "robot_controller"
+  supervisor TRUE
+}
+Robot {
+  children [
+    Receiver {
+      name "receiver1"
+      channel 2
+    }
+    Emitter {
+      name "emitter1"
+      channel 2
+    }
+    Emitter {
+      name "emitter0"
+      channel 1
+    }
+    Receiver {
+      name "receiver0"
+      channel 1
+    }
+  ]
+  controller "supervisor_manager"
   supervisor TRUE
 }
