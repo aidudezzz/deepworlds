@@ -9,7 +9,7 @@ from supervisor_controller import CartPoleSupervisor
 from utilities import plotData
 
 # Change these variables if needed
-EPISODE_LIMIT = 10000
+EPISODE_LIMIT = 0
 STEPS_PER_EPISODE = 200
 NUM_ROBOTS = 2
 
@@ -122,7 +122,7 @@ def run():
                             episode_rewards = pickle.load(handle)   
                     except:
                         episode_rewards = [] 
-                    episode_rewards.append(supervisorEnv.episodeScoreList)
+                    episode_rewards = np.concatenate(episode_rewards, supervisorEnv.episodeScoreList)
                     with open(rewards_file, 'wb+') as handle:
                         pickle.dump(episode_rewards, handle, protocol=pickle.HIGHEST_PROTOCOL)
             except Exception as e:
@@ -130,9 +130,12 @@ def run():
 
         episodeCount += 1  # Increment episode counter
 
+    with open(save_path + rf"\rewards\e5999.pickle", "rb") as f:
+        rewards = np.array(pickle.load(f)[0])
+    # rewards = np.array(supervisorEnv.episodeScoreList)
     movingAvgN = 10
     plotData(
-        convolve(np.array(supervisorEnv.episodeScoreList).T[0],
+        convolve(rewards.T[0],
                  ones((movingAvgN,)) / movingAvgN,
                  mode='valid'), "episode", "episode score",
         "Episode scores over episodes", save=True, saveName=f"{save_id}.png")
