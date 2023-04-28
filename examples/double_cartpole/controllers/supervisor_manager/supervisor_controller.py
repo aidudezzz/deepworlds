@@ -53,7 +53,7 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
         """
         self.num_robots = num_robots
         super(CartPoleSupervisor, self).__init__()
-        self.observationSpace = 4
+        self.observationSpace = 6
         self.actionSpace = 2
 
         self.robot = [
@@ -146,7 +146,7 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
             for i in range(self.num_robots)
         ]
 
-        cart_positions, cart_velocities, pole_angles, endpoint_velocities = [], [], [], []
+        cart_positions, cart_velocities, pole_angles, endpoint_velocities, other_pole_angles, other_endpoint_velocities = [], [], [], [], [], []
         for i in range(self.num_robots):
             # Position on y-axis
             cart_positions.append(
@@ -168,8 +168,20 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
             # Angular velocity x of endpoint
             endpoint_velocities.append(np.clip(self.poleEndpoint[i].getVelocity()[3], -1.0, 1.0))
 
+            # Other pole angle off vertical
+            other_pole_angles.append(
+                normalizeToRange(self.messageReceived[i - 1],
+                                 -0.261799388,
+                                 0.261799388,
+                                 -1.0,
+                                 1.0,
+                                 clip=True))
+
+            # Angular velocity x of other endpoint
+            other_endpoint_velocities.append(np.clip(self.poleEndpoint[i - 1].getVelocity()[3], -1.0, 1.0))
+
         return np.array([
-            cart_positions, cart_velocities, pole_angles, endpoint_velocities
+            cart_positions, cart_velocities, pole_angles, endpoint_velocities, other_pole_angles, other_endpoint_velocities,
         ]).T
 
     def get_reward(self, action=None):

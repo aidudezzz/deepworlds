@@ -2,6 +2,7 @@ import numpy as np
 from numpy import convolve, mean, ones
 
 import pickle
+import os
 
 from agent.PPO_agent import PPOAgent, Transition
 from supervisor_controller import CartPoleSupervisor
@@ -12,7 +13,17 @@ EPISODE_LIMIT = 10000
 STEPS_PER_EPISODE = 200
 NUM_ROBOTS = 2
 
-save_dir = rf"C:\Users\stavr\OneDrive\Έγγραφα\ECE AUTH\semester_8\RL\my_project\controllers\supervisor_manager\models"
+save_dir = rf"C:\Users\stavr\OneDrive\Έγγραφα\ECE AUTH\semester_8\RL\project\deepworlds\examples\double_cartpole\controllers\supervisor_manager\models"
+save_id = "other_pole_env"
+save_path = save_dir + rf"\{save_id}"
+
+try:
+   os.makedirs(save_path)
+   os.makedirs(save_path + rf"\agent_0")
+   os.makedirs(save_path + rf"\agent_1")
+   os.makedirs(save_path + rf"\rewards")
+except FileExistsError:
+   print("directory already exists")
 
 def run():
     # Initialize supervisor object
@@ -99,13 +110,13 @@ def run():
             f"Episode: {episodeCount} Score = {supervisorEnv.episodeScore} | Average Action Probabilities = {avgActionProb}"
         )
 
-        if (episodeCount) % 999 == 0:
+        if (episodeCount + 1) % 2000 == 0:
             try:
                 for i in range(NUM_ROBOTS):
-                    agent_path = save_dir + rf"\agent_{i}\e{episodeCount}"
+                    agent_path = save_path + rf"\agent_{i}\e{episodeCount}"
                     agents[i].save(agent_path)
 
-                    rewards_file = save_dir + rf"\rewards\e{episodeCount}.pickle"
+                    rewards_file = save_path + rf"\rewards\e{episodeCount}.pickle"
                     try:
                         with open(rewards_file, 'rb') as handle:
                             episode_rewards = pickle.load(handle)   
@@ -115,7 +126,7 @@ def run():
                     with open(rewards_file, 'wb+') as handle:
                         pickle.dump(episode_rewards, handle, protocol=pickle.HIGHEST_PROTOCOL)
             except Exception as e:
-                print("Error in saving: {e}")
+                print(f"Error in saving: {e}")
 
         episodeCount += 1  # Increment episode counter
 
@@ -124,7 +135,7 @@ def run():
         convolve(np.array(supervisorEnv.episodeScoreList).T[0],
                  ones((movingAvgN,)) / movingAvgN,
                  mode='valid'), "episode", "episode score",
-        "Episode scores over episodes", save=True, saveName="naive.png")
+        "Episode scores over episodes", save=True, saveName=f"{save_id}.png")
 
     if not solved and not supervisorEnv.test:
         print("Reached episode limit and task was not solved.")
