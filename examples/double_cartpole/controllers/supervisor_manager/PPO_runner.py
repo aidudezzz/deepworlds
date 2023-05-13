@@ -9,12 +9,12 @@ from supervisor_controller import CartPoleSupervisor
 from utilities import plotData
 
 # Change these variables if needed
-EPISODE_LIMIT = 0
+EPISODE_LIMIT = 20000
 STEPS_PER_EPISODE = 200
 NUM_ROBOTS = 2
 
 save_dir = rf"C:\Users\stavr\OneDrive\Έγγραφα\ECE AUTH\semester_8\RL\project\deepworlds\examples\double_cartpole\controllers\supervisor_manager\models"
-save_id = "other_pole_env"
+save_id = "other_pole_other_cart_env_0001"
 save_path = save_dir + rf"\{save_id}"
 
 try:
@@ -22,6 +22,7 @@ try:
    os.makedirs(save_path + rf"\agent_0")
    os.makedirs(save_path + rf"\agent_1")
    os.makedirs(save_path + rf"\rewards")
+   os.makedirs(save_path + rf"\lengths")
 except FileExistsError:
    print("directory already exists")
 
@@ -29,7 +30,7 @@ def run():
     # Initialize supervisor object
     supervisorEnv = CartPoleSupervisor(num_robots=NUM_ROBOTS)
 
-    episodeCount = 0
+    episodeCount = 12000
 
     # The agent used here is trained with the PPO algorithm (https://arxiv.org/abs/1707.06347).
     agent_1 = PPOAgent(
@@ -41,8 +42,8 @@ def run():
         batch_size=8,
         gamma=0.99,
         use_cuda=False,
-        actor_lr=0.001,
-        critic_lr=0.003,
+        actor_lr=0.0001,
+        critic_lr=0.0003,
     )
     agent_2 = PPOAgent(
         supervisorEnv.observationSpace,
@@ -53,10 +54,12 @@ def run():
         batch_size=8,
         gamma=0.99,
         use_cuda=False,
-        actor_lr=0.001,
-        critic_lr=0.003,
+        actor_lr=0.0001,
+        critic_lr=0.0003,
     )
     agents = [agent_1, agent_2]
+    agent_1.load(save_path + rf"/agent_0/e11999")
+    agent_2.load(save_path + rf"/agent_1/e11999")
 
     solved = False  # Whether the solved requirement is met
 
@@ -64,6 +67,7 @@ def run():
     while not solved and episodeCount < EPISODE_LIMIT:
         state = supervisorEnv.reset()  # Reset robots and get starting observation
         supervisorEnv.episodeScore = 0
+        supervisorEnv.episode_length = 0
         action_probs = []
         # Inner loop is the episode loop
         for step in range(STEPS_PER_EPISODE):
@@ -88,10 +92,12 @@ def run():
 
             supervisorEnv.episodeScore += np.array(
                 reward)  # Accumulate episode reward
+            supervisorEnv.episode_length += np.array([1, 1])
             if done:
                 # Save the episode's score
                 supervisorEnv.episodeScoreList.append(
                     supervisorEnv.episodeScore)
+                supervisorEnv.episode_length_list.append(supervisorEnv.episode_length)
                 for i in range(NUM_ROBOTS):
                     agents[i].train_step(batch_size=step + 1)
                 solved = supervisorEnv.solved(
@@ -107,7 +113,7 @@ def run():
         # The average action probability tells us how confident the agent was of its actions.
         # By looking at this we can check whether the agent is converging to a certain policy.
         print(
-            f"Episode: {episodeCount} Score = {supervisorEnv.episodeScore} | Average Action Probabilities = {avgActionProb}"
+            f"Episode: {episodeCount} Score = {supervisorEnv.episodeScore}, Length = {supervisorEnv.episode_length} | Average Action Probabilities = {avgActionProb}"
         )
 
         if (episodeCount + 1) % 2000 == 0:
@@ -116,29 +122,46 @@ def run():
                     agent_path = save_path + rf"\agent_{i}\e{episodeCount}"
                     agents[i].save(agent_path)
 
-                    rewards_file = save_path + rf"\rewards\e{episodeCount}.pickle"
-                    try:
-                        with open(rewards_file, 'rb') as handle:
-                            episode_rewards = pickle.load(handle)   
-                    except:
-                        episode_rewards = [] 
-                    episode_rewards = np.concatenate(episode_rewards, supervisorEnv.episodeScoreList)
-                    with open(rewards_file, 'wb+') as handle:
-                        pickle.dump(episode_rewards, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                rewards_file = save_path + rf"\rewards\e{episodeCount}.pickle"
+                try:
+                    with open(rewards_file, 'rb') as handle:
+                        episode_rewards = pickle.load(handle)   
+                except:
+                    episode_rewards = [[0, 0]] 
+                episode_rewards = np.concatenate((episode_rewards, supervisorEnv.episodeScoreList))
+                with open(rewards_file, 'wb+') as handle:
+                    pickle.dump(episode_rewards, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+                lengths_file = save_path + rf"\lengths\e{episodeCount}.pickle"
+                try:
+                    with open(lengths_file, 'rb') as handle:
+                        episode_lengths = pickle.load(handle)   
+                except:
+                    episode_lengths = [[0, 0]] 
+                episode_lengths = np.concatenate((episode_lengths, supervisorEnv.episodeScoreList))
+                with open(lengths_file, 'wb+') as handle:
+                    pickle.dump(episode_lengths, handle, protocol=pickle.HIGHEST_PROTOCOL)
             except Exception as e:
                 print(f"Error in saving: {e}")
 
         episodeCount += 1  # Increment episode counter
 
-    with open(save_path + rf"\rewards\e5999.pickle", "rb") as f:
-        rewards = np.array(pickle.load(f)[0])
-    # rewards = np.array(supervisorEnv.episodeScoreList)
+    # with open(save_path + rf"\rewards\e9999.pickle", "rb") as f:
+    #     rewards = np.array(pickle.load(f))
+    
+    rewards = np.array(supervisorEnv.episodeScoreList)
+    lengths = np.array(supervisorEnv.episode_length_list)
     movingAvgN = 10
     plotData(
         convolve(rewards.T[0],
                  ones((movingAvgN,)) / movingAvgN,
                  mode='valid'), "episode", "episode score",
-        "Episode scores over episodes", save=True, saveName=f"{save_id}.png")
+        "Episode scores over episodes", save=True, saveName=f"{save_id}_rewards.png")
+    plotData(
+        convolve(lengths.T[0],
+                 ones((movingAvgN,)) / movingAvgN,
+                 mode='valid'), "episode", "episode length",
+        "Episode length over episodes", save=True, saveName=f"{save_id}_lengths.png")
 
     if not solved and not supervisorEnv.test:
         print("Reached episode limit and task was not solved.")

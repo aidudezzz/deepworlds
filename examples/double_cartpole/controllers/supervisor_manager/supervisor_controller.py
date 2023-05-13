@@ -53,7 +53,7 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
         """
         self.num_robots = num_robots
         super(CartPoleSupervisor, self).__init__()
-        self.observationSpace = 6
+        self.observationSpace = 8
         self.actionSpace = 2
 
         self.robot = [
@@ -73,6 +73,8 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
         self.episodeScore = np.array(num_robots)
         self.episodeScoreList = [
         ]  # A list to save all the episode scores, used to check if task is solved
+        self.episode_length = np.array(num_robots)
+        self.episode_length_list = []
         self.test = False  # Whether the agent is in test mode
 
     def initialize_comms(self, emitter_name=None, receiver_name=None):
@@ -147,6 +149,7 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
         ]
 
         cart_positions, cart_velocities, pole_angles, endpoint_velocities, other_pole_angles, other_endpoint_velocities = [], [], [], [], [], []
+        other_cart_positions, other_cart_velocities = [], []
         for i in range(self.num_robots):
             # Position on y-axis
             cart_positions.append(
@@ -168,6 +171,14 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
             # Angular velocity x of endpoint
             endpoint_velocities.append(np.clip(self.poleEndpoint[i].getVelocity()[3], -1.0, 1.0))
 
+            # Other cart's position on y-axis
+            other_cart_positions.append(
+                normalizeToRange(positions[i - 1], -0.35, 0.35, -1.0, 1.0))
+            
+            # Linear velocity of the other cart on y-axis
+            other_cart_velocities.append(
+                normalizeToRange(self.robot[i - 1].getVelocity()[1], -0.2, 0.2, -1.0, 1.0, clip=True))
+
             # Other pole angle off vertical
             other_pole_angles.append(
                 normalizeToRange(self.messageReceived[i - 1],
@@ -180,9 +191,14 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
             # Angular velocity x of other endpoint
             other_endpoint_velocities.append(np.clip(self.poleEndpoint[i - 1].getVelocity()[3], -1.0, 1.0))
 
-        return np.array([
-            cart_positions, cart_velocities, pole_angles, endpoint_velocities, other_pole_angles, other_endpoint_velocities,
+        obs = np.array([
+            cart_positions, cart_velocities, pole_angles, endpoint_velocities, 
+            other_cart_positions, other_cart_velocities, other_pole_angles, other_endpoint_velocities,
         ]).T
+        # print("--------------------------------------------")
+        # print(obs)
+
+        return obs
 
     def get_reward(self, action=None):
         """
@@ -192,8 +208,13 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
         :return: Always 1
         :rtype: int
         """
-
         return (np.abs(self.messageReceived) < 0.261799388).astype(int)
+        # positions = np.array([
+        #     self.robot[i].getPosition()[1]
+        #     for i in range(self.num_robots)
+        # ])
+
+        # return (1 - min((abs(positions[0] + positions[1]) / 2), 0.35) / 0.35) * (np.abs(self.messageReceived) < 0.261799388).astype(int)
 
     def is_done(self):
         """
@@ -203,7 +224,10 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
         :rtype: bool
         """
 
-        if np.all(self.episodeScore) > 195.0:
+        # if np.all(self.episodeScore) > 195.0:
+        #     return True
+
+        if np.all(self.episode_length) > 195.0:
             return True
 
         if not all(np.abs(self.messageReceived) < 0.261799388):  # 15 degrees off vertical
@@ -245,9 +269,13 @@ class CartPoleSupervisor(EmitterReceiverSupervisorEnv):
         :return: True if task is solved, False otherwise
         :rtype: bool
         """
-        if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
-            if np.all(np.mean(self.episodeScoreList[-100:], axis=0) > 195.0):  # Last 100 episode scores average value
+        # if len(self.episodeScoreList) > 100:  # Over 100 trials thus far
+        #     if np.all(np.mean(self.episodeScoreList[-100:], axis=0) > 195.0):  # Last 100 episode scores average value
+        #         return True
+        if len(self.episode_length_list) > 100:  # Over 100 trials thus far
+            if np.all(np.mean(self.episode_length_list[-100:], axis=0) > 195.0):  # Last 100 episode scores average value
                 return True
+
         return False
 
     def reset(self):
