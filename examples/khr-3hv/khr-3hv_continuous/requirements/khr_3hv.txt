@@ -3,5 +3,4 @@ numpy
 matplotlib
 stable_baselines3
 ray[rllib]
-requests==2.28.0
 wandb

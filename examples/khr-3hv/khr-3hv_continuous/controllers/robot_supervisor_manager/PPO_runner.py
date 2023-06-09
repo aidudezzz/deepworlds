@@ -7,7 +7,10 @@ import wandb
 import ray
 from ray import tune
 from ray.tune.registry import register_env
-import ray.rllib.agents.ppo as ppo
+try:
+    from ray.rllib.agents.ppo import ppo
+except ImportError:
+    from ray.rllib.algorithms.ppo import ppo
 from ray.tune.integration.wandb import WandbLoggerCallback
 
 from KHR3HV_env import KHR3HVRobotSupervisor
