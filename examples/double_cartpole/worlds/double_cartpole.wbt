@@ -1,4 +1,4 @@
-#VRML_SIM R2023a utf8
+#VRML_SIM R2023b utf8
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
@@ -167,7 +167,6 @@ DEF ROBOT1 Robot {
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
-            scale 0.1 0.1 0.1
             children [
               DEF BALL Shape {
                 appearance PBRAppearance {
@@ -175,7 +174,7 @@ DEF ROBOT1 Robot {
                   metalness 0
                 }
                 geometry Sphere {
-                  radius 0.1
+                  radius 0.01
                 }
               }
             ]
@@ -396,7 +395,6 @@ DEF ROBOT2 Robot {
         children [
           DEF POLE_ENDPOINT Solid {
             translation 0.5000000000000002 0 0
-            scale 0.1 0.1 0.1
             children [
               DEF BALL Shape {
                 appearance PBRAppearance {
@@ -404,7 +402,7 @@ DEF ROBOT2 Robot {
                   metalness 0
                 }
                 geometry Sphere {
-                  radius 0.1
+                  radius 0.01
                 }
               }
             ]
