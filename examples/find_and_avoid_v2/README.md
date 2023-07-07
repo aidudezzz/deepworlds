@@ -1,5 +1,13 @@
 # Find target & avoid obstacles v2
 
+## Showcase
+
+Trained agent showcase:
+
+![image](./doc/find_avoid_v2_trained.gif)
+
+[Online interactive animation of trained agent](https://webots.cloud/AcNXp_5)
+
 ## General
 This is the updated and expanded second version of find and avoid.
 For this example, a simple custom differential drive robot is used, equipped with
