@@ -8,7 +8,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.2245453396718058 0.22010075965534806 0.9492813313400891 1.6427889618378544
-  position 0.15724478105920425 -5.395156343003796 3.534108418869838
+  position 0.240335369200381 -4.914464097689682 3.7038948025596405
 }
 TexturedBackground {
 }
@@ -208,10 +208,28 @@ DEF ROBOT1 Robot {
                     axis 0 1 0
                     anchor 0.085 0 0
                   }
-                  endPoint Solid {
+                  device [
+                    DEF MIDDLE_POLE_POS_SENSOR PositionSensor {
+                    }
+                  ]
+                  endPoint DEF MIDDLE_POLE Solid {
                     translation 0.085 0 0.51
                     rotation 0 -0.9999999999999999 0 1.5707953071795862
                     children [
+                      DEF MIDDLE_POLE_ENDPOINT Solid {
+                        translation 0.5 0 0
+                        children [
+                          Shape {
+                            appearance PBRAppearance {
+                              baseColor 0.12549 0.290196 0.529412
+                              metalness 0
+                            }
+                            geometry Sphere {
+                              radius 0.01
+                            }
+                          }
+                        ]
+                      }
                       DEF MIDDLE_POLE Shape {
                         appearance PBRAppearance {
                           baseColor 0.305882 0.898039 0.25098
