@@ -1,11 +1,11 @@
 #VRML_SIM R2022b utf8
 
+
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/robots/gctronic/e-puck/protos/E-puck.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/factory/containers/protos/WoodenBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/RectangleArena.proto"
-
 WorldInfo {
 }
 Viewpoint {
@@ -29,7 +29,7 @@ DEF supervisor Robot {
     DEF emitter Emitter {
       rotation -0.5773502691896258 -0.5773502691896258 -0.5773502691896258 2.0943951023931953
     }
-    DEF receiver Receiver {
+DEF receiver Receiver {
       rotation -0.5773502691896258 -0.5773502691896258 -0.5773502691896258 2.0943951023931953
     }
   ]

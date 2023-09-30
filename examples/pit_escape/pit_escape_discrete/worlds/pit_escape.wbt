@@ -1,10 +1,10 @@
 #VRML_SIM R2022b utf8
 
+
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/appearances/protos/SandyGround.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/samples/robotbenchmark/pit_escape/protos/Pit.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/robots/sphero/bb8/protos/BB-8.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
-
 WorldInfo {
   info [
     "The BB-8 robot has to climb out of the pit."
@@ -30,7 +30,7 @@ SpotLight {
 }
 DEF GROUND Solid {
   children [
-    Transform {
+    Pose {
       translation -0.3 115 0
       children [
         Shape {
@@ -46,7 +46,7 @@ DEF GROUND Solid {
         }
       ]
     }
-    Transform {
+    Pose {
       translation -0.3 -115 0
       children [
         Shape {
@@ -62,7 +62,7 @@ DEF GROUND Solid {
         }
       ]
     }
-    Transform {
+    Pose {
       translation 130 0 0
       children [
         Shape {
@@ -78,7 +78,7 @@ DEF GROUND Solid {
         }
       ]
     }
-    Transform {
+    Pose {
       translation -130 0 0
       children [
         Shape {
@@ -106,7 +106,7 @@ DEF ROBOT BB-8 {
   bodySlot [
     DEF RECEIVER Receiver {
     }
-    DEF EMITTER Emitter {
+DEF EMITTER Emitter {
     }
   ]
 }
@@ -114,7 +114,7 @@ DEF SUPERVISOR Robot {
   children [
     DEF RECEIVER Receiver {
     }
-    DEF EMITTER Emitter {
+DEF EMITTER Emitter {
     }
   ]
   name "supervisor"

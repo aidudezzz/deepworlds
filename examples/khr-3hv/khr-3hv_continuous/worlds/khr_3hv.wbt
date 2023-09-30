@@ -1,10 +1,10 @@
 #VRML_SIM R2022b utf8
 
+
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/robots/kondo/khr-3hv/protos/Khr3hv.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/Floor.proto"
-
 WorldInfo {
   info [
     "KHR3-HV demo"
@@ -23,17 +23,6 @@ Floor {
   size 50 50
 }
 Khr3hv {
-  hidden rotation_2 -0.9999992657468331 -0.001211819208687339 0 2.598106231415675e-07
-  hidden rotation_3 -0.03405622845208179 0 -0.9994199184044811 4.2146848510894035e-08
-  hidden rotation_6 -0.9999386715987968 0.011074883350794566 0 8.429369702178807e-08
-  hidden rotation_10 0 0.9999988688492776 0.0015040944669237378 2.528810910653644e-07
-  hidden rotation_11 1.5280437736838703e-23 0.9999999923035285 -0.00012406829879649107 2.0647654623614288e-07
-  hidden rotation_12 5.858303168768141e-05 0 0.9999999982840142 1.0167790716428855e-06
-  hidden rotation_15 0.9999995225188308 -0.0009772216281593795 0 1.9082797281243954e-07
-  hidden rotation_16 -4.8670110603618346e-05 -7.836723137552095e-23 0.9999999988156103 1.2880672684296776e-06
-  hidden rotation_17 -1.5287540592140387e-23 -0.9999999418734702 -0.00034095902405531265 2.0647654623614288e-07
-  hidden rotation_18 -7.710099907921047e-05 -9.923034388913545e-23 -0.999999997027718 1.0172157386467574e-06
-  hidden rotation_22 -3.514204375002404e-05 -9.99999999382512e-08 -0.9999999993825134 1.2891011687447157e-06
   controller "robot_supervisor_manager"
   supervisor TRUE
 }
