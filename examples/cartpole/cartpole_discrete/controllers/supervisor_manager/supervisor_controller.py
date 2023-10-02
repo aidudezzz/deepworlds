@@ -109,7 +109,7 @@ class CartPoleSupervisor(CSVSupervisorEnv):
         """
         return 1
 
-    def is_done(self):
+    def is_terminated(self):
         """
         An episode is done if the score is over 195.0, or if the pole is off balance, or the cart position is on the
         arena's edges.
@@ -132,6 +132,9 @@ class CartPoleSupervisor(CSVSupervisorEnv):
         if abs(cart_position) > 0.39:
             return True
 
+        return False
+
+    def is_truncated(self):
         return False
 
     def get_info(self):

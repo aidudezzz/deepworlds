@@ -20,7 +20,7 @@ def run():
 
     # Run outer loop until the episodes limit is reached or the task is solved
     while not solved and episode_count < episode_limit:
-        state = env.reset()  # Reset robot and get starting observation
+        state, _ = env.reset()  # Reset robot and get starting observation
         env.episode_score = 0
         action_probs = []  # This list holds the probability of each chosen action
 
@@ -33,14 +33,14 @@ def run():
 
             # Step the supervisor to get the current selected_action reward, the new state and whether we reached the
             # done condition
-            new_state, reward, done, info = env.step([selected_action])
+            new_state, reward, terminated, truncated, info = env.step([selected_action])
 
             # Save the current state transition in agent's memory
             trans = Transition(state, selected_action, action_prob, reward, new_state)
             agent.store_transition(trans)
 
             env.episode_score += reward  # Accumulate episode reward
-            if done:
+            if terminated or truncated:
                 # Save the episode's score
                 env.episode_score_list.append(env.episode_score)
                 agent.train_step(batch_size=step + 1)
@@ -74,10 +74,10 @@ def run():
     env.episode_score = 0
     while True:
         selected_action, action_prob = agent.work(state, type_="selectActionMax")
-        state, reward, done, _ = env.step([selected_action])
+        state, reward, terminated, truncated, _ = env.step([selected_action])
         env.episode_score += reward  # Accumulate episode reward
 
-        if done:
+        if terminated or truncated:
             print("Reward accumulated =", env.episode_score)
             env.episode_score = 0
             state = env.reset()
