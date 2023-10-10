@@ -3,3 +3,4 @@ sb3-contrib
 stable-baselines3
 numpy
 torch
+tensorboard
