@@ -1,4 +1,4 @@
 deepbots>=1.0.0
 numpy
 matplotlib
-stable_baselines3
+stable_baselines3<=1.8.0
