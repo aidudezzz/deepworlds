@@ -1,5 +1,6 @@
 #VRML_SIM R2023b utf8
 
+
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/RectangleArena.proto"
@@ -7,7 +8,6 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/factory/containers/protos/CardboardBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/chairs/protos/WoodenChair.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/kitchen/breakfast/protos/JamJar.proto"
-
 WorldInfo {
 }
 DEF VIEWPOINT Viewpoint {
@@ -49,7 +49,7 @@ DEF ROBOT Robot {
       physics Physics {
       }
     }
-    DEF CASTOR_WHEEL_BACK Solid {
+DEF CASTOR_WHEEL_BACK Solid {
       translation -0.04 0 -0.03
       children [
         DEF CASTOR Shape {
@@ -67,7 +67,7 @@ DEF ROBOT Robot {
       physics Physics {
       }
     }
-    DEF BODY Shape {
+DEF BODY Shape {
       appearance PBRAppearance {
         baseColor 0.917647 0.145098 0.145098
         roughness 1
@@ -77,7 +77,7 @@ DEF ROBOT Robot {
         size 0.1 0.1 0.05
       }
     }
-    DEF WHEEL1 HingeJoint {
+DEF WHEEL1 HingeJoint {
       jointParameters HingeJointParameters {
         position -6.704858890316245e-12
         axis 0 1 0
@@ -110,7 +110,7 @@ DEF ROBOT Robot {
         }
       }
     }
-    DEF WHEEL2 HingeJoint {
+DEF WHEEL2 HingeJoint {
       jointParameters HingeJointParameters {
         position -6.632028259900835e-12
         axis 0 1 0
@@ -133,18 +133,14 @@ DEF ROBOT Robot {
         }
       }
     }
-    DEF DS Group {
+DEF DS Group {
       children [
         DistanceSensor {
           translation 0.053 -4.28515e-18 0.01
           rotation 0 0 1 1.570796327
           name "distance sensor(0)"
           lookupTable [
-            0.015 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.015 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -153,11 +149,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 1.308996939
           name "distance sensor(1)"
           lookupTable [
-            0.013 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.013 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -166,11 +158,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 1.047197551
           name "distance sensor(2)"
           lookupTable [
-            0.012 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.012 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -179,11 +167,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 0.785398163
           name "distance sensor(3)"
           lookupTable [
-            0.008 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.008 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -192,11 +176,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 0.523598776
           name "distance sensor(4)"
           lookupTable [
-            0.007 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.007 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -205,11 +185,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 0.2617993877991494
           name "distance sensor(5)"
           lookupTable [
-            0.006 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.006 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -217,11 +193,7 @@ DEF ROBOT Robot {
           translation 0.051 0 0.01
           name "distance sensor(6)"
           lookupTable [
-            0.006 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.006 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -230,11 +202,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 -0.261799
           name "distance sensor(7)"
           lookupTable [
-            0.006 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.006 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -243,11 +211,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 -0.523598776
           name "distance sensor(8)"
           lookupTable [
-            0.007 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.007 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -256,11 +220,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 -0.785398163
           name "distance sensor(9)"
           lookupTable [
-            0.008 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.008 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -269,11 +229,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 -1.047197551
           name "distance sensor(10)"
           lookupTable [
-            0.012 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.012 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -282,11 +238,7 @@ DEF ROBOT Robot {
           rotation 0 0 1 -1.309
           name "distance sensor(11)"
           lookupTable [
-            0.013 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.013 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
@@ -295,17 +247,13 @@ DEF ROBOT Robot {
           rotation 0 0 1 -1.570796327
           name "distance sensor(12)"
           lookupTable [
-            0.015 0 0
-            0.25 25 0
-            0.5 50 0
-            0.75 75 0
-            1 100 0
+            0.015 0 0 0.25 25 0 0.5 50 0 0.75 75 0 1 100 0 
           ]
           aperture 0.1
         }
       ]
     }
-    DEF DS_BODY Solid {
+DEF DS_BODY Solid {
       translation 0.05 0 0.01
       children [
         Shape {
@@ -393,117 +341,117 @@ DEF OBSTACLES Group {
       name "cardboard box long 1"
       size 0.1 0.4 0.1
     }
-    DEF OBSTACLE_CBL2 CardboardBox {
+DEF OBSTACLE_CBL2 CardboardBox {
       translation 5.62 0 0.051
       name "cardboard box long 2"
       size 0.1 0.4 0.1
     }
-    DEF OBSTACLE_CBL3 CardboardBox {
+DEF OBSTACLE_CBL3 CardboardBox {
       translation 5.74 0 0.051
       name "cardboard box long 3"
       size 0.1 0.4 0.1
     }
-    DEF OBSTACLE_CBL4 CardboardBox {
+DEF OBSTACLE_CBL4 CardboardBox {
       translation 5.98 0 0.051
       name "cardboard box long 4"
       size 0.1 0.4 0.1
     }
-    DEF OBSTACLE_CBL5 CardboardBox {
+DEF OBSTACLE_CBL5 CardboardBox {
       translation 5.86 0 0.051
       name "cardboard box long 5"
       size 0.1 0.4 0.1
     }
-    DEF OBSTACLE_CB1 CardboardBox {
+DEF OBSTACLE_CB1 CardboardBox {
       translation 5.5 0.29 0.051
       name "cardboard box 1"
       size 0.1 0.1 0.1
     }
-    DEF OBSTACLE_CB2 CardboardBox {
+DEF OBSTACLE_CB2 CardboardBox {
       translation 5.62 0.29 0.051
       name "cardboard box 2"
       size 0.1 0.1 0.1
     }
-    DEF OBSTACLE_CB3 CardboardBox {
+DEF OBSTACLE_CB3 CardboardBox {
       translation 5.74 0.29 0.051
       name "cardboard box 3"
       size 0.1 0.1 0.1
     }
-    DEF OBSTACLE_CB4 CardboardBox {
+DEF OBSTACLE_CB4 CardboardBox {
       translation 5.86 0.29 0.051
       name "cardboard box 4"
       size 0.1 0.1 0.1
     }
-    DEF OBSTACLE_CB5 CardboardBox {
+DEF OBSTACLE_CB5 CardboardBox {
       translation 5.98 0.29 0.051
       name "cardboard box 5"
       size 0.1 0.1 0.1
     }
-    DEF OBSTACLE_CBLA1 CardboardBox {
+DEF OBSTACLE_CBLA1 CardboardBox {
       translation 5.86 0.68 0.051
       name "cardboard box large 1"
       size 0.4 0.4 0.1
     }
-    DEF OBSTACLE_CBLA2 CardboardBox {
+DEF OBSTACLE_CBLA2 CardboardBox {
       translation 5.86 1.13 0.051
       name "cardboard box large 2"
       size 0.4 0.4 0.1
     }
-    DEF OBSTACLE_CBLA3 CardboardBox {
+DEF OBSTACLE_CBLA3 CardboardBox {
       translation 5.86 1.59 0.051
       name "cardboard box large 3"
       size 0.4 0.4 0.1
     }
-    DEF OBSTACLE_CBLA4 CardboardBox {
+DEF OBSTACLE_CBLA4 CardboardBox {
       translation 5.86 2.06 0.051
       name "cardboard box large 4"
       size 0.4 0.4 0.1
     }
-    DEF OBSTACLE_CBLA5 CardboardBox {
+DEF OBSTACLE_CBLA5 CardboardBox {
       translation 5.86 2.53 0.051
       name "cardboard box large 5"
       size 0.4 0.4 0.1
     }
-    DEF OBSTACLE_C1 WoodenChair {
+DEF OBSTACLE_C1 WoodenChair {
       translation 6.46 0 0
       name "wooden chair 1"
     }
-    DEF OBSTACLE_C2 WoodenChair {
+DEF OBSTACLE_C2 WoodenChair {
       translation 6.46 0.46 0
       name "wooden chair 2"
     }
-    DEF OBSTACLE_C3 WoodenChair {
+DEF OBSTACLE_C3 WoodenChair {
       translation 6.46 0.91 0
       name "wooden chair 3"
     }
-    DEF OBSTACLE_C4 WoodenChair {
+DEF OBSTACLE_C4 WoodenChair {
       translation 6.46 1.38 0
       name "wooden chair 4"
     }
-    DEF OBSTACLE_C5 WoodenChair {
+DEF OBSTACLE_C5 WoodenChair {
       translation 6.46 1.84 0
       name "wooden chair 5"
     }
-    DEF OBSTACLE_JJ1 JamJar {
+DEF OBSTACLE_JJ1 JamJar {
       translation 5.31 -0.16 -0.0006973334377114518
       rotation -0.23694354074930515 0.9704293625290866 -0.04609350104486261 1.118717720072181e-16
       name "jam jar 1"
     }
-    DEF OBSTACLE_JJ2 JamJar {
+DEF OBSTACLE_JJ2 JamJar {
       translation 5.31 -0.049999999999999996 -0.0006973334377114518
       rotation 0.7337861323290028 0.17659940834513932 -0.6560263416767576 1.0837201441170259e-16
       name "jam jar 2"
     }
-    DEF OBSTACLE_JJ3 JamJar {
+DEF OBSTACLE_JJ3 JamJar {
       translation 5.31 0.06 -0.0006973334377114518
       rotation -0.5799210124462569 0.7881115262195015 -0.20632944909361925 7.618075910451488e-17
       name "jam jar 3"
     }
-    DEF OBSTACLE_JJ4 JamJar {
+DEF OBSTACLE_JJ4 JamJar {
       translation 5.31 0.16 -0.0006973334377114518
       rotation 0.8362368935157535 -0.30141364532371845 -0.4581022509612784 1.1622712563992011e-16
       name "jam jar 4"
     }
-    DEF OBSTACLE_JJ5 JamJar {
+DEF OBSTACLE_JJ5 JamJar {
       translation 5.31 0.27 -0.0006973334377114518
       rotation -0.4551714512289826 0.09075491470015253 0.8857666145457673 1.5529558483346807e-16
       name "jam jar 5"
@@ -529,7 +477,7 @@ DEF WALLS Group {
       name "wall 1"
       boundingObject USE BODY
     }
-    DEF WALL_2 Solid {
+DEF WALL_2 Solid {
       translation 4.99 6.01603e-06 0.05
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -572,7 +520,7 @@ DEF PATH Group {
       ]
       name "p"
     }
-    DEF p1 Solid {
+DEF p1 Solid {
       translation 5.13 0.120001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -594,7 +542,7 @@ DEF PATH Group {
       ]
       name "p(1)"
     }
-    DEF p2 Solid {
+DEF p2 Solid {
       translation 5.13 0.250001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -616,7 +564,7 @@ DEF PATH Group {
       ]
       name "p(2)"
     }
-    DEF p3 Solid {
+DEF p3 Solid {
       translation 5.13 0.360001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -638,7 +586,7 @@ DEF PATH Group {
       ]
       name "p(3)"
     }
-    DEF p4 Solid {
+DEF p4 Solid {
       translation 5.13 0.490001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -660,7 +608,7 @@ DEF PATH Group {
       ]
       name "p(4)"
     }
-    DEF p5 Solid {
+DEF p5 Solid {
       translation 5.13 0.610001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -682,7 +630,7 @@ DEF PATH Group {
       ]
       name "p(5)"
     }
-    DEF p6 Solid {
+DEF p6 Solid {
       translation 5.13 0.730001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -704,7 +652,7 @@ DEF PATH Group {
       ]
       name "p(6)"
     }
-    DEF p7 Solid {
+DEF p7 Solid {
       translation 5.13 0.850001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -726,7 +674,7 @@ DEF PATH Group {
       ]
       name "p(7)"
     }
-    DEF p8 Solid {
+DEF p8 Solid {
       translation 5.13 0.970001 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -748,7 +696,7 @@ DEF PATH Group {
       ]
       name "p(8)"
     }
-    DEF p9 Solid {
+DEF p9 Solid {
       translation 5.13 1.1 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -770,7 +718,7 @@ DEF PATH Group {
       ]
       name "p(9)"
     }
-    DEF p10 Solid {
+DEF p10 Solid {
       translation 5.13 1.23 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -792,7 +740,7 @@ DEF PATH Group {
       ]
       name "p(10)"
     }
-    DEF p11 Solid {
+DEF p11 Solid {
       translation 5.13 1.36 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -814,7 +762,7 @@ DEF PATH Group {
       ]
       name "p(11)"
     }
-    DEF p12 Solid {
+DEF p12 Solid {
       translation 5.13 1.49 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -836,7 +784,7 @@ DEF PATH Group {
       ]
       name "p(12)"
     }
-    DEF p13 Solid {
+DEF p13 Solid {
       translation 5.13 1.61 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -858,7 +806,7 @@ DEF PATH Group {
       ]
       name "p(13)"
     }
-    DEF p14 Solid {
+DEF p14 Solid {
       translation 5.13 1.74 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
@@ -880,7 +828,7 @@ DEF PATH Group {
       ]
       name "p(14)"
     }
-    DEF p15 Solid {
+DEF p15 Solid {
       translation 5.13 1.86 0.001
       rotation 0 0 1 -1.5707953071795862
       children [
