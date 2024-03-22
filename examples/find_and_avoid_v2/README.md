@@ -18,8 +18,8 @@ and distance sensor values, and latest action. The observation can also be augme
 from earlier steps.
 
 ## World
-The world consists of an arena that can be populated with various obstacles, boxes of various shapes,
-chairs, and jars. With the help of a grid map, the map can be randomized in two ways. The first one
+The world consists of an arena that can be populated using procedural generation with various obstacles, 
+boxes of various shapes, chairs, and jars. With the help of a grid map, the map can be randomized in two ways. The first one
 places the robot and the target at random positions, with a variable distance between them to control difficulty,
 and a variable number of obstacles are scattered randomly in the arena. It is made sure that there is 
 a free path on the grid map between the robot and the target using a simple BFS path-finding algorithm.
@@ -56,4 +56,7 @@ standard deviation of the reward are recorded, as returned by sb3's `evaluate_po
 ## Agents 
     
 + [Stable Baselines3 - Contrib Maskable Proximal Policy Optimization (Maskable-PPO)](https://sb3-contrib.readthedocs.io/en/master/modules/ppo_mask.html)
- 
+
+## Cite
+
+- [Deep Reinforcement Learning With Action Masking for Differential-Drive Robot Navigation Using Low-Cost Sensors, K Tsampazis, et al., MLSP2023, IEEE](https://ieeexplore.ieee.org/abstract/document/10285997)
