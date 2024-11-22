@@ -21,6 +21,12 @@ DEF ROBOT1 Robot {
   translation -0.175 0 0.04
   rotation 1 0 0 1.5708
   children [
+    Receiver {
+      channel 1
+    }
+    Emitter {
+      channel 1
+    }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
       rotation 0 1 0 -1.5707953071795862
@@ -165,7 +171,7 @@ DEF ROBOT1 Robot {
         translation -0.0004655326854952333 0.5300037594690288 -5.369584240411801e-07
         rotation -0.5769874410964118 -0.5775313877690036 0.577531807746226 2.0949379676602047
         children [
-          DEF POLE_ENDPOINT Solid {
+          DEF POLE_ENDPOINT_1 Solid {
             translation 0.5000000000000002 0 0
             children [
               DEF BALL Shape {
@@ -242,13 +248,19 @@ DEF ROBOT1 Robot {
     density -1
     mass 2
   }
-  controller ""
+  controller "robot_controller"
   supervisor TRUE
 }
 DEF ROBOT2 Robot {
   translation 0.175 0 0.04
   rotation 1 0 0 1.5708
   children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+      channel 2
+    }
     DEF HINGE_COVER Solid {
       translation 0 0.03 -3.469446951953614e-18
       rotation 0 1 0 -1.5707953071795862
@@ -393,7 +405,7 @@ DEF ROBOT2 Robot {
         translation -0.0004655326854952333 0.5300037594690288 -5.369584240411801e-07
         rotation -0.5769874410964118 -0.5775313877690036 0.577531807746226 2.0949379676602047
         children [
-          DEF POLE_ENDPOINT Solid {
+          DEF POLE_ENDPOINT_2 Solid {
             translation 0.5000000000000002 0 0
             children [
               DEF BALL Shape {
@@ -470,6 +482,28 @@ DEF ROBOT2 Robot {
     density -1
     mass 2
   }
-  controller ""
+  controller "robot_controller"
+  supervisor TRUE
+}
+Robot {
+  children [
+    Receiver {
+      name "receiver1"
+      channel 2
+    }
+    Emitter {
+      name "emitter1"
+      channel 2
+    }
+    Emitter {
+      name "emitter0"
+      channel 1
+    }
+    Receiver {
+      name "receiver0"
+      channel 1
+    }
+  ]
+  controller "supervisor_manager"
   supervisor TRUE
 }
