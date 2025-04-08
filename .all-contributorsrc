@@ -84,6 +84,16 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "TarekSaati",
+      "name": "Tarek Saati",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78405314?v=4",
+      "profile": "https://github.com/TarekSaati",
+      "contributions": [
+        "code",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -91,5 +101,7 @@
   "projectOwner": "aidudezzz",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
