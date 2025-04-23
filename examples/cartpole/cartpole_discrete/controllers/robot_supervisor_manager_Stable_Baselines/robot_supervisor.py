@@ -1,7 +1,7 @@
 from deepbots.supervisor import RobotSupervisorEnv
 from utilities import normalize_to_range
 
-from gym.spaces import Box, Discrete
+from gymnasium.spaces import Box, Discrete
 import numpy as np
 
 
@@ -109,9 +109,9 @@ class CartPoleRobotSupervisor(RobotSupervisorEnv):
         """
         return 1
 
-    def is_done(self):
+    def is_terminated(self):
         """
-        An episode is done if the score is over 195.0, or if the pole is off balance, or the cart position is on the
+        An episode is terminated if the score is over 195.0, or if the pole is off balance, or the cart position is on the
         arena's edges.
 
         :return: True if termination conditions are met, False otherwise
@@ -128,6 +128,9 @@ class CartPoleRobotSupervisor(RobotSupervisorEnv):
         if abs(cart_position) > 0.39:
             return True
 
+        return False
+
+    def is_truncated(self):
         return False
 
     def solved(self):

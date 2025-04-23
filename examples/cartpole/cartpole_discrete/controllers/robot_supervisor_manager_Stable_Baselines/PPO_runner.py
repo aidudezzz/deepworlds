@@ -1,5 +1,5 @@
 from numpy import convolve, ones, mean
-import gym
+import gymnasium as gym
 
 from robot_supervisor import CartPoleRobotSupervisor
 from utilities import plot_data
@@ -13,7 +13,7 @@ def run():
     env = CartPoleRobotSupervisor()
     
     # Verify that the environment is working as a gym-style env
-    #check_env(env)
+    check_env(env)
     
     #  Use the PPO algorithm from the stable baselines having MLP, verbose=1  output the training information
     model = PPO("MlpPolicy", env, verbose=1)
