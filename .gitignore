@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# logs
+examples/evolutionary/cartpole_evolutionary/controllers/supervisor_manager/wandb/*
