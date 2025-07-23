@@ -1,5 +1,7 @@
 # Find target & avoid obstacles
 
+:warning: NOTE: This agent do not converge well
+
 This is a typical find target and avoid obstacles task with a simple world
 configuration. For this task the E-puck robot is used, which is a compact mobile
 robot developed by GCtronic and EPFL and is included in Webots. The world
@@ -19,4 +21,8 @@ gas and wheel).
     [implementation](https://github.com/philtabor/Actor-Critic-Methods-Paper-To-Code/tree/master/DDPG)
     which is presented in [Youtube
     video](https://www.youtube.com/watch?v=6Yd5WnYls_Y).
+ 
+|Trained Agent Showcase|Reward Per Episode Plot|
+|----------------------|-----------------------|
+|![image](https://github.com/KelvinYang0320/deepworlds/blob/dev/examples/find_and_avoid/doc/demo.gif)|![image](https://github.com/KelvinYang0320/deepworlds/blob/dev/examples/find_and_avoid/doc/trend.png)|
     

@@ -1,0 +1,5 @@
+deepbots>=1.0.0
+numpy
+matplotlib
+torch
+ikpy

@@ -1,0 +1,28 @@
+#VRML_SIM R2022b utf8
+
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/robots/kondo/khr-3hv/protos/Khr3hv.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/Floor.proto"
+WorldInfo {
+  info [
+    "KHR3-HV demo"
+  ]
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation -0.08 0.06 1 2
+  position 4.5 -5.5 1.3
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  size 50 50
+}
+Khr3hv {
+  controller "robot_supervisor_manager"
+  supervisor TRUE
+}

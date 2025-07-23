@@ -1,10 +1,12 @@
 import numpy as np
+from controller import Supervisor
 
-from deepbots.supervisor.controllers.supervisor_emitter_receiver import SupervisorCSV
-from utilities import normalizeToRange, getDistanceFromCenter, plotData
+from deepbots.supervisor import CSVSupervisorEnv
+from utilities import normalize_to_range, get_distance_from_center
+from supervisor_manager import MAX_TIME
 
 
-class PitEscapeSupervisor(SupervisorCSV):
+class PitEscapeSupervisor(CSVSupervisorEnv):
     """
     This example is taken from Webots https://robotbenchmark.net/benchmark/pit_escape/ example.
 
@@ -62,30 +64,22 @@ class PitEscapeSupervisor(SupervisorCSV):
 
     def __init__(self):
         """
-        In the constructor the robot is spawned in the world via respawnRobot().
-        Reference to robot is initialized here, through self.respawnRobot(), where it is also spawned.
         When in test mode (self.test = True) the agent stops being trained and picks actions in a non-stochastic way.
         """
-        print("Robot is spawned in code, if you want to inspect it pause the simulation.")
         super().__init__()
-        self.observationSpace = 6
-        self.actionSpace = 4
+        self.observation_space = 6
+        self.action_space = 4
 
-        self.robot = None
-        self.respawnRobot()
+        self.robot = self.getFromDef("ROBOT")
 
-        self.episodeScore = 0  # score accumulated during an episode
-        self.episodeScoreList = []  # a list to save all the episode scores, used to check if task is solved
+        self.episode_score = 0  # score accumulated during an episode
+        self.episode_score_list = []  # a list to save all the episode scores, used to check if task is solved
         self.test = False  # whether the agent is in test mode
 
-        self.longestDistance = 0.0  # Tracks max distance achieved during an episode
-        self.oldMetric = 0.0  # oldMetrics is used to get the difference with new metrics
+        self.longest_distance = 0.0  # Tracks max distance achieved during an episode
+        self.old_metric = 0.0  # old_metric is used to get the difference with new metrics
         self.metric = 0.0
-        self.time = self.supervisor.getTime()  # Current time
-        self.startTime = 0.0  # Episode start time
-        self.episodeTime = 0.0  # Current episode time
-        self.maxTime = 60.0  # Time in seconds that each episode lasts
-        self.pitRadius = self.supervisor.getFromDef("PIT").getField("pitRadius").getSFFloat()
+        self.pit_radius = self.getFromDef("PIT").getField("pitRadius").getSFFloat()
 
     def get_observations(self):
         """
@@ -97,18 +91,21 @@ class PitEscapeSupervisor(SupervisorCSV):
         :return: Observation: [gyro x, gyro y, gyro z, accelerometer x, accelerometer y, accelerometer z]
         :rtype: list
         """
-        messageReceived = self.handle_receiver()
-        if messageReceived is not None:
-            return [normalizeToRange(float(messageReceived[i]), -5.0, 5.0, -1.0, 1.0, clip=True) for i in
-                    range(len(messageReceived))]
+        message_received = self.handle_receiver()
+        if message_received is not None:
+            return [normalize_to_range(float(message_received[i]), -5.0, 5.0, -1.0, 1.0, clip=True) for i in
+                    range(len(message_received))]
         else:
-            return [0.0 for _ in range(self.observationSpace)]
+            return self.get_default_observation()
+
+    def get_default_observation(self):
+        return [0.0 for _ in range(self.observation_space)]
 
     def get_reward(self, action=None):
         """
         Reward method implementation works based on https://robotbenchmark.net/benchmark/pit_escape/ metric.
         Calculates max distance achieved during the episode and based on that updates the metric.
-        If the max distance achieved is over the pitRadius, the episode is considered solved and
+        If the max distance achieved is over the pit_radius, the episode is considered solved and
         the metric updates with that in mind.
         This method updates the metric, but returns the difference with the previous recorded metric.
 
@@ -117,19 +114,19 @@ class PitEscapeSupervisor(SupervisorCSV):
         :return: This step's reward
         :rtype: float
         """
-        self.oldMetric = self.metric
+        self.old_metric = self.metric
 
-        distance = getDistanceFromCenter(self.robot)  # Calculate current distance from center
-        if distance > self.longestDistance:
-            self.longestDistance = distance  # Update max
-            self.metric = 0.5 * self.longestDistance / self.pitRadius  # Update metric
+        distance = get_distance_from_center(self.robot)  # Calculate current distance from center
+        if distance > self.longest_distance:
+            self.longest_distance = distance  # Update max
+            self.metric = 0.5 * self.longest_distance / self.pit_radius  # Update metric
 
         # Escaping increases metric over 0.5 based on time elapsed in episode
-        if self.longestDistance > self.pitRadius:
-            self.metric = 0.5 + 0.5 * (self.maxTime - self.episodeTime) / self.maxTime
+        if self.longest_distance > self.pit_radius:
+            self.metric = 0.5 + 0.5 * (MAX_TIME - self.getTime()) / MAX_TIME
 
         # Step reward is how much the metric changed, i.e. the difference from the previous one
-        return self.metric - self.oldMetric
+        return self.metric - self.old_metric
 
     def is_done(self):
         """
@@ -140,58 +137,24 @@ class PitEscapeSupervisor(SupervisorCSV):
         :return: True if termination conditions are met, False otherwise
         :rtype: bool
         """
-        doneFlag = False
-        self.episodeTime = self.time - self.startTime  # Update episode time
+        done_flag = False
 
-        # Time's not up
-        if self.episodeTime < self.maxTime:
-            self.time = self.supervisor.getTime()  # Update current time
         # Episode time run out
-        else:
-            doneFlag = True
+        if self.getTime() > MAX_TIME:
+            done_flag = True
 
         # Episode solved
-        if self.longestDistance > self.pitRadius:
-            doneFlag = True
+        if self.longest_distance > self.pit_radius:
+            done_flag = True
 
-        if doneFlag:
-            self.startTime = self.time  # Update next episode's start time
+        if done_flag:
             # Reset reward related variables
-            self.longestDistance = 0.0
+            self.longest_distance = 0.0
             self.metric = 0.0
-            self.oldMetric = 0.0
+            self.old_metric = 0.0
             return True
 
         return False
-
-    def reset(self):
-        """
-        Reset calls respawnRobot() method and returns starting observation.
-        :return: Starting observation zero vector
-        :rtype: list
-        """
-        # TODO This method will change in Webots R2020a rev2, to a general reset simulation method
-        self.respawnRobot()
-        return [0.0 for _ in range(self.observationSpace)]
-
-    def respawnRobot(self):
-        """
-        This method reloads the saved BB-8 robot in its initial state from the disk.
-        """
-        # TODO This method will be removed in Webots R2020a rev2
-        if self.robot is not None:
-            # Despawn existing robot
-            self.robot.remove()
-
-        # Respawn robot in starting position and state
-        rootNode = self.supervisor.getRoot()  # This gets the root of the scene tree
-        childrenField = rootNode.getField('children')  # This gets a list of all the children, ie. objects of the scene
-        childrenField.importMFNode(-2, "BB-8.wbo")  # Load robot from file and add to second-to-last position
-
-        # Get the new robot reference
-        self.robot = self.supervisor.getFromDef("ROBOT_BB-8")
-        # Reset the simulation physics to start over
-        self.supervisor.simulationResetPhysics()
 
     def get_info(self):
         """
@@ -202,6 +165,12 @@ class PitEscapeSupervisor(SupervisorCSV):
         """
         return None
 
+    def render(self, mode="human"):
+        """
+        Dummy implementation of render.
+        """
+        pass
+
     def solved(self):
         """
         This method checks whether the Pit Escape task is solved, so training terminates.
@@ -210,28 +179,29 @@ class PitEscapeSupervisor(SupervisorCSV):
         :return: True if task is solved, False otherwise
         :rtype: bool
         """
-        if len(self.episodeScoreList) > 10:  # Over 100 trials thus far
-            if np.mean(self.episodeScoreList[-10:]) > 0.85:  # Last 100 episodes' scores average value
+        if len(self.episode_score_list) > 100:  # Over 100 trials thus far
+            if np.mean(self.episode_score_list[-100:]) > 0.85:  # Last 100 episodes' scores average value
                 return True
         return False
 
-    def step(self, action, repeatSteps=1):
+    def step(self, action, repeat_steps=1):
         """
-        This custom implementation of step incorporates a repeat step feature. By setting the repeatSteps
+        This custom implementation of step incorporates a repeat step feature. By setting the repeat_steps
         value, the supervisor is stepped and the selected action is emitted to the robot repeatedly.
-        repeatSteps must be > 0.
+        repeat_steps must be > 0.
 
         :param action: Iterable that contains the action value(s)
         :type action: iterable
-        :param repeatSteps: Number of steps to repeatedly do the same action before returning, defaults to 1
-        :type repeatSteps: int, optional
+        :param repeat_steps: Number of steps to repeatedly do the same action before returning, defaults to 1
+        :type repeat_steps: int, optional
         :return: observation, reward, done, info
         """
-        if repeatSteps <= 0:
-            raise ValueError("repeatSteps must be > 0")
+        if repeat_steps <= 0:
+            raise ValueError("repeat_steps must be > 0")
 
-        for _ in range(repeatSteps):
-            self.supervisor.step(self.get_timestep())
+        for _ in range(repeat_steps):
+            if super(Supervisor, self).step(self.timestep) == -1:
+                exit()
             self.handle_emitter(action)
 
         return (

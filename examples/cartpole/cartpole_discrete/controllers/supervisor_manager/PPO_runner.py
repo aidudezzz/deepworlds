@@ -3,76 +3,76 @@ from numpy import convolve, ones, mean
 from supervisor_controller import CartPoleSupervisor
 from keyboard_controller_cartpole import KeyboardControllerCartPole
 from agent.PPO_agent import PPOAgent, Transition
-from utilities import plotData
+from utilities import plot_data
 
 
 def run():
     # Initialize supervisor object
     # Whenever we want to access attributes, etc., from the supervisor controller we use
-    # supervisorPre.
-    supervisorPre = CartPoleSupervisor()
+    # supervisor_pre.
+    supervisor_pre = CartPoleSupervisor()
     # Wrap the CartPole supervisor in the custom keyboard printer
-    supervisorEnv = KeyboardControllerCartPole(supervisorPre)
+    supervisor_env = KeyboardControllerCartPole(supervisor_pre)
 
     # The agent used here is trained with the PPO algorithm (https://arxiv.org/abs/1707.06347).
-    agent = PPOAgent(supervisorPre.observationSpace, supervisorPre.actionSpace)
+    agent = PPOAgent(supervisor_pre.observation_space, supervisor_pre.action_space)
 
-    episodeCount = 0
-    episodeLimit = 2000
+    episode_count = 0
+    episod_limit = 2000
     solved = False  # Whether the solved requirement is met
-    averageEpisodeActionProbs = []  # Save average episode taken actions probability to plot later
+    average_episode_action_probs = []  # Save average episode taken actions probability to plot later
 
     # Run outer loop until the episodes limit is reached or the task is solved
-    while not solved and episodeCount < episodeLimit:
-        state = supervisorEnv.reset()  # Reset robot and get starting observation
-        supervisorPre.episodeScore = 0
-        actionProbs = []  # This list holds the probability of each chosen action
+    while not solved and episode_count < episod_limit:
+        state = supervisor_env.reset()  # Reset robot and get starting observation
+        supervisor_pre.episodeScore = 0
+        action_probs = []  # This list holds the probability of each chosen action
 
         # Inner loop is the episode loop
-        for step in range(supervisorPre.stepsPerEpisode):
+        for step in range(supervisor_pre.steps_per_episode):
             # In training mode the agent samples from the probability distribution, naturally implementing exploration
-            selectedAction, actionProb = agent.work(state, type_="selectAction")
-            # Save the current selectedAction's probability
-            actionProbs.append(actionProb)
+            selected_action, action_prob = agent.work(state, type_="selectAction")
+            # Save the current selected_action's probability
+            action_probs.append(action_prob)
 
-            # Step the supervisor to get the current selectedAction reward, the new state and whether we reached the
+            # Step the supervisor to get the current selected_action reward, the new state and whether we reached the
             # done condition
-            newState, reward, done, info = supervisorEnv.step([selectedAction])
+            new_state, reward, done, info = supervisor_env.step([selected_action])
 
             # Save the current state transition in agent's memory
-            trans = Transition(state, selectedAction, actionProb, reward, newState)
-            agent.storeTransition(trans)
+            trans = Transition(state, selected_action, action_prob, reward, new_state)
+            agent.store_transition(trans)
 
-            supervisorPre.episodeScore += reward  # Accumulate episode reward
+            supervisor_pre.episodeScore += reward  # Accumulate episode reward
             if done:
                 # Save the episode's score
-                supervisorPre.episodeScoreList.append(supervisorPre.episodeScore)
-                agent.trainStep(batchSize=step + 1)
-                solved = supervisorPre.solved()  # Check whether the task is solved
+                supervisor_pre.episode_score_list.append(supervisor_pre.episodeScore)
+                agent.train_step(batch_size=step + 1)
+                solved = supervisor_pre.solved()  # Check whether the task is solved
                 break
 
-            state = newState  # state for next step is current step's newState
+            state = new_state  # state for next step is current step's new_state
 
-        if supervisorPre.test:  # If test flag is externally set to True, agent is deployed
+        if supervisor_pre.test:  # If test flag is externally set to True, agent is deployed
             break
 
-        print("Episode #", episodeCount, "score:", supervisorPre.episodeScore)
+        print("Episode #", episode_count, "score:", supervisor_pre.episodeScore)
         # The average action probability tells us how confident the agent was of its actions.
         # By looking at this we can check whether the agent is converging to a certain policy.
-        avgActionProb = mean(actionProbs)
-        averageEpisodeActionProbs.append(avgActionProb)
-        print("Avg action prob:", avgActionProb)
+        avgaction_prob = mean(action_probs)
+        average_episode_action_probs.append(avgaction_prob)
+        print("Avg action prob:", avgaction_prob)
 
-        episodeCount += 1  # Increment episode counter
+        episode_count += 1  # Increment episode counter
 
     # np.convolve is used as a moving average, see https://stackoverflow.com/a/22621523
-    movingAvgN = 10
-    plotData(convolve(supervisorPre.episodeScoreList, ones((movingAvgN,))/movingAvgN, mode='valid'),
+    moving_avg_n = 10
+    plot_data(convolve(supervisor_pre.episode_score_list, ones((moving_avg_n,))/moving_avg_n, mode='valid'),
              "episode", "episode score", "Episode scores over episodes")
-    plotData(convolve(averageEpisodeActionProbs, ones((movingAvgN,))/movingAvgN, mode='valid'),
+    plot_data(convolve(average_episode_action_probs, ones((moving_avg_n,))/moving_avg_n, mode='valid'),
              "episode", "average episode action probability", "Average episode action probability over episodes")
 
-    if not solved and not supervisorPre.test:
+    if not solved and not supervisor_pre.test:
         print("Reached episode limit and task was not solved.")
     else:
         if not solved:
@@ -80,15 +80,15 @@ def run():
         elif solved:
             print("Task is solved, deploying agent for testing...")
     print("Press R to reset.")
-    state = supervisorEnv.reset()
-    supervisorPre.test = True
-    supervisorPre.episodeScore = 0
+    state = supervisor_env.reset()
+    supervisor_pre.test = True
+    supervisor_pre.episodeScore = 0
     while True:
-        selectedAction, actionProb = agent.work(state, type_="selectActionMax")
-        state, reward, done, _ = supervisorEnv.step([selectedAction])
-        supervisorPre.episodeScore += reward  # Accumulate episode reward
+        selected_action, action_prob = agent.work(state, type_="selectActionMax")
+        state, reward, done, _ = supervisor_env.step([selected_action])
+        supervisor_pre.episodeScore += reward  # Accumulate episode reward
 
         if done:
-            print("Reward accumulated =", supervisorPre.episodeScore)
-            supervisorPre.episodeScore = 0
-            state = supervisorEnv.reset()
+            print("Reward accumulated =", supervisor_pre.episodeScore)
+            supervisor_pre.episodeScore = 0
+            state = supervisor_env.reset()

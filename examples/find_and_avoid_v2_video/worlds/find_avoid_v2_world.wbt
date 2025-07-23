@@ -1,0 +1,940 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/factory/containers/protos/CardboardBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/chairs/protos/WoodenChair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/kitchen/breakfast/protos/JamJar.proto"
+
+WorldInfo {
+}
+DEF VIEWPOINT Viewpoint {
+  orientation -0.3833461039047917 0.37464636620598124 0.8442072404982502 1.7619347030701011
+  position -0.9605156484435913 -3.921647450771648 4.478294738183916
+  follow "robot"
+  followType "None"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  rotation 0 1 0 0
+  floorSize 3.6 3.6
+  floorTileSize 1 1
+  floorAppearance Parquetry {
+  }
+}
+DEF ROBOT Robot {
+  translation 1.4630326780287426 -1.5182156603577182 0.03978789437407481
+  rotation -0.0011680995457829634 -6.797439205859879e-05 0.9999993154612321 -3.018952332792635
+  children [
+    Camera {
+      translation 0.1 0 0
+      fieldOfView 1.0472
+      width 640
+      height 480
+      near 0.1
+      far 10
+    }
+    DEF CASTOR_WHEEL_FRONT Solid {
+      translation 0.04 0 -0.03
+      children [
+        DEF CASTOR Shape {
+          appearance PBRAppearance {
+            baseColor 0.12549 0.290196 0.529412
+            metalness 0
+          }
+          geometry Sphere {
+            radius 0.01
+          }
+        }
+      ]
+      name "CASTOR_WHEEL"
+      boundingObject USE CASTOR
+      physics Physics {
+      }
+    }
+    DEF CASTOR_WHEEL_BACK Solid {
+      translation -0.04 0 -0.03
+      children [
+        DEF CASTOR Shape {
+          appearance PBRAppearance {
+            baseColor 0.12549 0.290196 0.529412
+            metalness 0
+          }
+          geometry Sphere {
+            radius 0.01
+          }
+        }
+      ]
+      name "CASTOR_WHEEL(1)"
+      boundingObject USE CASTOR
+      physics Physics {
+      }
+    }
+    DEF BODY Shape {
+      appearance PBRAppearance {
+        baseColor 0.917647 0.145098 0.145098
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.1 0.1 0.05
+      }
+    }
+    DEF WHEEL1 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 2.255958866588215
+        axis 0 1 0
+        anchor 0 0.06 0
+      }
+      device [
+        RotationalMotor {
+          name "left_wheel"
+        }
+      ]
+      endPoint Solid {
+        translation 5.890755460649622e-07 0.06000001867654499 -1.9765027438409503e-06
+        rotation 0.3179303859527065 0.6704166495246852 -0.6704191119949211 2.5259458824157353
+        children [
+          DEF WHEEL Shape {
+            appearance PBRAppearance {
+              baseColor 0.305882 0.898039 0.25098
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.04
+              subdivision 24
+            }
+          }
+        ]
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+        linearVelocity -0.021480940182653056 -0.0027396623607232372 3.10139292398708e-06
+        angularVelocity 0.06173352528753441 -0.4956208867668231 -0.398072572430894
+      }
+    }
+    DEF WHEEL2 HingeJoint {
+      jointParameters HingeJointParameters {
+        position -0.13597212836894682
+        axis 0 1 0
+        anchor 0 -0.06 0
+      }
+      device [
+        RotationalMotor {
+          name "right_wheel"
+        }
+      ]
+      endPoint Solid {
+        translation 1.3554858461798663e-06 -0.06000000980942243 -1.4706876214762954e-06
+        rotation -0.9953956286091749 0.06777724162761838 -0.0677774893537454 4.707770319200099
+        children [
+          USE WHEEL
+        ]
+        name "solid(1)"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+        linearVelocity 0.025853682213104814 0.0032707732520232723 -2.8175839891879903e-06
+        angularVelocity -0.09508755031867233 0.7445598436474758 -0.3981521741661517
+      }
+    }
+    DEF DS Group {
+      children [
+        DistanceSensor {
+          translation 0.053 -4.28515e-18 0.01
+          rotation 0 0 1 1.570796327
+          name "distance sensor(0)"
+          lookupTable [
+            0.015 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 1.308996939
+          name "distance sensor(1)"
+          lookupTable [
+            0.013 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 1.047197551
+          name "distance sensor(2)"
+          lookupTable [
+            0.012 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 0.785398163
+          name "distance sensor(3)"
+          lookupTable [
+            0.008 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 0.523598776
+          name "distance sensor(4)"
+          lookupTable [
+            0.007 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 0.2617993877991494
+          name "distance sensor(5)"
+          lookupTable [
+            0.006 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          name "distance sensor(6)"
+          lookupTable [
+            0.006 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 -0.261799
+          name "distance sensor(7)"
+          lookupTable [
+            0.006 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 -0.523598776
+          name "distance sensor(8)"
+          lookupTable [
+            0.007 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 -0.785398163
+          name "distance sensor(9)"
+          lookupTable [
+            0.008 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 -1.047197551
+          name "distance sensor(10)"
+          lookupTable [
+            0.012 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.051 0 0.01
+          rotation 0 0 1 -1.309
+          name "distance sensor(11)"
+          lookupTable [
+            0.013 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+        DistanceSensor {
+          translation 0.053 0 0.01
+          rotation 0 0 1 -1.570796327
+          name "distance sensor(12)"
+          lookupTable [
+            0.015 0 0
+            0.25 25 0.025
+            0.5 50 0.025
+            0.75 75 0.025
+            1 100 0
+          ]
+          type "sonar"
+          numberOfRays 4
+          aperture 0.1
+        }
+      ]
+    }
+    DEF DS_BODY Solid {
+      translation 0.05 0 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "DS_BODY"
+    }
+    TouchSensor {
+      translation 0.047524636585188906 0.031018466410938084 -0.0100030558070138
+      rotation 1 -8.229684459317903e-12 -8.268201391817455e-12 1.5708000000000244
+      children [
+        DEF TOUCH_BODY_LEFT Shape {
+          appearance PBRAppearance {
+            baseColor 0.203922 0.396078 0.643137
+            metalness 0
+          }
+          geometry Capsule {
+            height 0.05
+            radius 0.015
+          }
+        }
+      ]
+      name "touch sensor left"
+      boundingObject USE TOUCH_BODY_LEFT
+      physics Physics {
+      }
+      linearVelocity -0.012435393057909241 0.017439833745988204 2.9303335762355528e-05
+      angularVelocity -0.00013840093801268776 0.0005684110191763519 -0.39741140628886346
+    }
+    TouchSensor {
+      translation 0.04752681641212475 -0.031015123496495267 -0.01000303762210282
+      rotation 1 -8.229664679869155e-12 -8.268201390020631e-12 1.5708000000000246
+      children [
+        DEF TOUCH_BODY_RIGHT Shape {
+          appearance PBRAppearance {
+            baseColor 0.203922 0.396078 0.643137
+            metalness 0
+          }
+          geometry Capsule {
+            height 0.05
+            radius 0.015
+          }
+        }
+      ]
+      name "touch sensor right"
+      boundingObject USE TOUCH_BODY_RIGHT
+      physics Physics {
+      }
+      linearVelocity 0.012022857241512846 0.020545304660051857 2.5513623130054728e-05
+      angularVelocity -0.0001384009380111389 0.0005684110191793801 -0.3974114062888629
+    }
+  ]
+  boundingObject USE BODY
+  physics Physics {
+  }
+  controller "dqn_controller"
+  supervisor TRUE
+  linearVelocity 0.002177259762583937 0.00026459673480673605 -2.1463650872757584e-07
+  angularVelocity -0.0001384009381892966 0.0005684110191874754 -0.39741140524773766
+}
+DEF TARGET Solid {
+  translation -1 1 0.001
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "https://avatars.githubusercontent.com/u/57842071?s=256"
+          ]
+        }
+      }
+      geometry Plane {
+        size 0.24 0.24
+      }
+    }
+  ]
+  name "target"
+}
+DEF OBSTACLES Group {
+  children [
+    DEF OBSTACLE_CBL1 CardboardBox {
+      translation 5.5 0 0.051
+      name "cardboard box long 1"
+      size 0.1 0.4 0.1
+    }
+    DEF OBSTACLE_CBL2 CardboardBox {
+      translation 5.62 0 0.051
+      name "cardboard box long 2"
+      size 0.1 0.4 0.1
+    }
+    DEF OBSTACLE_CBL3 CardboardBox {
+      translation 0 0 0.051
+      rotation 0 0 1 0.6750528396923623
+      name "cardboard box long 3"
+      size 0.1 0.4 0.1
+    }
+    DEF OBSTACLE_CBL4 CardboardBox {
+      translation -0.5 -1 0.051
+      rotation 0 0 1 1.8964309944316993
+      name "cardboard box long 4"
+      size 0.1 0.4 0.1
+    }
+    DEF OBSTACLE_CBL5 CardboardBox {
+      translation 5.86 0 0.051
+      name "cardboard box long 5"
+      size 0.1 0.4 0.1
+    }
+    DEF OBSTACLE_CB1 CardboardBox {
+      translation 5.5 0.29 0.051
+      name "cardboard box 1"
+      size 0.1 0.1 0.1
+    }
+    DEF OBSTACLE_CB2 CardboardBox {
+      translation 0.5 1 0.051
+      rotation 0 0 1 -0.9694928872058699
+      name "cardboard box 2"
+      size 0.1 0.1 0.1
+    }
+    DEF OBSTACLE_CB3 CardboardBox {
+      translation 5.74 0.29 0.051
+      name "cardboard box 3"
+      size 0.1 0.1 0.1
+    }
+    DEF OBSTACLE_CB4 CardboardBox {
+      translation 1.5 1.5 0.051
+      rotation 0 0 1 1.230454191142342
+      name "cardboard box 4"
+      size 0.1 0.1 0.1
+    }
+    DEF OBSTACLE_CB5 CardboardBox {
+      translation 5.98 0.29 0.051
+      name "cardboard box 5"
+      size 0.1 0.1 0.1
+    }
+    DEF OBSTACLE_CBLA1 CardboardBox {
+      translation 5.86 0.68 0.051
+      name "cardboard box large 1"
+      size 0.4 0.4 0.1
+    }
+    DEF OBSTACLE_CBLA2 CardboardBox {
+      translation 5.86 1.13 0.051
+      name "cardboard box large 2"
+      size 0.4 0.4 0.1
+    }
+    DEF OBSTACLE_CBLA3 CardboardBox {
+      translation -1.5 -0.5 0.051
+      rotation 0 0 1 -1.7486628333388992
+      name "cardboard box large 3"
+      size 0.4 0.4 0.1
+    }
+    DEF OBSTACLE_CBLA4 CardboardBox {
+      translation 5.86 2.06 0.051
+      name "cardboard box large 4"
+      size 0.4 0.4 0.1
+    }
+    DEF OBSTACLE_CBLA5 CardboardBox {
+      translation -1.5 1.5 0.051
+      rotation 0 0 1 -2.981711593667146
+      name "cardboard box large 5"
+      size 0.4 0.4 0.1
+    }
+    DEF OBSTACLE_C1 WoodenChair {
+      translation 0.5 1.5 0
+      rotation 0 0 1 2.5222431035629294
+      name "wooden chair 1"
+    }
+    DEF OBSTACLE_C2 WoodenChair {
+      translation 6.46 0.46 0
+      name "wooden chair 2"
+    }
+    DEF OBSTACLE_C3 WoodenChair {
+      translation 6.46 0.91 0
+      name "wooden chair 3"
+    }
+    DEF OBSTACLE_C4 WoodenChair {
+      translation 6.46 1.38 0
+      name "wooden chair 4"
+    }
+    DEF OBSTACLE_C5 WoodenChair {
+      translation 6.46 1.84 0
+      name "wooden chair 5"
+    }
+    DEF OBSTACLE_JJ1 JamJar {
+      translation 0.00010682609903209674 -0.999982958600103 -0.0006972498946076489
+      rotation 1.192413342257399e-07 -6.863281809713801e-08 -0.9999999999999906 1.780661740822881
+      name "jam jar 1"
+    }
+    DEF OBSTACLE_JJ2 JamJar {
+      translation 1.000127339555708 0.999968656116071 -0.0006972498630802987
+      rotation -1.5503788880464504e-07 -8.664954728444458e-08 0.9999999999999841 1.6395903398123983
+      name "jam jar 2"
+    }
+    DEF OBSTACLE_JJ3 JamJar {
+      translation 5.31 0.060000000000000005 -0.000696200001152357
+      rotation 0.8058748299851758 0.514588092757442 -0.29285636955446664 9.867770818618206e-17
+      name "jam jar 3"
+    }
+    DEF OBSTACLE_JJ4 JamJar {
+      translation 5.31 0.16 -0.000696200001152357
+      rotation -0.10984613843259676 0.993679563759594 0.02312467162987777 8.04376441069383e-17
+      name "jam jar 4"
+    }
+    DEF OBSTACLE_JJ5 JamJar {
+      translation 0.00010387640615806782 1.499975735539507 -0.0006972498964337784
+      rotation -1.1104234354127807e-07 -1.1777814114456478e-08 0.9999999999999938 2.4712884716297205
+      name "jam jar 5"
+    }
+  ]
+}
+DEF WALLS Group {
+  children [
+    DEF WALL_1 Solid {
+      translation 4.94 5.96488e-06 0.05
+      rotation 0 0 1 -1.5708
+      children [
+        DEF BODY Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0.4
+          }
+          geometry Box {
+            size 3.6 0.025 0.1
+          }
+        }
+      ]
+      name "wall 1"
+      boundingObject USE BODY
+    }
+    DEF WALL_2 Solid {
+      translation 4.99 6.01603e-06 0.05
+      rotation 0 0 1 -1.5708
+      children [
+        DEF BODY Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0.4
+          }
+          geometry Box {
+            size 3.6 0.025 0.1
+          }
+        }
+      ]
+      name "wall 2"
+      boundingObject USE BODY
+    }
+  ]
+}
+DEF PATH Group {
+  children [
+    DEF p0 Solid {
+      translation 1 -1.5 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p"
+    }
+    DEF p1 Solid {
+      translation 0.5 -1 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(1)"
+    }
+    DEF p2 Solid {
+      translation 0 -0.5 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(2)"
+    }
+    DEF p3 Solid {
+      translation -0.5 0 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(3)"
+    }
+    DEF p4 Solid {
+      translation -0.5 0.5 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(4)"
+    }
+    DEF p5 Solid {
+      translation 5.13 0.610001 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(5)"
+    }
+    DEF p6 Solid {
+      translation 5.13 0.730001 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(6)"
+    }
+    DEF p7 Solid {
+      translation 5.13 0.850001 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(7)"
+    }
+    DEF p8 Solid {
+      translation 5.13 0.970001 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(8)"
+    }
+    DEF p9 Solid {
+      translation 5.13 1.1 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(9)"
+    }
+    DEF p10 Solid {
+      translation 5.13 1.23 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(10)"
+    }
+    DEF p11 Solid {
+      translation 5.13 1.36 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(11)"
+    }
+    DEF p12 Solid {
+      translation 5.13 1.49 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(12)"
+    }
+    DEF p13 Solid {
+      translation 5.13 1.61 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(13)"
+    }
+    DEF p14 Solid {
+      translation 5.13 1.74 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(14)"
+    }
+    DEF p15 Solid {
+      translation 5.13 1.86 0.001
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              transparency 0.75
+            }
+            texture ImageTexture {
+              url [
+                "https://avatars.githubusercontent.com/u/57842071?s=256"
+              ]
+            }
+          }
+          geometry Plane {
+            size 0.12 0.12
+          }
+        }
+      ]
+      name "p(15)"
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 import os
 
 import numpy as np
-
 import torch as T
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+
 from models.noise_generator import OUActionNoise
 from models.replay_buffer import ReplayBuffer
 
@@ -64,11 +64,11 @@ class CriticNetwork(nn.Module):
     def forward(self, state, action):
         state_value = self.fc1(state)
         state_value = F.leaky_relu(state_value)
-        # state_value = self.bn1(state_value)
+        state_value = self.bn1(state_value)
 
         state_value = self.fc2(state_value)
         state_value = F.leaky_relu(state_value)
-        # state_value = self.bn2(state_value)
+        state_value = self.bn2(state_value)
 
         action_value = self.action_value(action)
         action_value = F.leaky_relu(action_value)
@@ -111,10 +111,10 @@ class ActorNetwork(nn.Module):
         self.checkpoint_file = os.path.join(chkpt_dir, name + "_ddpg")
 
         self.fc1 = nn.Linear(*self.input_dims, self.fc1_dims)
-        # self.bn1 = nn.LayerNorm(self.fc1_dims)
+        self.bn1 = nn.LayerNorm(self.fc1_dims)
 
         self.fc2 = nn.Linear(self.fc1_dims, self.fc2_dims)
-        # self.bn2 = nn.LayerNorm(self.fc2_dims)
+        self.bn2 = nn.LayerNorm(self.fc2_dims)
 
         self.fc3 = nn.Linear(self.fc2_dims, self.fc3_dims)
         self.bn3 = nn.LayerNorm(self.fc3_dims)
@@ -143,15 +143,15 @@ class ActorNetwork(nn.Module):
     def forward(self, state):
         x = self.fc1(state)
         x = F.leaky_relu(x)
-        # x = self.bn1(x)
+        x = self.bn1(x)
 
         x = self.fc2(x)
         x = F.leaky_relu(x)
-        # x = self.bn2(x)
+        x = self.bn2(x)
 
         x = self.fc3(x)
         x = F.leaky_relu(x)
-        # x = self.bn3(x)
+        x = self.bn3(x)
 
         x = T.sigmoid(self.mu(x))
 
@@ -194,13 +194,9 @@ class DDPG(object):
             self.init_models(lr_critic, lr_actor, input_dims, layer1_size,
                              layer2_size, layer3_size, n_actions, save_dir)
 
-        self.noise = OUActionNoise(mu=np.zeros(n_actions),
-                                   dt=1e-2
-                                   # sigma=0.3,
-                                   # theta=0.15,
-                                   )
+        self.noise = OUActionNoise(mu=np.zeros(n_actions), dt=1e-2)
 
-        self.update_network_parameters(tau=1)
+        self.update_network_parameters(tau=0.8)
 
     def choose_action_train(self, observation):
         if observation is not None:
@@ -302,8 +298,6 @@ class DDPG(object):
         for name in actor_state_dict:
             actor_state_dict[name] = tau*actor_state_dict[name].clone() +\
                                      (1-tau)*target_actor_dict[name].clone()
-
-        self.target_actor.load_state_dict(actor_state_dict)
 
     def init_models(self, lr_critic, lr_actor, input_dims, layer1_size,
                     layer2_size, layer3_size, n_actions, save_dir):

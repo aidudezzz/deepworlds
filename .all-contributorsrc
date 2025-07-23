@@ -56,6 +56,44 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "KelvinYang0320",
+      "name": "Jiun Kai Yang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49781698?v=4",
+      "profile": "https://www.linkedin.com/in/kelvin-yang-b7b508198/",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "ideas",
+        "review",
+        "maintenance",
+        "projectManagement",
+        "bug",
+        "question"
+      ]
+    },
+    {
+      "login": "NickKok",
+      "name": "Nikolaos Kokkinis-Ntrenis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8222731?v=4",
+      "profile": "https://nickkok.github.io/my-website/",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "TarekSaati",
+      "name": "Tarek Saati",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78405314?v=4",
+      "profile": "https://github.com/TarekSaati",
+      "contributions": [
+        "code",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -63,5 +101,7 @@
   "projectOwner": "aidudezzz",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
